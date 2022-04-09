@@ -8,18 +8,20 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QLabel, QLineEdit, QMainWindow, QPushButton,
-    QScrollArea, QSizePolicy, QStackedWidget, QVBoxLayout,
-    QWidget)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+import sqlite3
+import clipboardManager_DB as db
 import icons_rc
+import PIL.Image as Image
+import os
+import io
+from PyQt5.QtCore import QTimer
+from PyQt5 import uic
+import sys
+from AppKit import NSPasteboard, NSStringPboardType, NSTIFFPboardType, NSPasteboardTypePNG, NSURL, NSURLPboardType
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -479,3 +481,12 @@ class Ui_MainWindow(object):
         self.settings_button.setText("")
     # retranslateUi
 
+if __name__ == "__main__":
+    # import sys
+    app = QApplication(sys.argv)
+    MainWindow = QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    # ui.manage_clip()
+    MainWindow.show()
+    sys.exit(app.exec_())
