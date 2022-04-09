@@ -11,14 +11,16 @@
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+import sqlite3
+import clipboardManager_DB as db
 import icons_rc
-import PIL.Image as Image
-import os
-import io
-from PyQt5.QtCore import QTimer
-from AppKit import NSPasteboard, NSStringPboardType, NSTIFFPboardType, NSPasteboardTypePNG, NSURL, NSURLPboardType
+
+from PyQt5 import uic
+import sys
 
 
+# class
+# add an instance of the clipboard manager here
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -484,45 +486,14 @@ class Ui_MainWindow(object):
         self.anchor_button.setText("")
         self.settings_button.setText("")
 
-    # retranslateUi
-
-    def manage_clip(self):
-        self.pb = NSPasteboard.generalPasteboard()
-        self.changeCount = self.pb.changeCount()
-        self.timer = QTimer()  # set up your QTimer
-        self.timer.timeout.connect(lambda: self.updateClip(self.changeCount))  # connect it to your update function
-        self.timer.start(1000)  # set it to timeout in 5000 ms
-
-    def updateClip(self, chg):
-        #print(chg, 'realy?')
-        if chg != self.pb.changeCount():
-            data_type = self.pb.types() #only used to check data type
-
-            if NSStringPboardType in data_type:
-                pbstring = self.pb.stringForType_(NSStringPboardType)
-                self.label_16.setText(pbstring)
-                #print("Pastboard string: %s" % pbstring)
-            elif NSTIFFPboardType in data_type:
-                size = 200, 150
-                # pbimage = self.pb.dataForType_(NSTIFFPboardType)
-                pbimage = self.pb.dataForType_(NSTIFFPboardType)
-                image = Image.open(io.BytesIO(pbimage)) # check what image.open does
-                filepath = os.path.abspath(os.getcwd()) + "/img_copy/img_copy_" + str(self.changeCount) + ".png" # check if this line is neccessary
-                image.save(filepath, quality=95) # is this really a PNG??? - you can specify format here
-                # image.thumbnail(size, Image.ANTIALIAS)
-                pixmap = QPixmap(filepath)
-                pixmap4 = pixmap.scaled(200, 150, Qt.KeepAspectRatio)
-                # pixmap2 = pixmap.scaledToWidth(200)
-                # pixmap = pixmap.scaledToHeight(150, Qt.SmoothTransformation);
-                # pixmap = pixmap.scaled(200, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                # print(pbimage)
-                self.label_16.setPixmap(pixmap4)
-                self.changeCount = self.pb.changeCount()
+        # retranslateUi
 
     def pressit(self):
         print('Pressed!!!')
 
 
+    def searchCard(self, searchTerm):
+        pass
 
 
 
