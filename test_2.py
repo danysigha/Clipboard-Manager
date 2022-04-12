@@ -1,27 +1,20 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainPHsews.ui'
+## Form generated from reading UI file 'mainpdZyJr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
-import sqlite3
-import clipboardManager_DB as db
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+import grab_clipboard as grabClip
 import icons_rc
-import PIL.Image as Image
-import os
-import io
-from PyQt5.QtCore import QTimer
 from PyQt5 import uic
 import sys
-from AppKit import NSPasteboard, NSStringPboardType, NSTIFFPboardType, NSPasteboardTypePNG, NSURL, NSURLPboardType
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -203,7 +196,7 @@ class Ui_MainWindow(object):
         self.favorite_cards = QPushButton(self.scrollAreaWidgetContents)
         self.favorite_cards.setObjectName(u"favorite_cards")
         icon5 = QIcon()
-        icon5.addFile(u":/icons/Icons/favorite_white_48dp.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon5.addFile(u":/icons/Icons/favorite_white_24dp.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.favorite_cards.setIcon(icon5)
         self.favorite_cards.setIconSize(QSize(30, 30))
 
@@ -385,25 +378,88 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.right_header_frame, 0, Qt.AlignRight)
 
 
-        self.verticalLayout.addWidget(self.header_frame, 0, Qt.AlignTop)
+        self.verticalLayout.addWidget(self.header_frame)
 
         self.center_frame = QFrame(self.right_frame)
         self.center_frame.setObjectName(u"center_frame")
         self.center_frame.setFrameShape(QFrame.NoFrame)
         self.center_frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_2 = QVBoxLayout(self.center_frame)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.stackedWidget_2 = QStackedWidget(self.center_frame)
-        self.stackedWidget_2.setObjectName(u"stackedWidget_2")
-        self.card_page_2 = QWidget()
-        self.card_page_2.setObjectName(u"card_page_2")
-        self.stackedWidget_2.addWidget(self.card_page_2)
-        self.settings_page_2 = QWidget()
-        self.settings_page_2.setObjectName(u"settings_page_2")
-        self.settings_page_2.setMinimumSize(QSize(200, 0))
-        self.stackedWidget_2.addWidget(self.settings_page_2)
+        self.horizontalLayout_7 = QHBoxLayout(self.center_frame)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
 
-        self.verticalLayout_2.addWidget(self.stackedWidget_2)
+
+
+        self.scrollArea_2 = QScrollArea(self.center_frame)
+        self.scrollArea_2.setObjectName(u"scrollArea_2")
+        self.scrollArea_2.setStyleSheet(u"/*  HANDLE BAR VERTICAL */\n"
+"QScrollBar::handle:vertical {	\n"
+"	background-color: rgb(80, 80, 122);\n"
+"	min-height: 30px;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"QScrollBar::handle:vertical:hover{	\n"
+"	background-color: rgb(255, 0, 127);\n"
+"}\n"
+"QScrollBar::handle:vertical:pressed {	\n"
+"	background-color: rgb(185, 0, 92);\n"
+"}\n"
+"\n"
+"/* BTN TOP - SCROLLBAR */\n"
+"QScrollBar::sub-line:vertical {\n"
+"	border: none;\n"
+"	background-color: rgb(59, 59, 90);\n"
+"	height: 15px;\n"
+"	border-top-left-radius: 7px;\n"
+"	border-top-right-radius: 7px;\n"
+"	subcontrol-position: top;\n"
+"	subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::sub-line:vertical:hover {	\n"
+"	background-color: rgb(255, 0, 127);\n"
+"}\n"
+"QScrollBar::sub-line:vertical:pressed {	\n"
+"	background-color: rgb(185, 0, 92);\n"
+"}\n"
+"\n"
+"/* BTN BOTTOM - SCROLLBAR */\n"
+"QScrollBar::add-line:vertical {\n"
+"	border: none;\n"
+"	background-color: rgb(59, 59, 90);\n"
+"	height: 15px;\n"
+"	border-bottom-left-radius: 7px;\n"
+"	border-bottom-right-radius: 7p"
+                        "x;\n"
+"	subcontrol-position: bottom;\n"
+"	subcontrol-origin: margin;\n"
+"}\n"
+"QScrollBar::add-line:vertical:hover {	\n"
+"	background-color: rgb(255, 0, 127);\n"
+"}\n"
+"QScrollBar::add-line:vertical:pressed {	\n"
+"	background-color: rgb(185, 0, 92);\n"
+"}\n"
+"\n"
+"/* RESET ARROW */\n"
+"QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\n"
+"	background: none;\n"
+"}\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+"	background: none;\n"
+"}")
+        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_2 = QWidget()
+        self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 607, 688))
+
+        self.gridLayout2 = QGridLayout(self.scrollAreaWidgetContents_2)
+        self.gridLayout2.setSpacing(0)
+        self.gridLayout2.setObjectName(u"gridLayout_2")
+        self.gridLayout2.setContentsMargins(0, 0, 0, 0)
+
+        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+
+        self.horizontalLayout_7.addWidget(self.scrollArea_2)
+
 
 
         self.verticalLayout.addWidget(self.center_frame)
@@ -431,7 +487,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.addWidget(self.size_grip, 0, Qt.AlignBottom)
 
 
-        self.verticalLayout.addWidget(self.footer_frame, 0, Qt.AlignBottom)
+        self.verticalLayout.addWidget(self.footer_frame)
 
 
         self.horizontalLayout.addWidget(self.right_frame)
@@ -439,9 +495,6 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-
-        self.stackedWidget_2.setCurrentIndex(0)
-
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -482,11 +535,12 @@ class Ui_MainWindow(object):
     # retranslateUi
 
 if __name__ == "__main__":
-    # import sys
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    # ui.manage_clip()
+    # gc = grabClip.clipboardManager(ui, ui.scrollArea_2)
+    gc = grabClip.clipboardManager(ui.gridLayout2)
+    gc.manage_clip()
     MainWindow.show()
     sys.exit(app.exec_())
