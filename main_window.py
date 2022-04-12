@@ -8,13 +8,11 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
-import sqlite3
-import clipboardManager_DB as db
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+import grab_clipboard as grabClip
 import icons_rc
-
 from PyQt5 import uic
 import sys
 
@@ -395,6 +393,7 @@ class Ui_MainWindow(object):
         self.stackedWidget_2.setObjectName(u"stackedWidget_2")
         self.card_page_2 = QWidget()
         self.card_page_2.setObjectName(u"card_page_2")
+
         self.label_16 = QLabel(self.card_page_2)
         self.label_16.setObjectName(u"label_16")
         self.label_16.setGeometry(QRect(30, 20, 200, 150))
@@ -403,6 +402,7 @@ class Ui_MainWindow(object):
         self.label_16.setWordWrap(True)
         self.label_16.setStyleSheet(u"*{\n"
 "background-color: rgb(33, 33, 33);}")
+
         self.stackedWidget_2.addWidget(self.card_page_2)
         self.settings_page_2 = QWidget()
         self.settings_page_2.setObjectName(u"settings_page_2")
@@ -499,11 +499,11 @@ class Ui_MainWindow(object):
 
 
 if __name__ == "__main__":
-    import sys
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    ui.manage_clip()
+    gc = grabClip.clipboardManager(ui.label_16)
+    gc.manage_clip()
     MainWindow.show()
     sys.exit(app.exec_())
