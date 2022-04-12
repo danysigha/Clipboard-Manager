@@ -1,49 +1,98 @@
 import PIL.Image as Image
+import uuid
 import os
 import io
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt, QSize
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel, QWidget, QGridLayout, QHBoxLayout
 from AppKit import NSPasteboard, NSStringPboardType, NSTIFFPboardType, NSPasteboardTypePNG, NSURL, NSURLPboardType
 
+
+class newCopy(): #QGridLayout
+    def __init__(self, parent, position): #  - parent=None
+        # super(newCopy, self).__init__(parent)
+        self.label = QLabel()
+        self.label.setMinimumSize(QSize(200, 150))
+        parent.addWidget(self.label, position[0], position[1], position[2], position[3])
+
+        # layout = QGridLayout()
+        # layout = QHBoxLayout()
+        # layout.addWidget(self.label)
+        # self.setLayout(layout)
+
+    def grabNewItem(self):
+        return self.label
+
+
 class clipboardManager():
-    def __init__(self, pasteboardCount, pasteboard):
-        self._currentCount = pasteboardCount
-        self._pb = pasteboard
 
-        def updateUI(self):
-            """Check if clipboard item count changed and update interface accordingly by creating
-            new widget"""
+    def __init__(self, scrollarea):  # main,
+        self._pb = NSPasteboard.generalPasteboard()
+        self._currentCount = NSPasteboard.generalPasteboard().changeCount()
+        self._timer = QTimer()  # set up your QTimer
+        self._ui = scrollarea  # pass label as test
+        # self._main_ui = main
+        self._position = -1
 
-            if self._currentCount != self._pb.changeCount():
+        self._colon1 = 0
+        self._colon2 = 0
+        self._colon3 = 0
+        self._colon4 = 1
+        self._colons = [self._colon1, self._colon2, self._colon3, self._colon4]
 
-                data_type = self._pb.types()  # only used to check data type
 
-                if NSStringPboardType in data_type:
-                    pbstring = self.pb.stringForType_(NSStringPboardType)
-                    self.label_16.setText(pbstring)
-                    # print("Pastboard string: %s" % pbstring)
+    def updateUI(self):
+        """Check if clipboard item count changed and update interface accordingly by creating
+        new widget"""
 
-                elif NSTIFFPboardType in data_type:
-                    # pbimage = self.pb.dataForType_(NSTIFFPboardType)
-                    pbimage = self.pb.dataForType_(NSTIFFPboardType)
-                    image = Image.open(io.BytesIO(pbimage))  # check what image.open does
-                    filepath = os.path.abspath(os.getcwd()) + "/img_copy/img_copy_" + str(
-                        self.changeCount) + ".png"  # check if this line is neccessary
-                    image.save(filepath, quality=95)  # is this really a PNG??? - you can specify format here
-                    # image.thumbnail(size, Image.ANTIALIAS)
-                    pixmap = QPixmap(filepath)
-                    pixmap4 = pixmap.scaled(200, 150, Qt.KeepAspectRatio)
-                    # pixmap2 = pixmap.scaledToWidth(200)
-                    # pixmap = pixmap.scaledToHeight(150, Qt.SmoothTransformation);
-                    # pixmap = pixmap.scaled(200, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                    # print(pbimage)
-                    self.label_16.setPixmap(pixmap4)
-                    self.changeCount = self.pb.changeCount()
+        if self._currentCount != self._pb.changeCount():
 
-                #missing URL implementation for now
+            data_type = self._pb.types()  # only used to check data type
 
-        def manage_clip(self):
-            self.pb = NSPasteboard.generalPasteboard()
-            self.changeCount = self.pb.changeCount()
-            self.timer = QTimer()  # set up your QTimer
-            self.timer.timeout.connect(lambda: self.updateClip(self.changeCount))  # connect it to your update function
-            self.timer.start(1000)  # set it to timeout in 5000 ms
+            if NSStringPboardType in data_type:
+                pbstring = self._pb.stringForType_(NSStringPboardType)
+                # self.label_16.setText(pbstring) #need to create new widget instead
+                # print("Pastboard string: %s" % pbstring)
+                self.addWidget().setText(pbstring)
+                # print(pbstring)
+
+            elif NSTIFFPboardType in data_type:
+                # pbimage = self.pb.dataForType_(NSTIFFPboardType)
+
+                pbimage = self._pb.dataForType_(NSTIFFPboardType)
+                image = Image.open(io.BytesIO(pbimage))  # check what image.open does
+                filepath = os.path.abspath(os.getcwd()) + "/img_copy/" + str(
+                    uuid.uuid4()) + ".png"  # check if this line is neccessary
+                image.save(filepath, quality=95)  # is this really a PNG??? - you can specify format here
+                # image.thumbnail(size, Image.ANTIALIAS)
+                pixmap = QPixmap(filepath)
+                pixmap4 = pixmap.scaled(200, 150, Qt.KeepAspectRatio)
+                # pixmap2 = pixmap.scaledToWidth(200)
+                # pixmap = pixmap.scaledToHeight(150, Qt.SmoothTransformation);
+                # pixmap = pixmap.scaled(200, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                # print(pbimage)
+                self._position += 1
+                pos = (self._position) % 3
+                self._colons[pos] += 1
+                self.addWidget().setPixmap(pixmap4)  # need to create new widget instead
+                # print("Success!!")
+            self._currentCount = self._pb.changeCount()
+
+            # missing URL implementation for now
+
+    def manage_clip(self):
+        self._currentCount = self._pb.changeCount()
+        self._timer.timeout.connect(lambda: self.updateUI())  # connect it to your update function
+        self._timer.start(1000)  # set it to timeout in 1 second
+
+    def addWidget(self):
+        # newItem = newCopy(self._main_ui)
+
+        newItem = newCopy(self._ui, self._colons)
+        # self._ui.addRow()
+        return newItem.grabNewItem()
+
+
+if __name__ == "__main__":
+    gc = clipboardManager()
+    gc.manage_clip()
