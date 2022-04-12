@@ -1,3 +1,6 @@
+import sqlite3
+import clipboardManager_DB as db
+
 class dataaccessobject():
     pass
 # decryption takes place here
