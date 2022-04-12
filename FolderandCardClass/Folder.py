@@ -10,6 +10,9 @@ class Folder(Card):
         if cards is None:
             self.cards = []
         else:
+            for element in cards:
+                if not isinstance(element, Card):
+                    raise Exception("element in list is not Card type")
             self.cards = cards
 
         #self.favorite = None
