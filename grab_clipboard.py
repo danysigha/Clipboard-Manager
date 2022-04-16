@@ -8,12 +8,25 @@ from PyQt5.QtWidgets import QLabel, QWidget, QGridLayout, QHBoxLayout
 from AppKit import NSPasteboard, NSStringPboardType, NSTIFFPboardType, NSPasteboardTypePNG, NSURL, NSURLPboardType
 
 
-class newCopy(): #QGridLayout
-    def __init__(self, parent, position): #  - parent=None
+class newCopy():  # QGridLayout
+    def __init__(self, parent, position):  # - parent=None
         # super(newCopy, self).__init__(parent)
         self.label = QLabel()
         self.label.setMinimumSize(QSize(200, 150))
-        parent.addWidget(self.label, position[0], position[1], position[2], position[3])
+        self.label.setMaximumSize(QSize(200, 150))
+        self.label.setStyleSheet(u"*{\n"
+                                    "border:4px solid black;\n"
+                                    "  border-radius: 15px;\n"
+                                    "  padding: 15px;\n"
+                                    #"  box-shadow: 0px 0px 20px 20px black;\n"
+                                    "  background-color: white;\n"
+                                    "}")
+        parent.addWidget(self.label, position[0], position[1], position[2], position[3], Qt.AlignTop)
+        if (position[1]+1) % 3 == 0:
+            position[0] += 1
+            position[1] = 0
+        else:
+            position[1] += 1
 
         # layout = QGridLayout()
         # layout = QHBoxLayout()
@@ -25,6 +38,8 @@ class newCopy(): #QGridLayout
 
 
 class clipboardManager():
+    # add class newCopy here!
+
 
     def __init__(self, scrollarea):  # main,
         self._pb = NSPasteboard.generalPasteboard()
@@ -32,13 +47,14 @@ class clipboardManager():
         self._timer = QTimer()  # set up your QTimer
         self._ui = scrollarea  # pass label as test
         # self._main_ui = main
-        self._position = -1
 
-        self._colon1 = 0
-        self._colon2 = 0
-        self._colon3 = 0
-        self._colon4 = 1
-        self._colons = [self._colon1, self._colon2, self._colon3, self._colon4]
+        #self._position = -1
+
+        self._row = 0
+        self._column = 0
+        self._rowSpan = 1
+        self._columnSpan = 1
+        self._position = [self._row, self._column, self._rowSpan, self._columnSpan]
 
 
     def updateUI(self):
@@ -53,7 +69,7 @@ class clipboardManager():
                 pbstring = self._pb.stringForType_(NSStringPboardType)
                 # self.label_16.setText(pbstring) #need to create new widget instead
                 # print("Pastboard string: %s" % pbstring)
-                self.addWidget().setText(pbstring)
+                self.addCopy().setText(pbstring)
                 # print(pbstring)
 
             elif NSTIFFPboardType in data_type:
@@ -66,16 +82,19 @@ class clipboardManager():
                 image.save(filepath, quality=95)  # is this really a PNG??? - you can specify format here
                 # image.thumbnail(size, Image.ANTIALIAS)
                 pixmap = QPixmap(filepath)
-                pixmap4 = pixmap.scaled(200, 150, Qt.KeepAspectRatio)
+                pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
                 # pixmap2 = pixmap.scaledToWidth(200)
                 # pixmap = pixmap.scaledToHeight(150, Qt.SmoothTransformation);
                 # pixmap = pixmap.scaled(200, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
                 # print(pbimage)
-                self._position += 1
-                pos = (self._position) % 3
-                self._colons[pos] += 1
-                self.addWidget().setPixmap(pixmap4)  # need to create new widget instead
+                # self._position += 1
+                # pos = (self._position) % 3
+                # self._colons[pos] += 1
+
+                self.addCopy().setPixmap(pixmap4)  # need to create new widget instead
                 # print("Success!!")
+
+                #newItem = newCopy(self._ui, self._colons, content) add
             self._currentCount = self._pb.changeCount()
 
             # missing URL implementation for now
@@ -85,10 +104,10 @@ class clipboardManager():
         self._timer.timeout.connect(lambda: self.updateUI())  # connect it to your update function
         self._timer.start(1000)  # set it to timeout in 1 second
 
-    def addWidget(self):
+    def addCopy(self):
         # newItem = newCopy(self._main_ui)
 
-        newItem = newCopy(self._ui, self._colons)
+        newItem = newCopy(self._ui, self._position)
         # self._ui.addRow()
         return newItem.grabNewItem()
 

@@ -458,7 +458,7 @@ class Ui_MainWindow(object):
 
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
 
-        self.horizontalLayout_7.addWidget(self.scrollArea_2)
+        self.horizontalLayout_7.addWidget(self.scrollArea_2, Qt.AlignTop)
 
 
 

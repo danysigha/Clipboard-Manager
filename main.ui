@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>831</width>
-    <height>800</height>
+    <width>194</width>
+    <height>0</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -169,7 +169,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/folder_white_24dp.svg</normaloff>:/icons/Icons/folder_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -208,7 +208,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/link_white_24dp.svg</normaloff>:/icons/Icons/link_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -225,7 +225,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/gif_white_24dp.svg</normaloff>:/icons/Icons/gif_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -275,7 +275,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/style_white_24dp.svg</normaloff>:/icons/Icons/style_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -299,7 +299,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/category_white_24dp.svg</normaloff>:/icons/Icons/category_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -323,7 +323,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset>
                <normaloff>:/icons/Icons/favorite_white_48dp.svg</normaloff>:/icons/Icons/favorite_white_48dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -389,7 +389,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/category_white_24dp.svg</normaloff>:/icons/Icons/category_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -406,7 +406,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/image_white_24dp.svg</normaloff>:/icons/Icons/image_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -423,7 +423,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/title_white_24dp.svg</normaloff>:/icons/Icons/title_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -452,7 +452,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/category_white_24dp.svg</normaloff>:/icons/Icons/category_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -476,7 +476,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/folder_white_24dp.svg</normaloff>:/icons/Icons/folder_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -509,7 +509,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="clipboard_manager_local/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/folder_white_24dp.svg</normaloff>:/icons/Icons/folder_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -593,7 +593,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="clipboard_manager_local/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/search_white_24dp.svg</normaloff>:/icons/Icons/search_white_24dp.svg</iconset>
                </property>
               </widget>
@@ -631,7 +631,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="clipboard_manager_local/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/view_sidebar_white_24dp.svg</normaloff>:/icons/Icons/view_sidebar_white_24dp.svg</iconset>
                </property>
                <property name="iconSize">
@@ -648,7 +648,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="clipboard_manager_local/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/anchor_white_24dp.svg</normaloff>:/icons/Icons/anchor_white_24dp.svg</iconset>
                </property>
                <property name="iconSize">
@@ -665,7 +665,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="clipboard_manager_local/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/settings_white_24dp.svg</normaloff>:/icons/Icons/settings_white_24dp.svg</iconset>
                </property>
                <property name="iconSize">
@@ -761,7 +761,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   </widget>
  </widget>
  <resources>
-  <include location="clipboard_manager_local/icons.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections/>
 </ui>
