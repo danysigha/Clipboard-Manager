@@ -8,38 +8,36 @@ from PyQt5.QtWidgets import QLabel, QWidget, QGridLayout, QHBoxLayout
 from AppKit import NSPasteboard, NSStringPboardType, NSTIFFPboardType, NSPasteboardTypePNG, NSURL, NSURLPboardType
 
 
-class newCopy():  # QGridLayout
-    def __init__(self, parent, position):  # - parent=None
-        # super(newCopy, self).__init__(parent)
-        self.label = QLabel()
-        self.label.setMinimumSize(QSize(200, 150))
-        self.label.setMaximumSize(QSize(200, 150))
-        self.label.setStyleSheet(u"*{\n"
-                                    "border:4px solid black;\n"
-                                    "  border-radius: 15px;\n"
-                                    "  padding: 15px;\n"
-                                    #"  box-shadow: 0px 0px 20px 20px black;\n"
-                                    "  background-color: white;\n"
-                                    "}")
-        parent.addWidget(self.label, position[0], position[1], position[2], position[3], Qt.AlignTop)
-        if (position[1]+1) % 3 == 0:
-            position[0] += 1
-            position[1] = 0
-        else:
-            position[1] += 1
-
-        # layout = QGridLayout()
-        # layout = QHBoxLayout()
-        # layout.addWidget(self.label)
-        # self.setLayout(layout)
-
-    def grabNewItem(self):
-        return self.label
-
-
 class clipboardManager():
     # add class newCopy here!
 
+    class newCopy():  # QGridLayout
+        def __init__(self, parent, position):  # - parent=None
+            # super(newCopy, self).__init__(parent)
+            self.label = QLabel()
+            self.label.setMinimumSize(QSize(200, 150))
+            self.label.setMaximumSize(QSize(200, 150))
+            self.label.setStyleSheet(u"*{\n"
+                                     "border:4px solid black;\n"
+                                     "  border-radius: 15px;\n"
+                                     "  padding: 15px;\n"
+                                     # "  box-shadow: 0px 0px 20px 20px black;\n"
+                                     "  background-color: white;\n"
+                                     "}")
+            parent.addWidget(self.label, position[0], position[1], position[2], position[3], Qt.AlignTop)
+            if (position[1] + 1) % 3 == 0:
+                position[0] += 1
+                position[1] = 0
+            else:
+                position[1] += 1
+
+            # layout = QGridLayout()
+            # layout = QHBoxLayout()
+            # layout.addWidget(self.label)
+            # self.setLayout(layout)
+
+        def grabNewItem(self):
+            return self.label
 
     def __init__(self, scrollarea):  # main,
         self._pb = NSPasteboard.generalPasteboard()
@@ -69,7 +67,8 @@ class clipboardManager():
                 pbstring = self._pb.stringForType_(NSStringPboardType)
                 # self.label_16.setText(pbstring) #need to create new widget instead
                 # print("Pastboard string: %s" % pbstring)
-                self.addCopy().setText(pbstring)
+                newItem = self.newCopy(self._ui, self._position)
+                newItem.grabNewItem().setText(pbstring)
                 # print(pbstring)
 
             elif NSTIFFPboardType in data_type:
@@ -90,8 +89,8 @@ class clipboardManager():
                 # self._position += 1
                 # pos = (self._position) % 3
                 # self._colons[pos] += 1
-
-                self.addCopy().setPixmap(pixmap4)  # need to create new widget instead
+                newItem = self.newCopy(self._ui, self._position)
+                newItem.grabNewItem().setPixmap(pixmap4)  # need to create new widget instead
                 # print("Success!!")
 
                 #newItem = newCopy(self._ui, self._colons, content) add
@@ -103,13 +102,6 @@ class clipboardManager():
         self._currentCount = self._pb.changeCount()
         self._timer.timeout.connect(lambda: self.updateUI())  # connect it to your update function
         self._timer.start(1000)  # set it to timeout in 1 second
-
-    def addCopy(self):
-        # newItem = newCopy(self._main_ui)
-
-        newItem = newCopy(self._ui, self._position)
-        # self._ui.addRow()
-        return newItem.grabNewItem()
 
 
 if __name__ == "__main__":
