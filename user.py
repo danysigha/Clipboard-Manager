@@ -3,6 +3,8 @@ class User():
         self.userID = userID
         self._password = password
         self.currentCardID = currentCardID
+        self.num_of_cards = 0
+        self.num_of_folders = 0
 
     def setPassword(self, newPassword):
         self._password = newPassword
