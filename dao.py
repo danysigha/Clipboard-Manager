@@ -249,3 +249,8 @@ class dao():
 	        userID_list.append(temp_userList[user][0])
 
 	    return userID_list
+
+	def encryptPassword():
+	    salt = bcrypt.gensalt(rounds = 16)
+	    hashed_pwd = bcrypt.hashpw(newpwd.encode('utf-8'), salt)
+		
