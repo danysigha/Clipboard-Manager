@@ -503,7 +503,7 @@ if __name__ == "__main__":
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    gc = grabClip.clipboardManager(ui.label_16)
+    gc = grabClip.ClipboardManager(ui.label_16)
     gc.manage_clip()
     MainWindow.show()
     sys.exit(app.exec_())

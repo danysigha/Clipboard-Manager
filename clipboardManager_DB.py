@@ -2,10 +2,30 @@
 
 # 1. import module
 import sqlite3
+# ----------> Added for just testing (LISA)
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon, QPixmap
+from tkinter import Tk
+from PIL import ImageGrab
+# ----------> Added for just testing (LISA)
+# from password_hashing import encryptPassword
+
+#encoding
+# <<git clone https://github.com/sqlcipher/sqlcipher.git>> needed
+# brew install wget
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# sudo wget https://www.openssl.org/source/openssl-1.0.2e.tar.gz
+# sudo tar -zxvf openssl-1.0.2e.tar.gz
+# cd openssl-1.0.2e
+# sudo ./config --prefix=/usr --openssldir=/usr/local/openssl shared
+# sudo make
+# sudo make install
+
 # from clipboardManager_functions import *
 
 # 2. open DB file
-conn = sqlite3.connect('ClipboardManager_DB.db')
+# conn = sqlite3.connect('sql-encrypt/sqlcipher/ClipboardManager_DB.db, pragma key=’secretKey’')
+conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
 
 # 3. make cursor
 cursor = conn.cursor()
@@ -37,20 +57,6 @@ CREATE_USER_ENTITY = """
         shelfTime INTEGER not null
     );"""
 
-# TODO: add category data + user_category data
-
-# CREATE_FOLDER_CONTAINS_ENTITY = """
-#     CREATE TABLE IF NOT EXISTS folder_contains(
-#         folderID INTEGER,
-#         cardID INTEGER
-#     );"""
-#
-# CREATE_USER_FOLDER_ENTITY = """
-#     CREATE TABLE IF NOT EXISTS user_folder(
-#         userID INTEGER,
-#         folderID INTEGER
-#     );"""
-
 # 4.1 card datas?
     # card datas
 user1_card_datas = [
@@ -68,6 +74,12 @@ user2_card_datas = [
 ]
 
     # folder datas
+    # user1 owns folderID 1 and 2
+        # in folderID 1, there are card 1 and 4
+        # in folderID 2, there are card 2 and 3
+    # user 2 owns folderID 3 and 4
+        # in folderID 3, there are card 5 and 6
+        # in folderID 4, there are card 7 and 8
 user1_folder_datas = [
     (1, 'user1 folder1 (default)', 1),
     (2, 'user1 folder2', 1)
@@ -85,54 +97,20 @@ user_datas = [
     (2, 8,               3,               140)
 ]
 
-    # folder_contains data
-        # user1 owns folderID 1 and 2
-            # in folderID 1, there are card 1 and 4
-            # in folderID 2, there are card 2 and 3
-        # user 2 owns folderID 3 and 4
-            # in folderID 3, there are card 5 and 6
-            # in folderID 4, there are card 7 and 8
-  # folderID, cardID
-# folder_contains_datas = [
-#     (1,         1),
-#     (1,         4),
-#     (2,         2),
-#     (2,         3),
-#     (3,         5),
-#     (3,         6),
-#     (4,         7),
-#     (4,         8)
-# ]
-
-    # user_folder data -> who owns what folderIDs
-   # userrID, folderID
-# user_folder_datas = [
-#     (1,         1),
-#     (1,         2),
-#     (2,         3),
-#     (2,         4)
-# ]
-
 # 5. run SQL command
 cursor.execute(CREATE_CARD_ENTITY)
 cursor.execute(CREATE_FOLDER_ENTITY)
 cursor.execute(CREATE_USER_ENTITY)
-# cursor.execute(CREATE_FOLDER_CONTAINS_ENTITY)
-# cursor.execute(CREATE_USER_FOLDER_ENTITY)
-#
+
 # 5.1 try inputting datas(?)
     # card datas
-cursor.executemany("INSERT INTO card VALUES (?, ?, ?, ?, ?, ?)", user1_card_datas)
-cursor.executemany("INSERT INTO card VALUES (?, ?, ?, ?, ?, ?)", user2_card_datas)
+cursor.executemany("INSERT OR IGNORE INTO card VALUES (?, ?, ?, ?, ?, ?)", user1_card_datas)
+cursor.executemany("INSERT OR IGNORE INTO card VALUES (?, ?, ?, ?, ?, ?)", user2_card_datas)
     # folder datas
-cursor.executemany("INSERT INTO folder VALUES (?, ?, ?)", user1_folder_datas)
-cursor.executemany("INSERT INTO folder VALUES (?, ?, ?)", user2_folder_datas)
+cursor.executemany("INSERT OR IGNORE INTO folder VALUES (?, ?, ?)", user1_folder_datas)
+cursor.executemany("INSERT OR IGNORE INTO folder VALUES (?, ?, ?)", user2_folder_datas)
     # user datas
-cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?)", user_datas)
-#     # folder_contains
-# cursor.executemany("INSERT INTO folder_contains VALUES (?, ?)", folder_contains_datas)
-# #     # user_folder
-# cursor.executemany("INSERT INTO user_folder VALUES (?, ?)", user_folder_datas)
+cursor.executemany("INSERT OR IGNORE INTO user VALUES (?, ?, ?, ?)", user_datas)
 
 # some functions
 def print_table(table_content): # just for printing all the result
@@ -188,11 +166,18 @@ def test_db(userID, data_type = "all"):
         test_db(userID, "card")
 
 def addCard(userID, content, category): # to be implemented even more later -> copy card
+
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+
     # find the user's default folder
     cursor.execute('SELECT defaultFolderID FROM user WHERE userID == ' + str(userID) + ";")
-    defaultFolderID_loc = cursor.fetchall()[0][0]
+    # defaultFolderID_loc = cursor.fetchall()[0][0]
+    defaultFolderID_loc = 1
 
     cursor.execute('INSERT INTO card(cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID) VALUES(?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?)', (content, category, defaultFolderID_loc))
+    conn.commit()
+    conn.close()
 
     # get the currentCardID -> maybe can be done by the upper layer or dnt need it
     # cursor.execute('SELECT cardID FROM card, folder WHERE card.folderID == folder.folderID AND folder.userID == '+ str(userID) + ';')
@@ -206,20 +191,70 @@ def addCard(userID, content, category): # to be implemented even more later -> c
 
 # paste function to be implemented later
 def pasteCard(cardID):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+
     cursor.execute('SELECT cardContent FROM card WHERE cardID == ' + str(cardID) + ';')
     result = cursor.fetchall()
     return result[0][0]
+    conn.commit()
+    conn.close()
 
 # delete
 def deleteCard(cardID):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
     cursor.execute('DELETE FROM card WHERE cardID == ' + str(cardID) + ';')
+    conn.commit()
+    conn.close()
 
-# select GIF?
+def getLastCardID():
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute('SELECT max(id) FROM card')
+    max_id = cursor.fetchone()[0]
+    return max_id
+
+def getAllCards():
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM card")
+    records = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return records
+
+def automaticDelete_shelftime(userID):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    # this must be called once in a while by the main system for the system to check and delete
+    cursor.execute('SELECT userID, shelfTime FROM user WHERE userID == ' + str(userID))
+    shelftime_months = cursor.fetchall()[0][1]
+    # print(shelftime_months)
+    cursor.execute('DELETE FROM card WHERE cardAddedDate <= datetime(\'now\', \'localtime\', \'-' + str(shelftime_months) +' months\');')
+    conn.commit()
+    conn.close()
+# search
+# def showCard(userID, searchType, searchContent):
+    # cursor.execute('SELECT * FROM card, folder WHERE userID == ' + str(userID) + ' AND ' + str(searchType) + '')
 
 # sorting
-
+def sortCard(folderID, sortType):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    # the folderID is included because we usually will sort within the folder that the user is looking at currently.
+    # please enter the folder that the user is currently taking a look at
+    cursor.execute('SELECT * FROM card WHERE folderID == ' + str(folderID) + ' ORDER BY ' + str(sortType))
+    return cursor.fetchall()
+    conn.commit()
+    conn.close()
 # change shelf time
-
+def changeShelfTIme(userID, newShelfTime):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute('UPDATE user SET shelfTime = ' + str(newShelfTime) + ' WHERE userID == ' + str(userID) + ';')
+    conn.commit()
+    conn.close()
 # set password?
 
 # hide card
@@ -228,34 +263,110 @@ def deleteCard(cardID):
 
 # create folder (HERE)
 def createFolder(userID, folderName):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
     cursor.execute("INSERT INTO folder(folderName, userID) VALUES(?, ?)", (folderName, userID))
+    conn.commit()
+    conn.close()
 
 # delete folder
-
+def deleteFolder(userID, folderID):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM folder WHERE folderID == ' + str(folderID) + ';')
+    conn.commit()
+    conn.close()
 # update folder
-def updateFolder_ID_all(userID, currentFolderID, newFolderID):
+def updateFolderID_all(userID, currentFolderID, newFolderID):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
     # this function changes the folderID inside the card entity, not the folder itself
     # this function changes all the folderIDs of the matching cards
+    # can be used to change entire card deck.
     cursor.execute('UPDATE card SET folderID = ' + str(newFolderID) + ' WHERE folderID == ' + str(currentFolderID) + ';')
+    conn.commit()
+    conn.close()
 
-def updateFolder_ID_indiv(userID, cardID, newFolderID):
+def updateFolderID_indiv(userID, cardID, newFolderID):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    # this function changes the folderID inside the card entity, but solely one card.
     cursor.execute('UPDATE card SET folderID = ' + str(newFolderID) + ' WHERE cardID == ' + str(cardID) +';')
+    conn.commit()
+    conn.close()
 
-# def updateFolder_Name(userID, currentFolderName, newFolderName): # because we do not know what the folderID is on point, let the program do it
+# rename folder
+def updateFolder_Name(userID, currentFolderName, newFolderName): # because we do not know what the folderID is on point, let the program do it
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
     # find currentFolderID
-    # cursor.execute('SELECT * FROM ')
-
+    cursor.execute('UPDATE card SET folderName = ' + str(newFolderName) + ' WHERE folderName == ' + str(currentFolderName))
+    conn.commit()
+    conn.close()
 
 # unlock password
 # 6. check if the table was made well
 
-createFolder(1, "temp folder name")
-updateFolder_ID_indiv(1, 1, 5)
-test_db(1, "card")
+# ----------> Added for just testing (LISA)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(800, 600)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.copyNow = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.press_it())
+        self.copyNow.setGeometry(QtCore.QRect(60, 430, 131, 51))
+        self.copyNow.setObjectName("copyNow")
+        self.copyLabel = QtWidgets.QLabel(self.centralwidget)
+        self.copyLabel.setGeometry(QtCore.QRect(40, 180, 251, 171))
+        self.copyLabel.setText("")
+        self.copyLabel.setObjectName("copyLabel")
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
+        self.menubar.setObjectName("menubar")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
 
-# createFolder(1, "new folder!")
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    def press_it(self):
+        try:
+            copy = Tk().clipboard_get()
+        except:
+            copy = ImageGrab.grabclipboard()
+        if isinstance(copy,str):
+            self.copyLabel.setText(copy)
+            addCard(1, copy, "Default")
+            test_db(1, "card")
+        else:
+            copy.save('paste.png', 'PNG')
+            pixmap = QPixmap('paste.png')
+            self.copyLabel.setPixmap(pixmap)
 
-# test_db(1)
+
+           # self.resize(pixmap.width(),pixmap.height())
+
+
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.copyNow.setText(_translate("MainWindow", "grab copy"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec_())
+
+# ----------> Added for just testing (LISA)
 
 # 6. close DB
 conn.close()

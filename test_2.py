@@ -15,6 +15,8 @@ import grab_clipboard as grabClip
 import icons_rc
 from PyQt5 import uic
 import sys
+# import folder
+import clipboardManager_DB as db
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -540,7 +542,10 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     # gc = grabClip.clipboardManager(ui, ui.scrollArea_2)
-    gc = grabClip.clipboardManager(ui.gridLayout2)
+    gc = grabClip.ClipboardManager(ui.gridLayout2)
+    gc.initializeUI(db.getAllCards())
     gc.manage_clip()
+
+
     MainWindow.show()
     sys.exit(app.exec_())
