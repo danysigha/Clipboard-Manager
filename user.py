@@ -4,7 +4,6 @@ class User():
         self._password = password
         self.currentCardID = currentCardID
 <<<<<<< HEAD
-        self._saltText = None
         self._pwdExist = False
 =======
         self.num_of_cards = 0
