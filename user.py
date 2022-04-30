@@ -1,18 +1,20 @@
 class User():
-    def __init__(self, userID, password=None, currentCardID=None):
+    def __init__(self, userID, password=None, currentCardID, defaultFolderID, shelfTime, email, firstname, lastname, passwordExists = 0):
         self.userID = userID
-        self._password = password
+        self.password = password
         self.currentCardID = currentCardID
-<<<<<<< HEAD
-        self._pwdExist = False
-=======
-        self.num_of_cards = 0
-        self.num_of_folders = 0
->>>>>>> 093e10f1e1585f3356ebb9403d6c9ab8b68c9353
+        self.defaultFolderID = defaultFolderID
+        self.shelfTime = shelfTime
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
+        self.passwordExists = passwordExists
 
-    def setPassword(self, newPassword):
-        self._password = newPassword
-    # deleteExpiredCard should this be done in the user class?
+        userdatas = [
+        (userID, password, passwordExists, currentCardID, 
+        defaultFolderID, shelfTime, email, firstname, lastname )
+        ]
 
-    def unlock(self):
-        pass #implemented by Tina
+        cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", user_datas)
+        conn.commit()
+
