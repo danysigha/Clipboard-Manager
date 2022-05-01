@@ -42,7 +42,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Set Password</string>
+    <string>Set shelftime</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -58,14 +58,68 @@
     <string>Delete Cards stored from:</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>220</y>
-     <width>171</width>
+     <x>10</x>
+     <y>20</y>
+     <width>121</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>Go back</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="menu">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>210</y>
+     <width>161</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>1 month ago</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2 months ago</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>3 months ago</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>6 months ago</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>1 year ago</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>280</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>
