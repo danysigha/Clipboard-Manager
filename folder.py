@@ -1,8 +1,11 @@
 from card import datetime,Card,uuid
 import copy
+
+
 class Folder(Card):
 
     numFolders = 0
+
     def __init__(self,folderName, cards=None):
         self.folderName = folderName
         self.folderID = uuid.uuid1().hex
