@@ -2,7 +2,8 @@ import sqlite3
 import card
 import clipboardManager_DB as db
 
-class DataAccessor():
+
+class DataAccessor:
     def __init__(self):
         pass
 # decryption takes place here
@@ -18,6 +19,12 @@ class DataAccessor():
     #     pass
     def readCard(self, id):
         return db.pasteCard(id)
+
+    def getNextID(self):
+        return 1+db.getLastCardID()
+
+    def getAllCards(self):
+        return db.getAllCards()
 
 
     # def initializeUI(self):
