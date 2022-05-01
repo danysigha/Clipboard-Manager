@@ -211,7 +211,7 @@ def deleteCard(cardID):
 def getLastCardID():
     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
     cursor = conn.cursor()
-    cursor.execute('SELECT max(id) FROM card')
+    cursor.execute('SELECT max(cardID) FROM card')
     max_id = cursor.fetchone()[0]
     return max_id
 
