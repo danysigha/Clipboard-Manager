@@ -1,4 +1,4 @@
-import dao
+# import dao
 import datetime
 import card
 import card_generator
@@ -13,13 +13,14 @@ from AppKit import NSPasteboard, NSStringPboardType, NSTIFFPboardType, NSPastebo
 
 class ClipboardManager:
 
-    def __init__(self, card_renderer):  # main,
+    def __init__(self, card_renderer, dao):  # main,
         self._pb = NSPasteboard.generalPasteboard()
         self._currentCount = NSPasteboard.generalPasteboard().changeCount()
         self._timer = QTimer()  # set up your QTimer
         # self._ui = scrollarea  # pass label as test
         # self._cardID = 1
         self._cardRenderer = card_renderer
+        self._dao = dao
 
 
     def updateUI(self):
@@ -30,23 +31,37 @@ class ClipboardManager:
 
             data_type = self._pb.types()  # only used to check data type
 
+            # card_id = uuid.uuid1().hex
+            card_id = self._dao.getNextID()
+
             if NSStringPboardType in data_type:
                 pbstring = self._pb.stringForType_(NSStringPboardType)
                 # self.label_16.setText(pbstring) #need to create new widget instead
                 # print("Pastboard string: %s" % pbstring)
                 category = "Text"
-                dao.DataAccessor().storeCard(pbstring, category)
+                self._dao.storeCard(pbstring, category, 0)
+
                 # card.Card(pbstring, category, self._cardID)
                 # self._cardID += 1
                 # new_card = card_generator.CardRenderer(self._ui)
-                self._cardRenderer.CardObject(self._cardRenderer.parent,
-                                              self._cardRenderer._position
-                                              ).addToInterface(dao.DataAccessor().getNextID(),
+                # self._cardRenderer.CardObject(self._cardRenderer.parent,
+                #                               self._cardRenderer._position,
+                #                               self._dao
+                #                               ).addToInterface(card_id,
+                #                                                pbstring,
+                #                                                category,
+                #                                                datetime.datetime.now(),
+                #                                                datetime.datetime.now(),
+                #                                                1, 0)
+                card_generator.CardObject(self._cardRenderer.parent,
+                                              self._cardRenderer._position,
+                                              self._dao
+                                              ).addToInterface(card_id,
                                                                pbstring,
                                                                category,
                                                                datetime.datetime.now(),
                                                                datetime.datetime.now(),
-                                                               1)
+                                                               1, 0)
 
                 # newItem.grabNewItem().setText(pbstring)
                 # print(pbstring)
@@ -60,8 +75,7 @@ class ClipboardManager:
                 image.save(filepath, quality=95)  # is this really a PNG??? - you can specify format here
                 # image.thumbnail(size, Image.ANTIALIAS)
                 category = "Image"
-                dao.DataAccessor().storeCard(filepath, category)
-
+                self._dao.storeCard(filepath, category, 0)
                 pixmap = QPixmap(filepath)
                 pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
                 # pixmap2 = pixmap.scaledToWidth(200)
@@ -69,14 +83,24 @@ class ClipboardManager:
                 # pixmap = pixmap.scaled(200, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation)
                 # print(pbimage)
                 # new_card = card_generator.CardRenderer(self._ui)
-                self._cardRenderer.CardObject(self._cardRenderer.parent,
-                                              self._cardRenderer._position
-                                              ).addToInterface(dao.DataAccessor().getNextID(),
+                # self._cardRenderer.CardObject(self._cardRenderer.parent,
+                #                               self._cardRenderer._position,
+                #                               self._dao
+                #                               ).addToInterface(card_id,
+                #                                                pixmap4,
+                #                                                category,
+                #                                                datetime.datetime.now(),
+                #                                                datetime.datetime.now(),
+                #                                                1, 0)
+                card_generator.CardObject(self._cardRenderer.parent,
+                                              self._cardRenderer._position,
+                                              self._dao
+                                              ).addToInterface(card_id,
                                                                pixmap4,
                                                                category,
                                                                datetime.datetime.now(),
                                                                datetime.datetime.now(),
-                                                               1)
+                                                               1, 0)
 
                 # newItem = cardVisual.CardRenderer(self._ui, self._position, dao.DataAccessor().getNextID())
                 # newItem.grabNewItem().setPixmap(pixmap4)  # need to create new widget instead
