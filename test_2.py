@@ -16,7 +16,8 @@ import icons_rc
 from PyQt5 import uic
 import sys
 # import folder
-import clipboardManager_DB as db
+import dao
+import card_generator
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -496,6 +497,7 @@ class Ui_MainWindow(object):
 
         MainWindow.setCentralWidget(self.centralwidget)
 
+
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -536,16 +538,17 @@ class Ui_MainWindow(object):
         self.settings_button.setText("")
     # retranslateUi
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    # gc = grabClip.clipboardManager(ui, ui.scrollArea_2)
-    gc = grabClip.ClipboardManager(ui.gridLayout2)
-    gc.initializeUI(db.getAllCards())
+    dataAccessObject = dao.DataAccessor()
+    cardMaker = card_generator.CardRenderer(ui.gridLayout2, dataAccessObject)
+    cardMaker.initializeUI(dataAccessObject.getAllCards())
+    gc = grabClip.ClipboardManager(cardMaker, dataAccessObject)
     gc.manage_clip()
-
 
     MainWindow.show()
     sys.exit(app.exec_())
