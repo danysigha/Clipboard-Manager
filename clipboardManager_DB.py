@@ -30,16 +30,17 @@ conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
 # 3. make cursor
 cursor = conn.cursor()
 ###############################################################
-
+#INTEGER primary key AUTOINCREMENT
 # 4. SQL command to create
 CREATE_CARD_ENTITY = """
     CREATE TABLE IF NOT EXISTS card(
-        cardId INTEGER primary key AUTOINCREMENT,
+        cardID INTEGER primary key AUTOINCREMENT,
         cardContent TEXT not null,
         cardCategory TEXT not null,
         cardAddedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         cardModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        folderID INTEGER not null
+        folderID INTEGER not null,
+        hideCard INTEGER not null
     );"""
 
 CREATE_FOLDER_ENTITY = """
@@ -60,17 +61,17 @@ CREATE_USER_ENTITY = """
 # 4.1 card datas?
     # card datas
 user1_card_datas = [
-    (1,'this is the user1\'s card content1 and it is in folderID 1','user1\'s card category 1',"2012-01-21 00:00:00.000","2022-03-21 00:00:00.000", 1),
-    (2,'this is the user1\'s card content2 and it is in folderID 2','user1\'s card category 1',"2013-02-21 00:00:00.000","2022-03-22 00:00:00.000", 2),
-    (3,'this is the user1\'s card content3 and it is in folderID 2','user1\'s card category 2',"2014-03-21 00:00:00.000","2022-03-22 00:00:00.000", 2),
-    (4,'this is the user1\'s card content4 and it is in folderID 1','user1\'s card category 2',"2015-04-21 00:00:00.000","2022-03-21 00:00:00.000", 1)
+    ('1','this is the user1\'s card content1 and it is in folderID 1','user1\'s card category 1',"2012-01-21 00:00:00.000","2022-03-21 00:00:00.000", 1, 0),
+    ('2','this is the user1\'s card content2 and it is in folderID 2','user1\'s card category 1',"2013-02-21 00:00:00.000","2022-03-22 00:00:00.000", 2, 0),
+    ('3','this is the user1\'s card content3 and it is in folderID 2','user1\'s card category 2',"2014-03-21 00:00:00.000","2022-03-22 00:00:00.000", 2, 0),
+    ('4','this is the user1\'s card content4 and it is in folderID 1','user1\'s card category 2',"2015-04-21 00:00:00.000","2022-03-21 00:00:00.000", 1, 0)
 ]
 
 user2_card_datas = [
-    (5,'this is the user2\'s card content1 and it is in folderID 3','user2\'s card category 1',"2012-02-21 00:00:00.000","2022-03-21 00:00:00.000", 3),
-    (6,'this is the user2\'s card content2 and it is in folderID 3','user2\'s card category 1',"2013-03-21 00:00:00.000","2022-03-22 00:00:00.000", 3),
-    (7,'this is the user2\'s card content3 and it is in folderID 4','user2\'s card category 2',"2014-04-21 00:00:00.000","2022-03-22 00:00:00.000", 4),
-    (8,'this is the user2\'s card content4 and it is in folderID 4','user2\'s card category 2',"2015-05-21 00:00:00.000","2022-03-21 00:00:00.000", 4)
+    ('5','this is the user2\'s card content1 and it is in folderID 3','user2\'s card category 1',"2012-02-21 00:00:00.000","2022-03-21 00:00:00.000", 3, 0),
+    ('6','this is the user2\'s card content2 and it is in folderID 3','user2\'s card category 1',"2013-03-21 00:00:00.000","2022-03-22 00:00:00.000", 3, 0),
+    ('7','this is the user2\'s card content3 and it is in folderID 4','user2\'s card category 2',"2014-04-21 00:00:00.000","2022-03-22 00:00:00.000", 4, 0),
+    ('8','this is the user2\'s card content4 and it is in folderID 4','user2\'s card category 2',"2015-05-21 00:00:00.000","2022-03-21 00:00:00.000", 4, 0)
 ]
 
     # folder datas
@@ -104,8 +105,8 @@ cursor.execute(CREATE_USER_ENTITY)
 
 # 5.1 try inputting datas(?)
     # card datas
-cursor.executemany("INSERT OR IGNORE INTO card VALUES (?, ?, ?, ?, ?, ?)", user1_card_datas)
-cursor.executemany("INSERT OR IGNORE INTO card VALUES (?, ?, ?, ?, ?, ?)", user2_card_datas)
+cursor.executemany("INSERT OR IGNORE INTO card VALUES (?, ?, ?, ?, ?, ?, ?)", user1_card_datas)
+cursor.executemany("INSERT OR IGNORE INTO card VALUES (?, ?, ?, ?, ?, ?, ?)", user2_card_datas)
     # folder datas
 cursor.executemany("INSERT OR IGNORE INTO folder VALUES (?, ?, ?)", user1_folder_datas)
 cursor.executemany("INSERT OR IGNORE INTO folder VALUES (?, ?, ?)", user2_folder_datas)
@@ -165,8 +166,8 @@ def test_db(userID, data_type = "all"):
         print("========= CARD =========")
         test_db(userID, "card")
 
-def addCard(userID, content, category): # to be implemented even more later -> copy card
-
+def addCard(userID, content, category, hideCard): # to be implemented even more later -> copy card
+    # print(userID, cardID, content, category, hideCard, sep='\n')
     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
     cursor = conn.cursor()
 
@@ -175,7 +176,7 @@ def addCard(userID, content, category): # to be implemented even more later -> c
     # defaultFolderID_loc = cursor.fetchall()[0][0]
     defaultFolderID_loc = 1
 
-    cursor.execute('INSERT INTO card(cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID) VALUES(?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?)', (content, category, defaultFolderID_loc))
+    cursor.execute('INSERT INTO card(cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID, hideCard) VALUES(?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?, ?)', (content, category, defaultFolderID_loc, hideCard))
     conn.commit()
     conn.close()
 
@@ -213,7 +214,16 @@ def getLastCardID():
     cursor = conn.cursor()
     cursor.execute('SELECT max(cardID) FROM card')
     max_id = cursor.fetchone()[0]
+    conn.commit()
+    conn.close()
     return max_id
+
+# def setCardID(cardID, newCardStatus):
+#     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+#     cursor = conn.cursor()
+#     cursor.execute('UPDATE card SET cardId = ' + str(newCardStatus) + ' WHERE cardID == ' + str(cardID) + ';')
+#     conn.commit()
+#     conn.close()
 
 def getAllCards():
     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
@@ -258,6 +268,17 @@ def changeShelfTIme(userID, newShelfTime):
 # set password?
 
 # hide card
+def hideCard(newCardStatus, card_id):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    # cursor.execute('UPDATE card SET hideCard = ' + str(newCardStatus) + ' WHERE cardID == ' + str(cardID) + ';')
+    # print(newCardStatus, type(newCardStatus))
+    # print(card_id, type(card_id))
+    cursor.execute('UPDATE card SET hideCard = ' + str(newCardStatus) + ' WHERE cardID == ' + str(card_id) + ';')
+
+    conn.commit()
+    conn.close()
+    # (newCardStatus, cardID)
 
 # favorite function
 
