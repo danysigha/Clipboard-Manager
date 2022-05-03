@@ -31,15 +31,15 @@ class ClipboardManager:
 
             data_type = self._pb.types()  # only used to check data type
 
-            # card_id = uuid.uuid1().hex
-            card_id = self._dao.getNextID()
+            card_id = uuid.uuid1().hex
+            # card_id = self._dao.getNextID()
 
             if NSStringPboardType in data_type:
                 pbstring = self._pb.stringForType_(NSStringPboardType)
                 # self.label_16.setText(pbstring) #need to create new widget instead
                 # print("Pastboard string: %s" % pbstring)
                 category = "Text"
-                self._dao.storeCard(pbstring, category, 0)
+                self._dao.storeCard(card_id, pbstring, category, 0)
 
                 # card.Card(pbstring, category, self._cardID)
                 # self._cardID += 1
@@ -55,7 +55,8 @@ class ClipboardManager:
                 #                                                1, 0)
                 card_generator.CardObject(self._cardRenderer.parent,
                                               self._cardRenderer._position,
-                                              self._dao
+                                              self._dao,
+                                              self._cardRenderer
                                               ).addToInterface(card_id,
                                                                pbstring,
                                                                category,
@@ -75,7 +76,7 @@ class ClipboardManager:
                 image.save(filepath, quality=95)  # is this really a PNG??? - you can specify format here
                 # image.thumbnail(size, Image.ANTIALIAS)
                 category = "Image"
-                self._dao.storeCard(filepath, category, 0)
+                self._dao.storeCard(card_id, filepath, category, 0)
                 pixmap = QPixmap(filepath)
                 pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
                 # pixmap2 = pixmap.scaledToWidth(200)
@@ -94,7 +95,8 @@ class ClipboardManager:
                 #                                                1, 0)
                 card_generator.CardObject(self._cardRenderer.parent,
                                               self._cardRenderer._position,
-                                              self._dao
+                                              self._dao,
+                                              self._cardRenderer
                                               ).addToInterface(card_id,
                                                                pixmap4,
                                                                category,
