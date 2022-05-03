@@ -8,8 +8,8 @@ class DataAccessor:
         pass
 # decryption takes place here
     # UI grabs the decryption key from user and pass to data access object
-    def storeCard(self, content, dataType, hideCard):
-        db.addCard(1, content, dataType, hideCard)
+    def storeCard(self, card_id, content, dataType, hideCard):
+        db.addCard(1, card_id, content, dataType, hideCard)
         # card.Card(content, dataType, db.getLastCardID()+1)
 
     def deleteCard(self, id):
@@ -29,14 +29,14 @@ class DataAccessor:
     # def lastCardid(self):
     #     return db.getLastCardID()
 
-    def getNextID(self):
-        latest = db.getLastCardID()
-        # if latest:
-        #     return 1 + latest
-        # return 1
-        if latest:
-            return 1+latest
-        return 1
+    # def getNextID(self):
+    #     latest = db.getLastCardID()
+    #     # if latest:
+    #     #     return 1 + latest
+    #     # return 1
+    #     if latest:
+    #         return 1+latest
+    #     return 1
 
 
     # def initializeUI(self):
