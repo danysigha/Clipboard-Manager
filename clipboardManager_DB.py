@@ -57,7 +57,6 @@ CREATE_USER_ENTITY = """
     CREATE TABLE IF NOT EXISTS user(
         userID INTEGER primary key AUTOINCREMENT,
         password TEXT NOT NULL,
-        saltText TEXT NOT NULL,
         currentCardID INTEGER NOT NULL,
         defaultFolderID INTEGER NOT NULL,
         shelfTime INTEGER NOT NULL
@@ -66,7 +65,7 @@ CREATE_USER_ENTITY = """
 # parameter for programmer's convenience
 cardAttributes = "cardID, cardContent, cardCategory, sourceApplication, dataType, cardAddedDate, cardModifiedDate, cardState, favoriteSelected, card.folderID"
 folderAttributes = "folderID, folderName, folder.userID"
-userAttributes = "userID, password, saltText, currentCardID, defaultFolderID, shelfTime"
+userAttributes = "userID, password, currentCardID, defaultFolderID, shelfTime"
 
 # 4.1 card datas
     # card datas
@@ -102,10 +101,10 @@ user2_folder_datas = [
 ]
 
     # user datas
-    #id, password,       saltText,       currentCardID,  defaultFolderID, shelfTime (month-wise)
+    #id, password,       currentCardID,  defaultFolderID, shelfTime (month-wise)
 user_datas = [
-    (1, "tempPassword1", "tempSaltText1", 4,               1,               120),
-    (2, "tempPassword2", "tempSaltText2", 8,               3,               140)
+    (1, "tempPassword1", 4,               1,               120),
+    (2, "tempPassword2", 8,               3,               140)
 ]
 
 # 5. run SQL command
@@ -121,7 +120,7 @@ cursor.executemany("INSERT INTO card VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", use
 cursor.executemany("INSERT INTO folder VALUES (?, ?, ?)", user1_folder_datas)
 cursor.executemany("INSERT INTO folder VALUES (?, ?, ?)", user2_folder_datas)
     # user datas
-cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)", user_datas)
+cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?)", user_datas)
 
 # some functions
 def print_table(table_content): # just for printing all the result
@@ -151,7 +150,7 @@ def print_card(cardID): # just for debugging
 def test_db(userID, data_type = "all"):
     test_info_card = ["cardID", "cardContent", "cardCategory", "sourceApplication", "dataType", "cardAddedDate", "cardModifiedDate", "cardState", "favoriteSelected", "folderID"]
     test_info_folder = ["folderID", "folderName", "userID"]
-    test_info_user = ["userID", "password", "saltText", "currentCardID", "currentFolderID", "shelfTime"]
+    test_info_user = ["userID", "password", "currentCardID", "currentFolderID", "shelfTime"]
 
     # print user table
     if (data_type == "user"):
@@ -323,6 +322,9 @@ def updateFolderID_all(userID, currentFolderID, newFolderID):
     # can be used to change entire card deck.
     cursor.execute('UPDATE card SET folderID = ' + str(newFolderID) + ' WHERE folderID == ' + str(currentFolderID) + ';')
 
+test_db(1,'card')
+updateFolderID_all(1, 1, 2)
+
 def updateFolderID_indiv(userID, cardID, newFolderID):
     # this function changes the folderID inside the card entity, but solely one card.
     cursor.execute('UPDATE card SET folderID = ' + str(newFolderID) + ' WHERE cardID == ' + str(cardID) +';')
@@ -332,17 +334,11 @@ def updateFolder_Name(userID, currentFolderName, newFolderName): # because we do
     # find currentFolderID
     cursor.execute('UPDATE card SET folderName = ' + str(newFolderName) + ' WHERE folderName == ' + str(currentFolderName))
 
-# userID INTEGER primary key,
-# password TEXT NOT NULL,
-# saltText TEXT NOT NULL,
-# currentCardID INTEGER NOT NULL,
-# defaultFolderID INTEGER NOT NULL,
-# shelfTime INTEGER NOT NULL
-def addUser(password, saltText):
+def addUser(password):
     # this sets the currentCardID (the most recent cardID) and the defaultFolderID as -1 temporarily.
     # the currentCardID will be changed if the user adds the first card
     # the defaultFolderID will be changed soon within this function
-    cursor.execute('INSERT INTO user(password, saltText, currentCardID, defaultFolderID, shelfTime) VALUES(?, ?, -1, -1, 24)', (password, saltText))
+    cursor.execute('INSERT INTO user(password, currentCardID, defaultFolderID, shelfTime) VALUES(?, -1, -1, 24)', (password))
 
     cursor.execute('SELECT userID from user')
     new_userID = cursor.fetchall()[-1][0]
@@ -393,9 +389,9 @@ def showAllUsers():
 # print("======================")
 # print_card(3)
 
-deleteFolder(3)
-
-test_db(2, "folder")
+# deleteFolder(3)
+#
+# test_db(2, "folder")
 
 
 # ----------> Added for just testing (LISA)
