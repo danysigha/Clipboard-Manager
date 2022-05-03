@@ -585,7 +585,16 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <widget class="QLineEdit" name="lineEdit"/>
+              <widget class="QLineEdit" name="lineEdit">
+               <property name="styleSheet">
+                <string notr="true">border:2px solid rgb(0, 0, 0);
+border-radius: 10px;
+padding: 3px;
+box-shadow: 0px 0px 20px 20px black;
+background-color: white;
+color: black;</string>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QPushButton" name="search_button">
@@ -758,7 +767,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                <x>0</x>
                <y>0</y>
                <width>623</width>
-               <height>688</height>
+               <height>678</height>
               </rect>
              </property>
             </widget>
