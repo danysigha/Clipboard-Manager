@@ -21,7 +21,7 @@ class CardRenderer:
         self._column = 0
         self._rowSpan = 1
         self._columnSpan = 1
-        self._position = [self._row, self._column, self._rowSpan, self._columnSpan]
+        self._position = [self._row, self._column, self._rowSpan, self._columnSpan] # not updated when we delete cards
 
         # self.label.setObjectName(self.name)
 
@@ -35,7 +35,7 @@ class CardRenderer:
         print(self._position, 'in initialize function before we initialized')
 
         for i in content:
-            new_card = CardObject(self.parent, position, self._dao)
+            new_card = CardObject(self.parent, position, self._dao, self)
             if i[2] == "Image":
                 pixmap = QPixmap(i[1])
                 pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
@@ -48,11 +48,11 @@ class CardRenderer:
 
 
 class CardObject():
-    def __init__(self, parent, position, dao):
+    def __init__(self, parent, position, dao, cardMaker):
         self.card_data = None
         self.label = QLabel()
         self._dao = dao
-        # self._cardMaker = cardMaker
+        self._cardMaker = cardMaker
         # self.id = uuid.uuid1().hex
         self.parent = parent
         self._position = position
@@ -148,9 +148,10 @@ class CardObject():
             # remove it from the gui
             widgetToRemove.setParent(None)
             widgetToRemove.deleteLater()
-        self._position = [0, 0, 1, 1]
+
         print(self._position, 'in reset function after reset')
-        CardRenderer(self.parent, self._dao).initializeUI(self._dao.getAllCards(), self._position)
+        # CardRenderer(self.parent, self._dao).initializeUI(self._dao.getAllCards(), self._position)
+        self._cardMaker.initializeUI(self._dao.getAllCards(), self._cardMaker._position)
 
 
         # self._cardMaker(self.parent, self._dao).initializeUI(self._dao.getAllCards())
@@ -167,7 +168,14 @@ class CardObject():
 
         if action == delCard:
             self._dao.deleteCard(int(self.card_data.cardID))
+            self._cardMaker._position = [0, 0, 1, 1]
             self.reset()
+
+            # if (self._position[1] % 3) == 0:
+            #     self._position[0] -= 1
+            #     self._position[1] = 2
+            # else:
+            #     self._position[1] -= 1
             #
             # self.parent.removeWidget(self.label)
             # # self.label.hide()
