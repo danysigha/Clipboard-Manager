@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>831</width>
+    <width>847</width>
     <height>800</height>
    </rect>
   </property>
@@ -169,7 +169,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/folder_white_24dp.svg</normaloff>:/icons/Icons/folder_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -208,7 +208,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/link_white_24dp.svg</normaloff>:/icons/Icons/link_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -225,7 +225,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/gif_white_24dp.svg</normaloff>:/icons/Icons/gif_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -275,7 +275,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/style_white_24dp.svg</normaloff>:/icons/Icons/style_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -299,7 +299,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/category_white_24dp.svg</normaloff>:/icons/Icons/category_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -323,7 +323,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/favorite_white_24dp.svg</normaloff>:/icons/Icons/favorite_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -389,7 +389,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/category_white_24dp.svg</normaloff>:/icons/Icons/category_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -406,7 +406,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/image_white_24dp.svg</normaloff>:/icons/Icons/image_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -423,7 +423,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/title_white_24dp.svg</normaloff>:/icons/Icons/title_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -452,7 +452,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/category_white_24dp.svg</normaloff>:/icons/Icons/category_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -476,7 +476,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/folder_white_24dp.svg</normaloff>:/icons/Icons/folder_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -509,7 +509,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="Clipboard-Manager/icons.qrc">
+              <iconset resource="icons.qrc">
                <normaloff>:/icons/Icons/folder_white_24dp.svg</normaloff>:/icons/Icons/folder_white_24dp.svg</iconset>
              </property>
              <property name="iconSize">
@@ -593,7 +593,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Clipboard-Manager/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/search_white_24dp.svg</normaloff>:/icons/Icons/search_white_24dp.svg</iconset>
                </property>
               </widget>
@@ -631,7 +631,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Clipboard-Manager/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/view_sidebar_white_24dp.svg</normaloff>:/icons/Icons/view_sidebar_white_24dp.svg</iconset>
                </property>
                <property name="iconSize">
@@ -648,7 +648,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Clipboard-Manager/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/anchor_white_24dp.svg</normaloff>:/icons/Icons/anchor_white_24dp.svg</iconset>
                </property>
                <property name="iconSize">
@@ -665,7 +665,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="Clipboard-Manager/icons.qrc">
+                <iconset resource="icons.qrc">
                  <normaloff>:/icons/Icons/settings_white_24dp.svg</normaloff>:/icons/Icons/settings_white_24dp.svg</iconset>
                </property>
                <property name="iconSize">
@@ -757,66 +757,10 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>607</width>
+               <width>623</width>
                <height>688</height>
               </rect>
              </property>
-             <widget class="QLabel" name="label_16">
-              <property name="geometry">
-               <rect>
-                <x>20</x>
-                <y>20</y>
-                <width>200</width>
-                <height>150</height>
-               </rect>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>150</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">*{
-border:4px solid black;
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0px 0px 20px 20px black;
-  background-color: white;
-}</string>
-              </property>
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
-             <widget class="QLabel" name="label_17">
-              <property name="geometry">
-               <rect>
-                <x>280</x>
-                <y>20</y>
-                <width>200</width>
-                <height>150</height>
-               </rect>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>150</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">*{
-border:4px solid black;
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0px 0px 20px 20px black;
-  background-color: white;
-}</string>
-              </property>
-              <property name="text">
-               <string>TextLabel</string>
-              </property>
-             </widget>
             </widget>
            </widget>
           </item>
@@ -874,7 +818,7 @@ border:4px solid black;
   </widget>
  </widget>
  <resources>
-  <include location="clipboard_manager_local/icons.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections/>
 </ui>
