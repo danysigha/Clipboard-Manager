@@ -34,7 +34,7 @@ cursor = conn.cursor()
 # 4. SQL command to create
 CREATE_CARD_ENTITY = """
     CREATE TABLE IF NOT EXISTS card(
-        cardID INTEGER primary key AUTOINCREMENT,
+        cardID TEXT not null,
         cardContent TEXT not null,
         cardCategory TEXT not null,
         cardAddedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -166,7 +166,7 @@ def test_db(userID, data_type = "all"):
         print("========= CARD =========")
         test_db(userID, "card")
 
-def addCard(userID, content, category, hideCard): # to be implemented even more later -> copy card
+def addCard(userID, card_id, content, category, hideCard): # to be implemented even more later -> copy card
     # print(userID, cardID, content, category, hideCard, sep='\n')
     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
     cursor = conn.cursor()
@@ -176,7 +176,7 @@ def addCard(userID, content, category, hideCard): # to be implemented even more 
     # defaultFolderID_loc = cursor.fetchall()[0][0]
     defaultFolderID_loc = 1
 
-    cursor.execute('INSERT INTO card(cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID, hideCard) VALUES(?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?, ?)', (content, category, defaultFolderID_loc, hideCard))
+    cursor.execute('INSERT INTO card(cardID, cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID, hideCard) VALUES(?, ?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?, ?)', (card_id, content, category, defaultFolderID_loc, hideCard))
     conn.commit()
     conn.close()
 
@@ -205,7 +205,7 @@ def pasteCard(cardID):
 def deleteCard(cardID):
     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM card WHERE cardID == ' + str(cardID) + ';')
+    cursor.execute('DELETE FROM card WHERE cardID == "' + str(cardID) + '";')
     conn.commit()
     conn.close()
 
@@ -274,8 +274,9 @@ def hideCard(newCardStatus, card_id):
     # cursor.execute('UPDATE card SET hideCard = ' + str(newCardStatus) + ' WHERE cardID == ' + str(cardID) + ';')
     # print(newCardStatus, type(newCardStatus))
     # print(card_id, type(card_id))
-    cursor.execute('UPDATE card SET hideCard = ' + str(newCardStatus) + ' WHERE cardID == ' + str(card_id) + ';')
-
+    # a = 'UPDATE card SET hideCard = "' + str(newCardStatus) + '" WHERE cardID == ' + str(card_id) + ';'
+    # print(a)  # must add quotes around the card string
+    cursor.execute('UPDATE card SET hideCard = "' + str(newCardStatus) + '" WHERE cardID == "' + str(card_id) + '";')
     conn.commit()
     conn.close()
     # (newCardStatus, cardID)

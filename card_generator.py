@@ -167,7 +167,7 @@ class CardObject():
         action = contextMenu.exec_(self.label.mapToGlobal(eventPosition))
 
         if action == delCard:
-            self._dao.deleteCard(int(self.card_data.cardID))
+            self._dao.deleteCard(self.card_data.cardID)
             self._cardMaker._position = [0, 0, 1, 1]
             self.reset()
 
