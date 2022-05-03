@@ -19,6 +19,7 @@ class mainSetting(QDialog):
 		#performance
 		self.password.clicked.connect(self.gotoPasswordPage)
 		self.pushButton_3.clicked.connect(self.gotoShelftime)
+		self.pushButton_2.clicked.connect(self.goBack)
 		self.show()
 
 	#goes to the password pages
@@ -33,7 +34,8 @@ class mainSetting(QDialog):
 	def gotoShelftime(self):
 		widget.setCurrentIndex(widget.currentIndex()+2)
 
-	
+	def goBack(self):
+		widget.setCurrentIndex(widget.currentIndex()-1)
 
 
 class setPassword(QDialog):
