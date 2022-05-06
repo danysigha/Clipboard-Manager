@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QLabel, QTextEdit, QPushButton, QLineEdit, QComboBox
 import sqlite3
 from mini_dao2 import dao as dao
+
 #from user import User as user
 
 
@@ -20,6 +21,8 @@ class mainSetting(QDialog):
 		self.password.clicked.connect(self.gotoPasswordPage)
 		self.pushButton_3.clicked.connect(self.gotoShelftime)
 		self.pushButton_2.clicked.connect(self.goBack)
+		self.changeEmail.clicked.connect(self.gotoEmail)
+
 		self.show()
 
 	#goes to the password pages
@@ -34,8 +37,12 @@ class mainSetting(QDialog):
 	def gotoShelftime(self):
 		widget.setCurrentIndex(widget.currentIndex()+2)
 
+	def gotoEmail(self):
+		widget.setCurrentIndex(widget.currentIndex()+2)
+
 	def goBack(self):
 		widget.setCurrentIndex(widget.currentIndex()-1)
+		MainWindow.show()
 
 
 
@@ -100,7 +107,13 @@ class shelftime(QDialog):
 		self.label_3.setText("Shelftime successfully updated.")
 
 
+class changeEmail(QDialog):
+	def __init__(self):
+		super(changeEmail, self).__init__()
 
+		uic.loadUi("settings4.ui", self)
+
+		self.changeEmail.clicked.connect(self.goBack)
 
 
 
@@ -153,33 +166,36 @@ class currentPasswordPage(QDialog):
 		cursor = conn.cursor()
 		cursor.execute("""UPDATE user SET password_exists = 0 WHERE userID = 1""")
 		conn.commit()
-#main
-app = QApplication(sys.argv)
-
-#intialize QStackWidget
-# QStackedwidget is a stack of QDialogs
-# we load different uis with it and each dialog is an index in the list
-#increment by one we show UI # 2 and so forth
-widget = QtWidgets.QStackedWidget()
-
-window1 = mainSetting() #page 1
-window2 = setPassword() #page 2
-window3 = shelftime() #page 3
-window4 = currentPasswordPage() #page 4
-#add the objects created above^ to the stack of screens
-widget.addWidget(window1)
-widget.addWidget(window2)
-widget.addWidget(window3)
-widget.addWidget(window4)
-widget.setFixedHeight(803)
-widget.setFixedWidth(789)
-
-#show the widget
-widget.show()
 
 
-try:
-    sys.exit(app.exec_())
-except:
-    print("Exiting")
+if __name__ = “__main__”:
+
+	app = QApplication(sys.argv)
+
+	#intialize QStackWidget
+	# QStackedwidget is a stack of QDialogs
+	# we load different uis with it and each dialog is an index in the list
+	#increment by one we show UI # 2 and so forth
+	widget = QtWidgets.QStackedWidget()
+
+	window1 = mainSetting() #page 1
+	window2 = setPassword() #page 2
+	window3 = shelftime() #page 3
+	window4 = currentPasswordPage() #page 4
+	#add the objects created above^ to the stack of screens
+	widget.addWidget(window1)
+	widget.addWidget(window2)
+	widget.addWidget(window3)
+	widget.addWidget(window4)
+	widget.setFixedHeight(803)
+	widget.setFixedWidth(789)
+
+	#show the widget
+	widget.show()
+
+
+	
+	sys.exit(app.exec_())
+
+	print("Exiting")
 
