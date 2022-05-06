@@ -109,6 +109,7 @@ class currentPasswordPage(QDialog):
 		uic.loadUi("settings5.ui", self)
 
 		self.pushButton_2.clicked.connect(self.goBack)
+		self.pushButton_3.clicked.connect(self.sendEmail)
 		self.pushButton.clicked.connect(self.setPassword)
 		self.oldpwd.setEchoMode(QtWidgets.QLineEdit.Password)
 		self.pwd1.setEchoMode(QtWidgets.QLineEdit.Password)
@@ -137,6 +138,10 @@ class currentPasswordPage(QDialog):
 		self.oldpwd.clear()
 		self.pwd1.clear()
 		self.pwd2.clear()
+
+	def sendEmail(self):
+		dao.send_email()
+		self.label_4.setText("A temporary password was sent to the email on file. Please check your email.")
 		
 
 
