@@ -38,6 +38,8 @@ class mainSetting(QDialog):
 		widget.setCurrentIndex(widget.currentIndex()-1)
 
 
+
+
 class setPassword(QDialog):
 
 	def __init__(self):
@@ -111,6 +113,7 @@ class currentPasswordPage(QDialog):
 		self.pushButton_2.clicked.connect(self.goBack)
 		self.pushButton_3.clicked.connect(self.sendEmail)
 		self.pushButton.clicked.connect(self.setPassword)
+		self.pushButton_4.clicked.connect(self.turnOffPassword)
 		self.oldpwd.setEchoMode(QtWidgets.QLineEdit.Password)
 		self.pwd1.setEchoMode(QtWidgets.QLineEdit.Password)
 		self.pwd2.setEchoMode(QtWidgets.QLineEdit.Password)
@@ -144,7 +147,12 @@ class currentPasswordPage(QDialog):
 		self.label_4.setText("A temporary password was sent to the email on file. Please check your email.")
 		
 
-
+	def turnOffPassword(self):
+		widget.setCurrentIndex(widget.currentIndex()-3)
+		conn = sqlite3.connect('ClipboardManager_DB.db')
+		cursor = conn.cursor()
+		cursor.execute("""UPDATE user SET password_exists = 0 WHERE userID = 1""")
+		conn.commit()
 #main
 app = QApplication(sys.argv)
 
