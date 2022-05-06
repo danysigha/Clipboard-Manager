@@ -45,7 +45,7 @@
     <string>Set/Change Existing Password</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="darkmode">
+  <widget class="QPushButton" name="changeEmail">
    <property name="geometry">
     <rect>
      <x>290</x>
@@ -55,7 +55,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Darkmode</string>
+    <string>Change Email</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_3">
