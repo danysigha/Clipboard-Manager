@@ -1,0 +1,32 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>Icons/category_black_24dp.svg</file>
+    <file>Icons/category_white_24dp.svg</file>
+    <file>Icons/folder_black_24dp.svg</file>
+    <file>Icons/folder_white_24dp.svg</file>
+    <file>Icons/anchor_black_24dp.svg</file>
+    <file>Icons/anchor_white_24dp.svg</file>
+    <file>Icons/favorite_black_24dp.svg</file>
+    <file>Icons/favorite_white_24dp.svg</file>
+    <file>Icons/view_sidebar_white_24dp.svg</file>
+    <file>Icons/view_sidebar_black_24dp.svg</file>
+    <file>Icons/gif_box_black_24dp.svg</file>
+    <file>Icons/image_black_24dp.svg</file>
+    <file>Icons/image_white_24dp.svg</file>
+    <file>Icons/link_black_24dp.svg</file>
+    <file>Icons/link_white_24dp.svg</file>
+    <file>Icons/more_vert_black_24dp.svg</file>
+    <file>Icons/more_vert_white_24dp.svg</file>
+    <file>Icons/search_black_24dp.svg</file>
+    <file>Icons/search_white_24dp.svg</file>
+    <file>Icons/gif_white_24dp.svg</file>
+    <file>Icons/visibility_off_white_24dp.svg</file>
+    <file>Icons/visibility_off_black_24dp.svg</file>
+    <file>Icons/settings_black_24dp.svg</file>
+    <file>Icons/settings_white_24dp.svg</file>
+    <file>Icons/style_black_24dp.svg</file>
+    <file>Icons/style_white_24dp.svg</file>
+    <file>Icons/title_black_24dp.svg</file>
+    <file>Icons/title_white_24dp.svg</file>
+  </qresource>
+</RCC>
