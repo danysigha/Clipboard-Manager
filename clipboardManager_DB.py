@@ -40,7 +40,8 @@ CREATE_CARD_ENTITY = """
         cardAddedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         cardModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         folderID INTEGER not null,
-        hideCard INTEGER not null
+        hideCard INTEGER not null,
+        favoriteCard INTEGER not null
     );"""
 
 CREATE_FOLDER_ENTITY = """
@@ -181,7 +182,7 @@ def print_table(table_content): # just for printing all the result
 #         print("========= CARD =========")
 #         test_db(userID, "card")
 
-def addCard(userID, card_id, content, category, hideCard): # to be implemented even more later -> copy card
+def addCard(userID, card_id, content, category, hideCard, favoriteCard): # to be implemented even more later -> copy card
     # print(userID, cardID, content, category, hideCard, sep='\n')
     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
     cursor = conn.cursor()
@@ -191,7 +192,7 @@ def addCard(userID, card_id, content, category, hideCard): # to be implemented e
     # defaultFolderID_loc = cursor.fetchall()[0][0]
     defaultFolderID_loc = 1
 
-    cursor.execute('INSERT INTO card(cardID, cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID, hideCard) VALUES(?, ?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?, ?)', (card_id, content, category, defaultFolderID_loc, hideCard))
+    cursor.execute('INSERT INTO card(cardID, cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID, hideCard, favoriteCard) VALUES(?, ?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?, ?, ?)', (card_id, content, category, defaultFolderID_loc, hideCard, favoriteCard))
     conn.commit()
     conn.close()
 
@@ -215,6 +216,29 @@ def pasteCard(cardID):
     return result[0][0]
     conn.commit()
     conn.close()
+
+
+def getSearchCards(search):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute("""SELECT * FROM card WHERE cardContent LIKE """ + "\"%" + str(search) + "%\"")
+    records = cursor.fetchall()
+
+    conn.commit()
+    conn.close()
+    return records
+
+
+def getFavoriteCards():
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute("""SELECT * FROM card WHERE favoriteCard = "1" """)
+    records = cursor.fetchall()
+
+    conn.commit()
+    conn.close()
+    return records
+
 
 # delete
 def deleteCard(cardID):
@@ -316,6 +340,35 @@ def getAllCards():
     conn.close()
     return records
 
+def getTextCards():
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+
+    cursor.execute("""SELECT * FROM card WHERE cardCategory = "Text" """)
+    records = cursor.fetchall()
+
+    conn.commit()
+    conn.close()
+    return records
+
+def getImageCards():
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute("""SELECT * FROM card WHERE cardCategory = "Image" """)
+    records = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return records
+
+def getURLCards():
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute("""SELECT * FROM card WHERE cardCategory = "URL" """)
+    records = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return records
+
 def automaticDelete_shelftime(userID):
     conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
     cursor = conn.cursor()
@@ -372,7 +425,18 @@ def hideCard(newCardStatus, card_id):
     conn.close()
     # (newCardStatus, cardID)
 
+
 # favorite function
+def favoriteCard(card_id, favoriteStatus):
+    conn = sqlite3.connect('ClipboardManager_DB.db, pragma key=’secretKey’')
+    cursor = conn.cursor()
+    cursor.execute(
+        'UPDATE card SET favoriteCard = "' + str(favoriteStatus) + '" WHERE cardID == "' + str(card_id) + '";')
+
+    conn.commit()
+    conn.close()
+
+
 
 # create folder (HERE)
 def createFolder(userID, folderName):

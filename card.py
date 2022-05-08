@@ -4,7 +4,7 @@ import uuid
 
 class Card:
 
-    def __init__(self, id, cardContent, cardCategory, addedDate, modifiedDate, cardFolder, hideCard=False):
+    def __init__(self, id, cardContent, cardCategory, addedDate, modifiedDate, cardFolder, hideCard=False, favoriteCard =False):
         # "make a UUID based on the host ID and current time" .hex removes dashes and
         # turns it into a string
         self.cardID = id
@@ -19,6 +19,13 @@ class Card:
             self.hideCard = True
         else:
             self.hideCard = hideCard
+
+        if favoriteCard == 0:
+            self.favoriteCard = False
+        elif favoriteCard == 1:
+            self.favoriteCard = True
+        else:
+            self.favoriteCard = favoriteCard
 
     # getter functions
 
