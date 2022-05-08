@@ -5,7 +5,6 @@ from PyQt5.QtGui import QPixmap
 import uuid
 # import dao
 import card
-import test_2
 import grab_clipboard as grabClip
 
 
