@@ -10,11 +10,11 @@ class User():
         self.email = email
         self.passwordExists = passwordExists
 
-        userdatas = [
-        (userID, password, passwordExists, currentCardID, 
-        defaultFolderID, shelfTime, email, firstname, lastname )
-        ]
+#         userdatas = [
+#         (userID, password, passwordExists, currentCardID, 
+#         defaultFolderID, shelfTime, email, firstname, lastname )
+#         ]
 
-        cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", user_datas)
-        conn.commit()
+#         cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", user_datas)
+#         conn.commit()
 
