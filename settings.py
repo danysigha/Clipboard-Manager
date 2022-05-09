@@ -222,8 +222,8 @@ if __name__ == "__main__":
     widget.addWidget(window2)
     widget.addWidget(window3)
     widget.addWidget(window4)
-    widget.setFixedHeight(803)
-    widget.setFixedWidth(789)
+    widget.setFixedHeight(493)
+    widget.setFixedWidth(370)
 
     # show the widget
     widget.show()
