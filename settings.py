@@ -163,7 +163,7 @@ class currentPasswordPage(QDialog):
         self.pushButton_2.clicked.connect(self.goBack)
         self.pushButton_3.clicked.connect(self.sendEmail)
         self.pushButton.clicked.connect(self.setPassword)
-        self.pushButton_4.clicked.connect(self.turnOffPassword)
+        self.pushButton_4.clicked.connect(self.turnOffPasswordPage)
         self.oldpwd.setEchoMode(QtWidgets.QLineEdit.Password)
         self.pwd1.setEchoMode(QtWidgets.QLineEdit.Password)
         self.pwd2.setEchoMode(QtWidgets.QLineEdit.Password)
@@ -196,9 +196,35 @@ class currentPasswordPage(QDialog):
         self.dao.send_email()
         self.label_4.setText("A temporary password was sent to the email on file. Please check your email.")
 
+    def turnOffPasswordPage(self):
+        self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
+
+class disablePasswordPage(QDialog):
+
+    def __init__(self, data_access_object, widget):
+        super(disablePasswordPage, self).__init__()
+        uic.loadUi("disablePwd.ui", self)
+
+        self.widget = widget
+        self.dao = data_access_object
+        
+        self.enter.clicked.connect(self.turnOffPassword)
+        self.pushButton_2.clicked.connect(self.goBack)
+
     def turnOffPassword(self):
-        self.dao.set_password_state(0)
-        self.widget.setCurrentIndex(self.widget.currentIndex() - 3)
+        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        pwd = self.lineEdit.text()
+        if self.dao.password_is_valid(pwd) == True:
+            self.dao.set_password_state(0)
+            self.widget.setCurrentIndex(self.widget.currentIndex() - 5)
+        else:
+            self.label_3.setText("The current password entered is incorrect. Please try again.")
+            self.lineEdit.clear()
+
+        
+
+    def goBack(self):
+        self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
 
 
 
@@ -217,14 +243,26 @@ if __name__ == "__main__":
     window2 = setPassword()  # page 2
     window3 = shelftime()  # page 3
     window4 = currentPasswordPage()  # page 4
+    window5 = resetApplication()
+    window6 = disablePasswordPage()  # page 3
     # add the objects created above^ to the stack of screens
     widget.addWidget(window1)
     widget.addWidget(window2)
     widget.addWidget(window3)
     widget.addWidget(window4)
+    widget.addWidget(window5)
+    widget.addWidget(window6)
     widget.setFixedHeight(493)
     widget.setFixedWidth(370)
 
+    window1 = settings.mainSetting(self, self.dao, self.window)  # page 1
+    window2 = settings.setPassword(self.dao, self.window)  # page 2
+    window3 = settings.shelftime(self.dao, self.window)  # page 3
+    window4 = settings.currentPasswordPage(self.dao, self.window)  # page 4
+    window5 = settings.resetApplication(self.dao, self.window, self)  # page 5
+    window6 = settings.disablePasswordPage(self.dao, self.window)  # page 6
+       
+       
     # show the widget
     widget.show()
 
