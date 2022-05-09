@@ -7,7 +7,7 @@ import uuid
 import validators
 import os
 import card
-import test_2
+#import test_2
 import grab_clipboard as grabClip
 
 
