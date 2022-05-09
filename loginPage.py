@@ -117,8 +117,8 @@ if __name__ == "__main__":
     #add the objects created above^ to the stack of screens
     widget.addWidget(window1)
     widget.addWidget(window2)
-    widget.setFixedHeight(803)
-    widget.setFixedWidth(789)
+    widget.setFixedHeight(493)
+    widget.setFixedWidth(370)
 
     #show the widget
     widget.show()
