@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>942</width>
-    <height>713</height>
+    <width>370</width>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,16 +16,18 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>90</y>
-     <width>231</width>
+     <x>110</x>
+     <y>60</y>
+     <width>151</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Helvetica</family>
-     <pointsize>48</pointsize>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="text">
@@ -35,8 +37,8 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>400</y>
+     <x>90</x>
+     <y>380</y>
      <width>211</width>
      <height>41</height>
     </rect>
@@ -48,8 +50,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>180</y>
+     <x>100</x>
+     <y>130</y>
      <width>221</width>
      <height>21</height>
     </rect>
@@ -58,6 +60,8 @@
     <font>
      <family>Helvetica</family>
      <pointsize>24</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="text">
@@ -69,7 +73,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>121</width>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>
@@ -77,45 +81,13 @@
     <string>Go back</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>350</y>
-     <width>201</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font: 11pt &quot;Helvetica&quot;;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>250</y>
-     <width>401</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>250</y>
-     <width>431</width>
-     <height>91</height>
+     <x>50</x>
+     <y>170</y>
+     <width>301</width>
+     <height>171</height>
     </rect>
    </property>
    <property name="font">
@@ -125,7 +97,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Warning: Chosing to reset application will delete all information and files from previous user. </string>
+    <string>Warning: Chosing to reset application will delete all information and files from previous user.  The application will close after reseting.</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>

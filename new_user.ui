@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>803</width>
-    <height>789</height>
+    <width>370</width>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,9 +16,9 @@
   <widget class="QPushButton" name="enter">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>390</y>
-     <width>301</width>
+     <x>70</x>
+     <y>330</y>
+     <width>231</width>
      <height>61</height>
     </rect>
    </property>
@@ -37,8 +37,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>70</y>
+     <x>110</x>
+     <y>80</y>
      <width>161</width>
      <height>41</height>
     </rect>
@@ -46,6 +46,8 @@
    <property name="font">
     <font>
      <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="text">
@@ -55,35 +57,35 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>180</y>
+     <x>120</x>
+     <y>130</y>
      <width>151</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Please enter an email.</string>
+    <string>Please enter an email:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>280</y>
+     <x>120</x>
+     <y>200</y>
      <width>151</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Please confirm email.</string>
+    <string>Please confirm email:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>200</y>
-     <width>301</width>
+     <x>70</x>
+     <y>160</y>
+     <width>231</width>
      <height>31</height>
     </rect>
    </property>
@@ -91,9 +93,9 @@
   <widget class="QLineEdit" name="lineEdit_2">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>300</y>
-     <width>301</width>
+     <x>70</x>
+     <y>230</y>
+     <width>231</width>
      <height>31</height>
     </rect>
    </property>
@@ -101,10 +103,10 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>350</y>
-     <width>301</width>
-     <height>41</height>
+     <x>70</x>
+     <y>270</y>
+     <width>231</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
