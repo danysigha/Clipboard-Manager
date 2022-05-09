@@ -87,8 +87,8 @@ class newUser(QDialog):
 
     # goes to the password pages
     def gotoMainPage(self):
-        email1 = self.lineEdit.text()
-        email2 = self.lineEdit_2.text()
+        email1 = self.lineEdit_3.text()
+        email2 = self.lineEdit_4.text()
         if (email1 == email2):
             self.dao.create_user(email1)
             self.widget.close()
@@ -106,9 +106,9 @@ class newUser(QDialog):
             # widget.setCurrentIndex(widget.currentIndex() + 1)
 
         else:
-            self.label_2.setText("Emails do not match, please try again.")
-            self.lineEdit.clear()
-            self.lineEdit_2.clear()
+            self.label_3.setText("Emails do not match, please try again.")
+            self.lineEdit_3.clear()
+            self.lineEdit_4.clear()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

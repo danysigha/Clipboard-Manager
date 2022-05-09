@@ -208,18 +208,18 @@ class disablePasswordPage(QDialog):
         self.widget = widget
         self.dao = data_access_object
         
-        self.enter.clicked.connect(self.turnOffPassword)
+        self.enter_2.clicked.connect(self.turnOffPassword)
         self.pushButton_2.clicked.connect(self.goBack)
+        self.lineEdit_3.setEchoMode(QtWidgets.QLineEdit.Password)
 
     def turnOffPassword(self):
-        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-        pwd = self.lineEdit.text()
+        pwd = self.lineEdit_3.text()
         if self.dao.password_is_valid(pwd) == True:
             self.dao.set_password_state(0)
             self.widget.setCurrentIndex(self.widget.currentIndex() - 5)
         else:
             self.label_3.setText("The current password entered is incorrect. Please try again.")
-            self.lineEdit.clear()
+            self.lineEdit_3.clear()
 
         
 
