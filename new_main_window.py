@@ -542,10 +542,12 @@ if __name__ == "__main__":
     # MainWindow.show()
 
     widget = QStackedWidget()
-    window1 = loginPage.login(ui.dao, widget, ui)  # page 1
+    window1 = loginPage.login(ui.dao, widget, ui)  
     window2 = loginPage.newUser(ui.dao, widget, ui)
+    window3 =  loginPage.login2(ui.dao, widget, ui) 
     widget.addWidget(window1)
     widget.addWidget(window2)
+    widget.addWidget(window3)
     widget.setFixedHeight(493)
     widget.setFixedWidth(370)
     qr = widget.frameGeometry()
