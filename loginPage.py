@@ -30,7 +30,7 @@ class login(QDialog):
                 self.widget.close()
                 self.MainWindow.show()
         else:
-            self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
+            self.widget.setCurrentIndex(self.widget.currentIndex() + 1)
             
 
 class login2(QDialog):
