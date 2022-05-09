@@ -10,56 +10,64 @@ import card_generator
 import grab_clipboard as grabClip
 #from user import User as user
 
-
 class login(QDialog):
     def __init__(self, data_access_object, widget, MainWindow):
         super(login, self).__init__()
 
         #load ui file
         uic.loadUi("welcomescreen.ui", self)
-        self.dao = data_access_object
-        self.flag = False
-        self.widget = widget
         self.MainWindow = MainWindow
-        #performance
-        self.lineEdit.hide()
-        self.label_4.hide()
-        self.label_3.hide()
-        self.pushButton.hide()
-        if self.dao.get_user_status() != 0:
-            self.flag = True
-            self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-
+        self.widget = widget
+        self.dao = data_access_object
         self.login.clicked.connect(self.gotoNextPage)
-
         self.show()
-
-    #goes to the password pages
+        
     def gotoNextPage(self):
-        if self.flag:
+        if self.dao.get_user_status() != 0:
             if self.dao.get_password_state() == True:
-                self.lineEdit.show()
-                self.label_4.show()
-                self.pushButton.show()
-                self.pushButton.clicked.connect(self.sendEmail)
-
-                self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-                pwd = self.lineEdit.text()
-                if self.dao.password_is_valid(pwd):
-                    self.widget.close()
-                    self.MainWindow.show()
-                else:
-                    self.label_3.setText("Incorrect password. Please try again.")
-                    self.lineEdit.clear()
+                self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
             else:
                 self.widget.close()
                 self.MainWindow.show()
         else:
-            self.widget.setCurrentIndex(self.widget.currentIndex() + 1)
+            self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
+            
+
+class login2(QDialog):
+    def __init__(self, data_access_object, widget, MainWindow):
+        super(login2, self).__init__()
+
+        #load ui file
+        uic.loadUi("welcomescreen2.ui", self)
+        self.dao = data_access_object
+        self.flag = False
+        self.widget = widget
+        self.MainWindow = MainWindow
+        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        #performance
+        
+        self.login.clicked.connect(self.gotoNextPage)
+        self.show()
+
+    #goes to the password pages
+    def gotoNextPage(self):
+        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        pwd = self.lineEdit.text()
+        if self.dao.password_is_valid(pwd):
+            self.widget.close()
+            self.MainWindow.show()
+        else:
+            self.label_3.show()
+            self.label_3.setText("Incorrect password. Please try again.")
+            self.lineEdit.clear()
 
     def sendEmail(self):
         self.dao.send_email()
+        self.label_3.show()
         self.label_3.setText("A temporary password was sent to the email on file. Please check your email.")
+
+
+    
 
 
 class newUser(QDialog):
