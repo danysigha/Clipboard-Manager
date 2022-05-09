@@ -139,7 +139,7 @@
          </widget>
         </item>
         <item alignment="Qt::AlignHCenter">
-         <widget class="QPushButton" name="enter_2">
+         <widget class="QPushButton" name="enter">
           <property name="minimumSize">
            <size>
             <width>241</width>
