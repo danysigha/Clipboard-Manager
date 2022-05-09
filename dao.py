@@ -7,6 +7,7 @@ import ssl
 import string
 import random
 import clipboardManager_DB as db
+from email.message import EmailMessage
 
 class password_decorator:
     def __init__(self, function):
