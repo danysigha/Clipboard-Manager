@@ -114,43 +114,36 @@ class DataAccessor:
         db.resetdb()
 
     def send_email(self):
-        # conn = sqlite3.connect('ClipboardManager_DB.db')
-        # cursor = conn.cursor()
-        # records = cursor.execute("""SELECT email FROM user LIMIT 1""")
-        # email = ''
-        # for row in records:
-        #     email = row[0]
-        email = self.get_email()
-        port = 465  # For SSL
-        smtp_server = "smtp.gmail.com"
         sender_email = "yourclipboardmanager@gmail.com"
+        receiver_email = self.get_email()
         os = platform.system()
-        receiver_email = email
-        # if os == 'Darwin':
-        #     password = "ecqibpmoeknjxwbm"
-        # elif os == 'Windows':
-        #     password = "qourwmshfkltqnnc"
+        if os == 'Darwin':
+            password = "ecqibpmoeknjxwbm"
+        elif os == 'Windows':
+            password = "qourwmshfkltqnnc"
 
-        password = "ecqibpmoeknjxwbm"
+        
         temp = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
 
         self.set_password(temp)
-        # conn = sqlite3.connect('ClipboardManager_DB.db')
-        # cursor = conn.cursor()
-        # salt = bcrypt.gensalt()
-        # hashed_pwd = bcrypt.hashpw(temp.encode('utf-8'), salt)
-        # cursor.execute("""UPDATE user SET password = (?) WHERE userID = 1""", (hashed_pwd,))
-        # conn.commit()
+   
 
-        message = ("""\
-    		Subject: Your temporary password.
-    		This is your temporary password: {}. Please use this password to sign in and
+        plainText = ("""This is your temporary password: {}. Please use this password to sign in and
     		remember to change password to your own.""".format(temp))
 
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(sender_email, receiver_email, message)
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(sender_email, password)
+
+        msg = EmailMessage()
+
+        message = f'{plainText}\n'
+        msg.set_content(message)
+        msg['Subject'] = "Your temporary password."
+        msg['From'] = sender_email
+        msg['To'] = receiver_email
+        server.send_message(msg)
 
 
 if __name__ == "__main__":
