@@ -111,12 +111,15 @@ class UI(QMainWindow):
         window3 = settings.shelftime(self.dao, self.window)  # page 3
         window4 = settings.currentPasswordPage(self.dao, self.window)  # page 4
         window5 = settings.resetApplication(self.dao, self.window, self)  # page 5
+        window6 = settings.disablePasswordPage(self.dao, self.window)  # page 6
+       
         # add the objects created above^ to the stack of screens
         self.window.addWidget(window1)
         self.window.addWidget(window2)
         self.window.addWidget(window3)
         self.window.addWidget(window4)
         self.window.addWidget(window5)
+        self.window.addWidget(window6)
         self.window.setFixedHeight(493)
         self.window.setFixedWidth(370)
 
