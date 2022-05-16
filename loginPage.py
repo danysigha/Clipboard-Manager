@@ -47,7 +47,6 @@ class login2(QDialog):
         #performance
         
         self.login.clicked.connect(self.gotoNextPage)
-        self.pushButton.clicked.connect(self.sendEmail)
         self.show()
 
     #goes to the password pages
