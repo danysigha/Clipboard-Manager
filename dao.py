@@ -129,6 +129,9 @@ class DataAccessor:
     def changeShelfLife(self, month):
         """changes the shelf life to the desired month"""
         db.changeShelfLife(month)
+    
+    def automaticDeleteShelfLife(self):
+        db.automaticDeleteShelfLife(1)
 
     def getUserStatus(self):
         """ returns the status of the user"""
