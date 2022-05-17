@@ -254,3 +254,4 @@ def resetdb():
     cursor.execute("""DELETE FROM folder""")
     cursor.execute("""DELETE FROM card""")
     closeDb(conn)
+initalizeDb()
