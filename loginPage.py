@@ -1,109 +1,169 @@
 from PyQt5 import uic
-import sys
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QLabel, QTextEdit, QPushButton, QLineEdit, QComboBox, \
-    QMainWindow
-import sqlite3
-import dao
-import new_main_window
-import card_generator
-import grab_clipboard as grabClip
-#from user import User as user
+from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QLabel, QTextEdit, QPushButton, QLineEdit, QComboBox
 
-class login(QDialog):
+class welcomeScreen(QDialog):
+    """
+    This is a class for the first welcome screen. 
+  
+    This class loads the ui file in order to generate the interface for the first welcome
+    screen. It determines what screen to show next when the enter button is clicked based 
+    on whether there's a new user or returning user. 
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+
+    """
+
     def __init__(self, data_access_object, widget, MainWindow):
-        super(login, self).__init__()
+        """
+        The constructor for welcomeScreen class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+        
+        """
 
-        #load ui file
+        super(welcomeScreen, self).__init__()
         uic.loadUi("welcomescreen.ui", self)
         self.MainWindow = MainWindow
         self.widget = widget
         self.dao = data_access_object
-        self.login.clicked.connect(self.gotoNextPage)
+        self.login.clicked.connect(self.goToNextPage)
         self.show()
         
-    def gotoNextPage(self):
+    def goToNextPage(self):
+        """
+        The function to go to the next page based on the conditions met.
+  
+        """
+
         if self.dao.get_user_status() != 0:
             if self.dao.get_password_state() == True:
                 self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
+
             else:
                 self.widget.close()
                 self.MainWindow.show()
+
         else:
             self.widget.setCurrentIndex(self.widget.currentIndex() + 1)
             
+class welcomeScreenPasswordPage(QDialog):
+    """
+    This is a class for the login page.
+  
+    This class loads the ui file in order to generate the interface for entering the 
+    password in order for the user to log in and access the main window.
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
 
-class login2(QDialog):
+    """
+
     def __init__(self, data_access_object, widget, MainWindow):
-        super(login2, self).__init__()
-
-        #load ui file
-        uic.loadUi("welcomescreen2.ui", self)
+        """
+        The constructor for welcomeScreenPasswordPage class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+        """
+        super(welcomeScreenPasswordPage, self).__init__()
+        uic.loadUi("welcomescreenPasswordPage.ui", self)
         self.dao = data_access_object
-        self.flag = False
         self.widget = widget
         self.MainWindow = MainWindow
         self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-        #performance
-        
-        self.login.clicked.connect(self.gotoNextPage)
+        self.login.clicked.connect(self.goToNextPage)
         self.show()
 
-    #goes to the password pages
-    def gotoNextPage(self):
+    def goToNextPage(self):
+        """
+        The function to go to either go to the main window if password entered is correct 
+        or to stay on current page until correct password is entered. 
+  
+        """
+
         self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
         pwd = self.lineEdit.text()
         if self.dao.password_is_valid(pwd):
             self.widget.close()
             self.MainWindow.show()
+
         else:
             self.label_3.show()
             self.label_3.setText("Incorrect password. Please try again.")
             self.lineEdit.clear()
 
     def sendEmail(self):
+        """
+        The function to go to send a temporary password to email on file.
+  
+        """
+
         self.dao.send_email()
         self.label_3.show()
         self.label_3.setText("A temporary password was sent to the email on file. Please check your email.")
 
-
-    
-
-
 class newUser(QDialog):
+    """
+    This is a class for the new user interface.
+  
+    This class loads the ui file in order to generate the interface for the new user to enter 
+    their email for future use. 
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+
+    """
 
     def __init__(self, data_access_object, widget, MainWindow):
+        """
+        The constructor for the newUser class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                                   to another
+
+        """
+
         super(newUser, self).__init__()
-
-        #load ui file
-        uic.loadUi("new_user.ui", self)
-
-        #performance
+        uic.loadUi("newUserPage.ui", self)
         self.dao = data_access_object
         self.widget = widget
-        self.enter.clicked.connect(self.gotoMainPage)
+        self.enter.clicked.connect(self.goToMainWindow)
         self.MainWindow = MainWindow
         self.show()
 
-    # goes to the password pages
-    def gotoMainPage(self):
+    def goToMainWindow(self):
+        """
+        The function to save email entered by new user to database and move to main window.
+  
+        """
+
         email1 = self.lineEdit.text()
         email2 = self.lineEdit_2.text()
         if (email1 == email2):
             self.dao.create_user(email1)
             self.widget.close()
             self.MainWindow.show()
-
-            # MainWindow = QMainWindow()
-            # ui = new_main_window.UI()
-            # ui.setupUi(MainWindow)
-            # cardMaker = card_generator.CardRenderer(ui.gridLayout2, self.dao)
-            # cardMaker.initializeUI(self.dao.getAllCards())
-            # gc = grabClip.ClipboardManager(cardMaker, self.dao)
-            # gc.manage_clip()
-            # self.reject()
-            # MainWindow.setVisible(1)
-            # widget.setCurrentIndex(widget.currentIndex() + 1)
 
         else:
             self.label_2.setText("Emails do not match, please try again.")
@@ -112,17 +172,10 @@ class newUser(QDialog):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
-    #intialize QStackWidget
-    # QStackedwidget is a stack of QDialogs
-    # we load different uis with it and each dialog is an index in the list
-    #increment by one we show UI # 2 and so forth
     widget = QtWidgets.QStackedWidget()
     data_access_object = dao.DataAccessor()
     window1 = login(data_access_object) #page 1
     window2 = newUser(data_access_object)
-
-    #add the objects created above^ to the stack of screens
     widget.addWidget(window1)
     widget.addWidget(window2)
     widget.setFixedHeight(493)

@@ -1,119 +1,195 @@
 from PyQt5 import uic
-import sys
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QLabel, QTextEdit, QPushButton, QLineEdit, QComboBox, \
-    QMainWindow
-import sqlite3
-#from mini_dao2 import dao as dao
-import new_main_window
-import sys
-# import dao
-import card_generator
-import grab_clipboard as grabClip
-
-
-
-# from user import User as user
+from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QLabel, QTextEdit, QPushButton, QLineEdit, QComboBox
 
 
 class mainSetting(QDialog):
+    """
+    This is a class for the main settings page.
+  
+    This class loads the ui file in order to generate the interface for the main
+    settings page and grants access to the different pages that are accountable
+    for the other features and settings the user can change.
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+
+    """
 
     def __init__(self, parent, data_access_object, widget):
+        """
+        The constructor for mainSetting class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+  
+        """
+
         super(mainSetting, self).__init__()
-
-        # load ui file
-        uic.loadUi("settings1.ui", self)
-
-        # performance
+        uic.loadUi("mainSettingsPage.ui", self)
         self._parent = parent
         self.widget = widget
         self.dao = data_access_object
-        self.password.clicked.connect(self.gotoPasswordPage)
-        self.pushButton_3.clicked.connect(self.gotoShelftime)
-        self.pushButton_2.clicked.connect(self.goBack)#
-        self.reset.clicked.connect(self.gotoResetPage)
-
+        self.password.clicked.connect(self.goToPasswordPage)
+        self.pushButton_3.clicked.connect(self.goToShelftime)
+        self.pushButton_2.clicked.connect(self.goToMainWindow)
+        self.reset.clicked.connect(self.goToResetPage)
         self.show()
 
-    # goes to the password pages
-    def gotoPasswordPage(self):
+    def goToPasswordPage(self):
+        """
+        The function to go to the Password Page either to set or change password based
+        on current password state.
+  
+        """
 
         if self.dao.get_password_state():
             self.widget.setCurrentIndex(self.widget.currentIndex() + 3)
+
         else:
             self.widget.setCurrentIndex(self.widget.currentIndex() + 1)
 
-    def gotoShelftime(self):
+    def goToShelftime(self):
+        """
+        The function to go to the change shelftime page.
+  
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
 
-    def gotoResetPage(self):
+    def goToResetPage(self):
+        """
+        The function to go to the reset application page.
+
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() + 4)
 
-    def goBack(self):
+    def goToMainWindow(self):
+        """
+        The function to go back to the main window.
+  
+        """
+
         self.widget.close()
         self._parent.show()
 
-        # app = QApplication(sys.argv)
-        # MainWindow = QMainWindow()
-        # ui = new_main_window.UI()
-        # ui.setupUi(MainWindow)
-        # dataAccessObject = dao.DataAccessor()
-        # cardMaker = card_generator.CardRenderer(ui.gridLayout2, dataAccessObject)
-        # cardMaker.initializeUI(dataAccessObject.getAllCards())
-        # gc = grabClip.ClipboardManager(cardMaker, dataAccessObject)
-        # gc.manage_clip()
-        # MainWindow.show()
-        # widget.setCurrentIndex(widget.currentIndex() - 1)
-        # MainWindow.show()
+class setFirstPassword(QDialog):
+    """
+    This is a class for setting the first password of the application.
+  
+    This class loads the ui file in order to generate the interface for setting the first
+    password.
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
 
-
-class setPassword(QDialog):
+    """
 
     def __init__(self, data_access_object, widget):
-        super(setPassword, self).__init__()
+        """
+        The constructor for setFirstPassword class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+  
+        """
 
-        uic.loadUi("settings2.ui", self)
-
+        super(setFirstPassword, self).__init__()
+        uic.loadUi("setFirstPasswordPage.ui", self)
         self.dao = data_access_object
         self.widget = widget
         self.pwd1.setEchoMode(QtWidgets.QLineEdit.Password)
         self.pwd2.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.pushButton_2.clicked.connect(self.goBack)
-        self.pushButton.clicked.connect(self.set_password)
+        self.pushButton_2.clicked.connect(self.goToMainSettings)
+        self.pushButton.clicked.connect(self.setPassword)
 
-    def goBack(self):
+    def goToMainSettings(self):
+        """
+        The function to go back to the main settings page.
+  
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() - 1)
 
-    def set_password(self):
+    def setPassword(self):
+        """
+        The function to set the password and send it to database.
+  
+        """
 
         pwd1 = self.pwd1.text()
         pwd2 = self.pwd2.text()
+
         if (pwd1 == pwd2):
             self.dao.set_password(pwd1)
             self.label_4.setText("Password successfully saved")
+
         else:
             self.label_4.setText("The passwords do not match. Please try again.")
+
         self.pwd1.clear()
         self.pwd2.clear()
 
-
-
-
 class shelftime(QDialog):
+    """
+    This is a class for changing the shelftime of the application.
+  
+    This class loads the ui file in order to generate the interface for changing the shelftime.
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+
+    """
+
     def __init__(self, data_access_object, widget):
+        """
+        The constructor for shelftime class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+  
+        """
+
         super(shelftime, self).__init__()
-
-        uic.loadUi("settings3.ui", self)
-
+        uic.loadUi("shelftimePage.ui", self)
         self.dao = data_access_object
         self.widget = widget
-        self.pushButton_3.clicked.connect(self.goBack)
+        self.pushButton_3.clicked.connect(self.goToMainSettings)
         self.pushButton.clicked.connect(self.changeShelftime)
 
-    def goBack(self):
+    def goToMainSettings(self):
+        """
+        The function to go back to the main settings page.
+  
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
 
     def changeShelftime(self):
+        """
+        The function to go change the shelftime in the database.
+  
+        """
+
         self.menu = self.findChild(QComboBox, "menu")
         if (self.menu.currentIndex() == 0):
             self.dao.changeShelftime(1)
@@ -131,36 +207,93 @@ class shelftime(QDialog):
 
         self.label_3.setText("Shelftime successfully updated.")
 
-
 class resetApplication(QDialog):
+    """
+    This is a class for resetting the whole application and erasing the database.
+  
+    This class loads the ui file in order to generate the interface for resetting
+    the application.
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+
+    """
+
     def __init__(self, data_access_object, widget, parent):
+        """
+        The constructor for resetApplication class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+  
+        """
+
         super(resetApplication, self).__init__()
-
-        uic.loadUi("settings4.ui", self)
-
+        uic.loadUi("resetApplicationPage.ui", self)
         self.dao = data_access_object
         self.widget = widget
         self.parent = parent
-        self.pushButton_2.clicked.connect(self.goBack)
-        self.pushButton.clicked.connect(self.resetDB)
+        self.pushButton_2.clicked.connect(self.goToMainSettings)
+        self.pushButton.clicked.connect(self.resetDatabase)
 
 
-    def goBack(self):
+    def goToMainSettings(self):
+        """
+        The function to go back to the main settings page.
+  
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() - 4)
 
-    def resetDB(self):
+    def resetDatabase(self):
+         """
+        The function to go erase everything in the database and reset application.
+  
+        """
+
         self.dao.resetdb()
         self.widget.close()
         self.parent.close()
 
-class currentPasswordPage(QDialog):
-    def __init__(self, data_access_object, widget):
-        super(currentPasswordPage, self).__init__()
+class changePasswordPage(QDialog):
+    """
+    This is a class for changing the current password, disabling the password,
+    and sending temporary password.
+  
+    This class loads the ui file in order to generate the interface for changing 
+    the current password, disabling password, and sending temporary password. 
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
 
-        uic.loadUi("settings5.ui", self)
+    """
+
+    def __init__(self, data_access_object, widget):
+        """
+        The constructor for changePasswordPage class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+  
+        """
+
+        super(changePasswordPage, self).__init__()
+        uic.loadUi("changePasswordPage.ui", self)
         self.dao = data_access_object
         self.widget = widget
-        self.pushButton_2.clicked.connect(self.goBack)
+        self.pushButton_2.clicked.connect(self.goToMainSettings)
         self.pushButton_3.clicked.connect(self.sendEmail)
         self.pushButton.clicked.connect(self.setPassword)
         self.pushButton_4.clicked.connect(self.turnOffPasswordPage)
@@ -168,13 +301,24 @@ class currentPasswordPage(QDialog):
         self.pwd1.setEchoMode(QtWidgets.QLineEdit.Password)
         self.pwd2.setEchoMode(QtWidgets.QLineEdit.Password)
 
-    def goBack(self):
+    def goToMainSettings(self):
+        """
+        The function to go back to the main settings page.
+  
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() - 3)
 
     def setPassword(self):
+         """
+        The function to change the password in database.
+  
+        """
+
         oldpwd = self.oldpwd.text()
         pwd1 = self.pwd1.text()
         pwd2 = self.pwd2.text()
+
         if (pwd1 == pwd2 and self.dao.change_password(oldpwd, pwd1)):
             self.label_4.setText("Password successfully saved")
 
@@ -191,29 +335,65 @@ class currentPasswordPage(QDialog):
         self.pwd1.clear()
         self.pwd2.clear()
 
-
     def sendEmail(self):
+         """
+        The function to send the temporary password to user email.
+  
+        """
+
         self.dao.send_email()
         self.label_4.setText("A temporary password was sent to the email on file. Please check your email.")
 
     def turnOffPasswordPage(self):
+         """
+        The function to go to the disable password page.
+  
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
 
 class disablePasswordPage(QDialog):
+    """
+    This is a class for disabling the password
+  
+    This class loads the ui file in order to generate the interface for disabling the password. 
+  
+    Attributes
+    parent (QMainWindow): the MainWindow object to be used to access the main window
+    data_access_object (dao): the dao object used to communicate with database
+    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+
+    """
 
     def __init__(self, data_access_object, widget):
-        super(disablePasswordPage, self).__init__()
-        uic.loadUi("disablePwd.ui", self)
+        """
+        The constructor for disablePassword class.
+  
+        Parameters:
+        parent (QMainWindow): the MainWindow object to be used to access the main window
+        data_access_object (dao): the dao object used to communicate with database
+        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
+                               to another
+  
+        """
 
+        super(disablePasswordPage, self).__init__()
+        uic.loadUi("disablePasswordPage.ui", self)
         self.widget = widget
         self.dao = data_access_object
-        
         self.enter.clicked.connect(self.turnOffPassword)
         self.pushButton_2.clicked.connect(self.goBack)
 
     def turnOffPassword(self):
+         """
+        The function to go disable the password.
+  
+        """
+
         self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
         pwd = self.lineEdit.text()
+
         if self.dao.password_is_valid(pwd) == True:
             self.dao.set_password_state(0)
             self.widget.setCurrentIndex(self.widget.currentIndex() - 5)
@@ -221,31 +401,26 @@ class disablePasswordPage(QDialog):
             self.label_3.setText("The current password entered is incorrect. Please try again.")
             self.lineEdit.clear()
 
-        
-
     def goBack(self):
+        """
+        The function to go back to the change password page.
+  
+        """
+
         self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
 
 
 
 
 if __name__ == "__main__":
-
     app = QApplication(sys.argv)
-
-    # intialize QStackWidget
-    # QStackedwidget is a stack of QDialogs
-    # we load different uis with it and each dialog is an index in the list
-    # increment by one we show UI # 2 and so forth
     widget = QtWidgets.QStackedWidget()
-
     window1 = mainSetting()  # page 1
     window2 = setPassword()  # page 2
     window3 = shelftime()  # page 3
-    window4 = currentPasswordPage()  # page 4
+    window4 = changePasswordPage()  # page 4
     window5 = resetApplication()
     window6 = disablePasswordPage()  # page 3
-    # add the objects created above^ to the stack of screens
     widget.addWidget(window1)
     widget.addWidget(window2)
     widget.addWidget(window3)
@@ -254,18 +429,12 @@ if __name__ == "__main__":
     widget.addWidget(window6)
     widget.setFixedHeight(493)
     widget.setFixedWidth(370)
-
     window1 = settings.mainSetting(self, self.dao, self.window)  # page 1
     window2 = settings.setPassword(self.dao, self.window)  # page 2
     window3 = settings.shelftime(self.dao, self.window)  # page 3
-    window4 = settings.currentPasswordPage(self.dao, self.window)  # page 4
+    window4 = settings.changePasswordPage(self.dao, self.window)  # page 4
     window5 = settings.resetApplication(self.dao, self.window, self)  # page 5
     window6 = settings.disablePasswordPage(self.dao, self.window)  # page 6
-       
-       
-    # show the widget
     widget.show()
-
     sys.exit(app.exec_())
 
-    # print("Exiting")
