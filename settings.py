@@ -145,72 +145,6 @@ class SetFirstPassword(QDialog):
         self.pwd2.clear()
 
 
-class ShelfLife(QDialog):
-    """
-    This is a class for changing the shelf life of the application.
-  
-    This class loads the ui file in order to generate the interface for changing the shelf life.
-  
-    Attributes
-    parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
-    widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
-                               to another
-
-    """
-
-    def __init__(self, data_access_object, widget):
-        """
-        The constructor for shelfLife class.
-  
-        Parameters:
-        parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
-        widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
-                               to another
-  
-        """
-
-        super(ShelfLife, self).__init__()
-        self.menu = None
-        uic.loadUi("shelfLifePage.ui", self)
-        self.dao = data_access_object
-        self.widget = widget
-        self.pushButton_3.clicked.connect(self.goToMainSettings)
-        self.pushButton.clicked.connect(self.changeShelftime)
-
-    def goToMainSettings(self):
-        """
-        The function to go back to the main settings page.
-  
-        """
-
-        self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
-
-    def changeShelfLife(self):
-        """
-        The function to go change the shelfLife in the database.
-  
-        """
-
-        self.menu = self.findChild(QComboBox, "menu")
-        if self.menu.currentIndex() == 0:
-            self.dao.changeShelfLife(1)
-
-        elif self.menu.currentIndex() == 1:
-            self.dao.changeShelfLife(2)
-
-        elif self.menu.currentIndex() == 2:
-            self.dao.changeShelftime(3)
-
-        elif self.menu.currentIndex() == 3:
-            self.dao.changeShelfLife(6)
-        else:
-            self.dao.changeShelfLife(12)
-
-        self.label_3.setText("Shelf life successfully updated.")
-
-
 class ResetApplication(QDialog):
     """
     This is a class for resetting the whole application and erasing the database.
@@ -225,7 +159,6 @@ class ResetApplication(QDialog):
                                to another
 
     """
-
     def __init__(self, data_access_object, widget, parent):
         """
         The constructor for resetApplication class.
@@ -252,7 +185,7 @@ class ResetApplication(QDialog):
   
         """
 
-        self.widget.setCurrentIndex(self.widget.currentIndex() - 4)
+        self.widget.setCurrentIndex(self.widget.currentIndex() - 3)
 
     def resetDatabase(self):
         """
@@ -311,7 +244,7 @@ class ChangePasswordPage(QDialog):
   
         """
 
-        self.widget.setCurrentIndex(self.widget.currentIndex() - 3)
+        self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
 
     def setPassword(self):
         """
@@ -401,7 +334,7 @@ class DisablePasswordPage(QDialog):
 
         if self.dao.password_is_valid(pwd):
             self.dao.set_password_state(0)
-            self.widget.setCurrentIndex(self.widget.currentIndex() - 5)
+            self.widget.setCurrentIndex(self.widget.currentIndex() - 4)
         else:
             self.label_3.setText("The current password entered is incorrect. Please try again.")
             self.lineEdit.clear()

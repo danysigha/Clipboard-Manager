@@ -190,10 +190,10 @@ class UI(QMainWindow):
     def openWindow(self):
         self.window = QStackedWidget()
         window1 = settings.mainSetting(self, self.dao, self.window)  # page 1
-        window2 = settings.setPassword(self.dao, self.window)  # page 2
-        window3 = settings.shelftime(self.dao, self.window)  # page 3
-        window4 = settings.currentPasswordPage(self.dao, self.window)  # page 4
-        window5 = settings.resetApplication(self.dao, self.window, self)  # page 5
+        window2 = settings.setFirstPassword(self.dao, self.window)  # page 2
+        window3 = settings.changePasswordPage(self.dao, self.window)  # page 4
+        window4 = settings.resetApplication(self.dao, self.window, self)  # page 5
+        window5 = settings.disablePasswordPage(self.dao, self.window)  # page 6
         # add the objects created above^ to the stack of screens
         self.window.addWidget(window1)
         self.window.addWidget(window2)
@@ -202,12 +202,6 @@ class UI(QMainWindow):
         self.window.addWidget(window5)
         self.window.setFixedHeight(493)
         self.window.setFixedWidth(370)
-
-        qr = self.window.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.window.move(qr.topLeft())
-        # show the widget
         self.window.show()
         self.hide()
 
@@ -615,34 +609,19 @@ class UI(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    # MainWindow = QMainWindow()
     ui = UI()
-    # ui.setupUi(MainWindow)
-
     ui.cardMaker.initializeUI(ui.dao.getAllCards())
     gc = grabClip.ClipboardManager(ui.cardMaker, ui.dao)
     gc.manage_clip()
-    # MainWindow.show()
-
     widget = QStackedWidget()
-    window1 = loginPage.login(ui.dao, widget, ui)  # page 1
+    window1 = loginPage.welcomeScreen(ui.dao, widget, ui)  # page 1
     window2 = loginPage.newUser(ui.dao, widget, ui)
+    window3 = loginPage.welcomeScreenPasswordPage(ui.dao, widget, ui)  # page 1
     widget.addWidget(window1)
     widget.addWidget(window2)
-    # widget.setFixedHeight(803)
-    # widget.setFixedWidth(789)
+    widget.addWidget(window3)
     widget.setFixedHeight(493)
     widget.setFixedWidth(370)
-    qr = widget.frameGeometry()
-    cp = QDesktopWidget().availableGeometry().center()
-    qr.moveCenter(cp)
-    widget.move(qr.topLeft())
-
-    qr1 = ui.frameGeometry()
-    cp1 = QDesktopWidget().availableGeometry().center()
-    qr1.moveCenter(cp)
-    ui.move(qr1.topLeft())
-
     widget.show()
 
     sys.exit(app.exec_())
