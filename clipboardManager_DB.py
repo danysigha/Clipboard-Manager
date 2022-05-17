@@ -49,6 +49,8 @@ def initalizeDb():
             password TEXT NOT NULL,
             password_exists BOOLEAN NOT NULL
         );"""
+    cursor.execute(CREATE_CARD_ENTITY)
+    cursor.execute(CREATE_USER_ENTITY)
     closeDb(conn)
 
 def addCard(userID, card_id, content, category, hideCard, favoriteCard):
