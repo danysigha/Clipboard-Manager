@@ -54,7 +54,6 @@ def initalizeDb():
             userID INTEGER primary key,
             currentCardID INTEGER not null,
             defaultFolderID INTEGER not null,
-            shelfTime INTEGER not null,
             email TEXT NOT NULL,
             password TEXT NOT NULL,
             password_exists BOOLEAN NOT NULL
