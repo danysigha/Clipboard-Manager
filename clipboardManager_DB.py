@@ -262,33 +262,6 @@ def getUrlCards():
     return records
 
 
-def automaticDeleteShelftime(userID):  # must be called in login page
-    """
-    Deletes the card information from card table.
-
-    """
-
-    conn, cursor = connectToDb()
-    # this must be called once in a while by the main system for the system to check and delete
-    cursor.execute('SELECT userID, shelfTime FROM user WHERE userID == ' + str(userID))
-    shelftime_months = cursor.fetchall()[0][1]
-    # print(shelftime_months)
-    cursor.execute('DELETE FROM card WHERE cardAddedDate <= datetime(\'now\', \'localtime\', \'-' + str(
-        shelftime_months) + ' months\');')
-    closeDb(conn)
-
-
-def changeShelfLife(month):
-    """
-    Updates the shelf life of cards.
-
-    """
-
-    conn, cursor = connectToDb()
-    cursor.execute("""UPDATE user SET shelfTime = (?) WHERE userID = 1""", (month,))
-    closeDb(conn)
-
-
 def hideCard(newCardStatus, cardId):
     """
     Sets the card record's hidden  field.
