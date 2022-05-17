@@ -2,7 +2,8 @@ from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QLabel, QTextEdit, QPushButton, QLineEdit, QComboBox
 
-class welcomeScreen(QDialog):
+
+class WelcomeScreen(QDialog):
     """
     This is a class for the first welcome screen. 
   
@@ -37,7 +38,7 @@ class welcomeScreen(QDialog):
         self.dao = data_access_object
         self.login.clicked.connect(self.goToNextPage)
         self.show()
-        
+
     def goToNextPage(self):
         """
         The function to go to the next page based on the conditions met.
@@ -54,8 +55,9 @@ class welcomeScreen(QDialog):
 
         else:
             self.widget.setCurrentIndex(self.widget.currentIndex() + 1)
-            
-class welcomeScreenPasswordPage(QDialog):
+
+
+class WelcomeScreenPasswordPage(QDialog):
     """
     This is a class for the login page.
   
@@ -117,7 +119,8 @@ class welcomeScreenPasswordPage(QDialog):
         self.label_3.show()
         self.label_3.setText("A temporary password was sent to the email on file. Please check your email.")
 
-class newUser(QDialog):
+
+class NewUser(QDialog):
     """
     This is a class for the new user interface.
   
@@ -169,20 +172,3 @@ class newUser(QDialog):
             self.label_2.setText("Emails do not match, please try again.")
             self.lineEdit.clear()
             self.lineEdit_2.clear()
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    widget = QtWidgets.QStackedWidget()
-    data_access_object = dao.DataAccessor()
-    window1 = login(data_access_object) #page 1
-    window2 = newUser(data_access_object)
-    widget.addWidget(window1)
-    widget.addWidget(window2)
-    widget.setFixedHeight(493)
-    widget.setFixedWidth(370)
-
-    #show the widget
-    widget.show()
-
-
-    sys.exit(app.exec_())

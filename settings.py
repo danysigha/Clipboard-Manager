@@ -1,9 +1,9 @@
 from PyQt5 import uic
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget, QLabel, QTextEdit, QPushButton, QLineEdit, QComboBox
+from PyQt5.QtWidgets import QDialog, QComboBox
 
 
-class mainSetting(QDialog):
+class MainSetting(QDialog):
     """
     This is a class for the main settings page.
   
@@ -31,13 +31,13 @@ class mainSetting(QDialog):
   
         """
 
-        super(mainSetting, self).__init__()
+        super(MainSetting, self).__init__()
         uic.loadUi("mainSettingsPage.ui", self)
         self._parent = parent
         self.widget = widget
         self.dao = data_access_object
         self.password.clicked.connect(self.goToPasswordPage)
-        self.pushButton_3.clicked.connect(self.goToShelftime)
+        self.pushButton_3.clicked.connect(self.goToShelfLife)
         self.pushButton_2.clicked.connect(self.goToMainWindow)
         self.reset.clicked.connect(self.goToResetPage)
         self.show()
@@ -55,9 +55,9 @@ class mainSetting(QDialog):
         else:
             self.widget.setCurrentIndex(self.widget.currentIndex() + 1)
 
-    def goToShelftime(self):
+    def goToShelfLife(self):
         """
-        The function to go to the change shelftime page.
+        The function to go to the change shelfLife page.
   
         """
 
@@ -80,7 +80,8 @@ class mainSetting(QDialog):
         self.widget.close()
         self._parent.show()
 
-class setFirstPassword(QDialog):
+
+class SetFirstPassword(QDialog):
     """
     This is a class for setting the first password of the application.
   
@@ -107,7 +108,7 @@ class setFirstPassword(QDialog):
   
         """
 
-        super(setFirstPassword, self).__init__()
+        super(SetFirstPassword, self).__init__()
         uic.loadUi("setFirstPasswordPage.ui", self)
         self.dao = data_access_object
         self.widget = widget
@@ -133,7 +134,7 @@ class setFirstPassword(QDialog):
         pwd1 = self.pwd1.text()
         pwd2 = self.pwd2.text()
 
-        if (pwd1 == pwd2):
+        if pwd1 == pwd2:
             self.dao.set_password(pwd1)
             self.label_4.setText("Password successfully saved")
 
@@ -143,11 +144,12 @@ class setFirstPassword(QDialog):
         self.pwd1.clear()
         self.pwd2.clear()
 
-class shelftime(QDialog):
+
+class ShelfLife(QDialog):
     """
-    This is a class for changing the shelftime of the application.
+    This is a class for changing the shelf life of the application.
   
-    This class loads the ui file in order to generate the interface for changing the shelftime.
+    This class loads the ui file in order to generate the interface for changing the shelf life.
   
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
@@ -159,7 +161,7 @@ class shelftime(QDialog):
 
     def __init__(self, data_access_object, widget):
         """
-        The constructor for shelftime class.
+        The constructor for shelfLife class.
   
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
@@ -169,8 +171,9 @@ class shelftime(QDialog):
   
         """
 
-        super(shelftime, self).__init__()
-        uic.loadUi("shelftimePage.ui", self)
+        super(ShelfLife, self).__init__()
+        self.menu = None
+        uic.loadUi("shelfLifePage.ui", self)
         self.dao = data_access_object
         self.widget = widget
         self.pushButton_3.clicked.connect(self.goToMainSettings)
@@ -184,30 +187,31 @@ class shelftime(QDialog):
 
         self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
 
-    def changeShelftime(self):
+    def changeShelfLife(self):
         """
-        The function to go change the shelftime in the database.
+        The function to go change the shelfLife in the database.
   
         """
 
         self.menu = self.findChild(QComboBox, "menu")
-        if (self.menu.currentIndex() == 0):
-            self.dao.changeShelftime(1)
+        if self.menu.currentIndex() == 0:
+            self.dao.changeShelfLife(1)
 
-        elif (self.menu.currentIndex() == 1):
-            self.dao.changeShelftime(2)
+        elif self.menu.currentIndex() == 1:
+            self.dao.changeShelfLife(2)
 
-        elif (self.menu.currentIndex() == 2):
+        elif self.menu.currentIndex() == 2:
             self.dao.changeShelftime(3)
 
-        elif (self.menu.currentIndex() == 3):
-            self.dao.changeShelftime(6)
+        elif self.menu.currentIndex() == 3:
+            self.dao.changeShelfLife(6)
         else:
-            self.dao.changeShelftime(12)
+            self.dao.changeShelfLife(12)
 
-        self.label_3.setText("Shelftime successfully updated.")
+        self.label_3.setText("Shelf life successfully updated.")
 
-class resetApplication(QDialog):
+
+class ResetApplication(QDialog):
     """
     This is a class for resetting the whole application and erasing the database.
   
@@ -234,14 +238,13 @@ class resetApplication(QDialog):
   
         """
 
-        super(resetApplication, self).__init__()
+        super(ResetApplication, self).__init__()
         uic.loadUi("resetApplicationPage.ui", self)
         self.dao = data_access_object
         self.widget = widget
         self.parent = parent
         self.pushButton_2.clicked.connect(self.goToMainSettings)
         self.pushButton.clicked.connect(self.resetDatabase)
-
 
     def goToMainSettings(self):
         """
@@ -252,7 +255,7 @@ class resetApplication(QDialog):
         self.widget.setCurrentIndex(self.widget.currentIndex() - 4)
 
     def resetDatabase(self):
-         """
+        """
         The function to go erase everything in the database and reset application.
   
         """
@@ -261,7 +264,8 @@ class resetApplication(QDialog):
         self.widget.close()
         self.parent.close()
 
-class changePasswordPage(QDialog):
+
+class ChangePasswordPage(QDialog):
     """
     This is a class for changing the current password, disabling the password,
     and sending temporary password.
@@ -289,7 +293,7 @@ class changePasswordPage(QDialog):
   
         """
 
-        super(changePasswordPage, self).__init__()
+        super(ChangePasswordPage, self).__init__()
         uic.loadUi("changePasswordPage.ui", self)
         self.dao = data_access_object
         self.widget = widget
@@ -310,7 +314,7 @@ class changePasswordPage(QDialog):
         self.widget.setCurrentIndex(self.widget.currentIndex() - 3)
 
     def setPassword(self):
-         """
+        """
         The function to change the password in database.
   
         """
@@ -319,13 +323,13 @@ class changePasswordPage(QDialog):
         pwd1 = self.pwd1.text()
         pwd2 = self.pwd2.text()
 
-        if (pwd1 == pwd2 and self.dao.change_password(oldpwd, pwd1)):
+        if pwd1 == pwd2 and self.dao.change_password(oldpwd, pwd1):
             self.label_4.setText("Password successfully saved")
 
-        elif (pwd1 == pwd2 and not self.dao.change_password(oldpwd, pwd1)):
+        elif pwd1 == pwd2 and not self.dao.change_password(oldpwd, pwd1):
             self.label_4.setText("The current password entered is incorrect. Please try again.")
 
-        elif (pwd1 != pwd2 and self.dao.change_password(oldpwd, pwd1)):
+        elif pwd1 != pwd2 and self.dao.change_password(oldpwd, pwd1):
             self.label_4.setText("The new passwords do not match. Please try again.")
 
         else:
@@ -336,7 +340,7 @@ class changePasswordPage(QDialog):
         self.pwd2.clear()
 
     def sendEmail(self):
-         """
+        """
         The function to send the temporary password to user email.
   
         """
@@ -345,14 +349,15 @@ class changePasswordPage(QDialog):
         self.label_4.setText("A temporary password was sent to the email on file. Please check your email.")
 
     def turnOffPasswordPage(self):
-         """
+        """
         The function to go to the disable password page.
   
         """
 
         self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
 
-class disablePasswordPage(QDialog):
+
+class DisablePasswordPage(QDialog):
     """
     This is a class for disabling the password
   
@@ -378,7 +383,7 @@ class disablePasswordPage(QDialog):
   
         """
 
-        super(disablePasswordPage, self).__init__()
+        super(DisablePasswordPage, self).__init__()
         uic.loadUi("disablePasswordPage.ui", self)
         self.widget = widget
         self.dao = data_access_object
@@ -386,7 +391,7 @@ class disablePasswordPage(QDialog):
         self.pushButton_2.clicked.connect(self.goBack)
 
     def turnOffPassword(self):
-         """
+        """
         The function to go disable the password.
   
         """
@@ -394,7 +399,7 @@ class disablePasswordPage(QDialog):
         self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
         pwd = self.lineEdit.text()
 
-        if self.dao.password_is_valid(pwd) == True:
+        if self.dao.password_is_valid(pwd):
             self.dao.set_password_state(0)
             self.widget.setCurrentIndex(self.widget.currentIndex() - 5)
         else:
@@ -408,33 +413,3 @@ class disablePasswordPage(QDialog):
         """
 
         self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
-
-
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    widget = QtWidgets.QStackedWidget()
-    window1 = mainSetting()  # page 1
-    window2 = setPassword()  # page 2
-    window3 = shelftime()  # page 3
-    window4 = changePasswordPage()  # page 4
-    window5 = resetApplication()
-    window6 = disablePasswordPage()  # page 3
-    widget.addWidget(window1)
-    widget.addWidget(window2)
-    widget.addWidget(window3)
-    widget.addWidget(window4)
-    widget.addWidget(window5)
-    widget.addWidget(window6)
-    widget.setFixedHeight(493)
-    widget.setFixedWidth(370)
-    window1 = settings.mainSetting(self, self.dao, self.window)  # page 1
-    window2 = settings.setPassword(self.dao, self.window)  # page 2
-    window3 = settings.shelftime(self.dao, self.window)  # page 3
-    window4 = settings.changePasswordPage(self.dao, self.window)  # page 4
-    window5 = settings.resetApplication(self.dao, self.window, self)  # page 5
-    window6 = settings.disablePasswordPage(self.dao, self.window)  # page 6
-    widget.show()
-    sys.exit(app.exec_())
-
