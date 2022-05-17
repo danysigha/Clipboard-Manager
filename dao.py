@@ -173,6 +173,11 @@ class DataAccessor:
         db.resetdb()
 
     def sendEmail(self):
+        """
+        The function to send temporary password to user email.
+
+        """
+
         email = self.getEmail()
         port = 465  # For SSL
         smtp_server = "smtp.gmail.com"
