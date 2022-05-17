@@ -45,7 +45,6 @@ def initalizeDb():
         CREATE TABLE IF NOT EXISTS user(
             userID INTEGER primary key,
             currentCardID INTEGER not null,
-            defaultFolderID INTEGER not null,
             email TEXT NOT NULL,
             password TEXT NOT NULL,
             password_exists BOOLEAN NOT NULL
