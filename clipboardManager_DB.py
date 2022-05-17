@@ -60,8 +60,8 @@ def addCard(userID, card_id, content, category, hideCard, favoriteCard):
     """
 
     conn, cursor = connectToDb()
-    cursor.execute('SELECT defaultFolderID FROM user WHERE userID == ' + str(userID) + ";") \
-            defaultFolderID_loc = 1
+    cursor.execute('SELECT defaultFolderID FROM user WHERE userID == ' + str(userID) + ";")
+    defaultFolderID_loc = 1
     cursor.execute(
         'INSERT INTO card(cardID, cardContent, cardCategory, hideCard, favoriteCard) VALUES(?, ?, ?, ?, ?, ?)',
         (card_id, content, category, defaultFolderID_loc, hideCard, favoriteCard))
