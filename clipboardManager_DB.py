@@ -35,19 +35,11 @@ def initalizeDb():
             cardID TEXT not null,
             cardContent TEXT not null,
             cardCategory TEXT not null,
-            cardAddedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-            cardModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-            folderID INTEGER not null,
             hideCard INTEGER not null,
             favoriteCard INTEGER not null
         );"""
 
-    CREATE_FOLDER_ENTITY = """
-        CREATE TABLE IF NOT EXISTS folder(
-            folderID INTEGER primary key AUTOINCREMENT,
-            folderName TEXT not null,
-            userID INTEGER not null
-        );"""
+    
 
     CREATE_USER_ENTITY = """
         CREATE TABLE IF NOT EXISTS user(
@@ -70,7 +62,7 @@ def addCard(userID, card_id, content, category, hideCard, favoriteCard):
     cursor.execute('SELECT defaultFolderID FROM user WHERE userID == ' + str(userID) + ";") \
             defaultFolderID_loc = 1
     cursor.execute(
-        'INSERT INTO card(cardID, cardContent, cardCategory, cardAddedDate, cardModifiedDate, folderID, hideCard, favoriteCard) VALUES(?, ?, ?, datetime("now", "localtime"), datetime("now", "localtime"), ?, ?, ?)',
+        'INSERT INTO card(cardID, cardContent, cardCategory, hideCard, favoriteCard) VALUES(?, ?, ?, ?, ?, ?)',
         (card_id, content, category, defaultFolderID_loc, hideCard, favoriteCard))
     closeDb(conn)
 
