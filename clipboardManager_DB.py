@@ -59,9 +59,6 @@ def initalizeDb():
             password TEXT NOT NULL,
             password_exists BOOLEAN NOT NULL
         );"""
-    cursor.execute(CREATE_CARD_ENTITY)
-    cursor.execute(CREATE_FOLDER_ENTITY)
-    cursor.execute(CREATE_USER_ENTITY)
     closeDb(conn)
 
 def addCard(userID, card_id, content, category, hideCard, favoriteCard):
@@ -179,9 +176,9 @@ def createUser(email):
 
     conn, cursor = connectToDb()
     user_datas = [
-        (1, 4, 1, 12, email, "", 0),
+        (1, 4, 1, email, "", 0),
     ]
-    cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)", user_datas)
+    cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)", user_datas)
     closeDb(conn)
 
 
