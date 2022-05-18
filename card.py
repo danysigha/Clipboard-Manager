@@ -30,10 +30,6 @@ class Card:
         """returns card Id"""
         return self.cardId
 
-    def getAddedDate(self):
-        """returns card creation date"""
-        return self.addedDate
-
     def getCardCategory(self):
         """returns the type of card content"""
         return self.cardCategory
@@ -41,6 +37,13 @@ class Card:
     def getCardContent(self):
         """returns the card content"""
         return self.cardContent
+    def getIsHidden(self):
+        
+        return self._hideCard
+    
+    def getIsFavorite(self):
+        
+        return self._favoriteCard
 
    
     def setCardCategory(self, e):
