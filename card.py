@@ -4,7 +4,7 @@ import uuid
 
 class Card:
 
-    def __init__(self, id, cardContent, cardCategory, hideCard=False, favoriteCard =False):
+    def __init__(self, Id, cardContent, cardCategory, hideCard=False, favoriteCard =False):
         """ Creates card object with the given parameters"""
         self._cardId = id
         self._cardContent = cardContent
