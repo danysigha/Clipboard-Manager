@@ -29,7 +29,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item alignment="Qt::AlignLeft|Qt::AlignTop">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="goBack">
           <property name="text">
            <string>Go back</string>
           </property>

@@ -5,6 +5,7 @@ import ssl
 import string
 import random
 import clipboardManager_DB as db
+from email.message import EmailMessage
 
 
 class PasswordDecorator:
@@ -30,7 +31,7 @@ class PasswordDecorator:
 
         self.function = function
 
-    def passwordIsValid(pwd):
+    def passwordIsValid(self, pwd):
         """
         The function to check password validity.
         Parameters:
@@ -39,7 +40,7 @@ class PasswordDecorator:
         password stored
         """
 
-        h = db.get_password()
+        h = db.getPassword()
         return bcrypt.checkpw(pwd.encode('utf-8'), h)
 
     def __call__(self, *args, **kwargs):
@@ -49,7 +50,6 @@ class PasswordDecorator:
         """
 
         pwd = args[0]
-
         if self.passwordIsValid(pwd):
             self.function(*args, **kwargs)
             result = True
@@ -105,13 +105,13 @@ class DataAccessor:
 
         return db.getImageCards()
 
-    def getURLCards(self):
+    def getUrlCards(self):
         """
         returns all cards with cardCategory 'URL'
 
         """
 
-        return db.getURLCards()
+        return db.getUrlCards()
 
     def hideCard(self, cardStatus, cardId):
         """
@@ -123,7 +123,7 @@ class DataAccessor:
 
         """
 
-        db.hideCard(card_status, card_id)
+        db.hideCard(cardStatus, cardId)
 
     def getFavoriteCards(self):
         """
@@ -142,7 +142,7 @@ class DataAccessor:
 
         """
 
-        db.favoriteCard(card_id, favorite_status)
+        db.favoriteCard(cardId, favoriteStatus)
 
     def getSearchCards(self, search):
         """
@@ -154,7 +154,6 @@ class DataAccessor:
         """
 
         return db.getSearchCards(search)
-    
 
     def getUserStatus(self):
         """
@@ -191,8 +190,8 @@ class DataAccessor:
         """
 
         salt = bcrypt.gensalt()
-        hashed_pwd = bcrypt.hashpw(newpwd.encode('utf-8'), salt)
-        db.changePassword(hashed_pwd)
+        hashedPwd = bcrypt.hashpw(newpwd.encode('utf-8'), salt)
+        db.changePassword(hashedPwd)
 
     def setPassword(self, newpwd):
         """
@@ -204,9 +203,9 @@ class DataAccessor:
         """
 
         salt = bcrypt.gensalt()
-        hashed_pwd = bcrypt.hashpw(newpwd.encode('utf-8'), salt)
-        db.change_password(hashed_pwd)
-        self.set_password_state(1)
+        hashedPwd = bcrypt.hashpw(newpwd.encode('utf-8'), salt)
+        db.changePassword(hashedPwd)
+        self.setPasswordState(1)
 
     def setPasswordState(self, state):
         """
@@ -217,7 +216,7 @@ class DataAccessor:
 
         """
 
-        db.set_password_state(state)
+        db.setPasswordState(state)
 
     def getPasswordState(self):
         """
@@ -260,7 +259,7 @@ class DataAccessor:
         Sends the email to the database.
         """
 
-        db.set_email(email)
+        db.setEmail(email)
 
     def resetDb(self):
         """
@@ -276,24 +275,29 @@ class DataAccessor:
 
         """
 
-        email = self.getEmail()
-        port = 465  # For SSL
-        smtp_server = "smtp.gmail.com"
         senderEmail = "yourclipboardmanager@gmail.com"
-        os = platform.system()
-        receiverEmail = email
-
+        receiverEmail = self.getEmail()
         password = "ecqibpmoeknjxwbm"
+        os = platform.system()
+        if os == 'Windows':
+            password = "qourwmshfkltqnnc"
+
         temp = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
 
         self.setPassword(temp)
 
-        message = ("""\
-            Subject: Your temporary password.
-            This is your temporary password: {}. Please use this password to sign in and
-            remember to change password to your own.""".format(temp))
+        plainText = ("""This is your temporary password: {}. Please use this password to sign in and
+            		remember to change password to your own.""".format(temp))
 
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL(smtpServer, port, context=context) as server:
-            server.login(senderEmail, password)
-            server.sendmail(senderEmail, receiverEmail, message)
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(senderEmail, password)
+
+        msg = EmailMessage()
+
+        message = f'{plainText}\n'
+        msg.set_content(message)
+        msg['Subject'] = "Your temporary password."
+        msg['From'] = senderEmail
+        msg['To'] = receiverEmail
+        server.send_message(msg)

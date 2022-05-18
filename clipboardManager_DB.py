@@ -39,21 +39,19 @@ def initalizeDb():
             favoriteCard INTEGER not null
         );"""
 
-    
-
     CREATE_USER_ENTITY = """
         CREATE TABLE IF NOT EXISTS user(
             userID INTEGER primary key,
-            currentCardID INTEGER not null,
             email TEXT NOT NULL,
             password TEXT NOT NULL,
-            password_exists BOOLEAN NOT NULL
+            passwordExists BOOLEAN NOT NULL
         );"""
     cursor.execute(CREATE_CARD_ENTITY)
     cursor.execute(CREATE_USER_ENTITY)
     closeDb(conn)
 
-def addCard(userID, card_id, content, category, hideCard, favoriteCard):
+
+def addCard(userID, cardId, content, category, hideCard, favoriteCard):
     """
     Adds record of a new card with the given parameters.
 
@@ -61,9 +59,10 @@ def addCard(userID, card_id, content, category, hideCard, favoriteCard):
 
     conn, cursor = connectToDb()
     cursor.execute(
-        'INSERT INTO card(cardID, cardContent, cardCategory, hideCard, favoriteCard) VALUES(?, ?, ?, ?, ?, ?)',
-        (card_id, content, category, defaultFolderID_loc, hideCard, favoriteCard))
+        'INSERT INTO card(cardID, cardContent, cardCategory, hideCard, favoriteCard) VALUES(?, ?, ?, ?, ?)',
+        (cardId, content, category, hideCard, favoriteCard))
     closeDb(conn)
+
 
 def getSearchCards(search):
     """
@@ -79,6 +78,7 @@ def getSearchCards(search):
     records = cursor.fetchall()
     closeDb(conn)
     return records
+
 
 def getFavoriteCards():
     """
@@ -165,10 +165,10 @@ def createUser(email):
     """
 
     conn, cursor = connectToDb()
-    user_datas = [
-        (1, 4, 1, email, "", 0),
+    userDatas = [
+        (1, email, "", 0),
     ]
-    cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)", user_datas)
+    cursor.executemany("INSERT INTO user VALUES (?, ?, ?, ?)", userDatas)
     closeDb(conn)
 
 
@@ -190,7 +190,7 @@ def setPasswordState(state):
     """
 
     conn, cursor = connectToDb()
-    cursor.execute("""UPDATE user SET password_exists = (?) WHERE userID = 1""", (state,))
+    cursor.execute("""UPDATE user SET passwordExists = (?) WHERE userID = 1""", (state,))
     closeDb(conn)
 
 
@@ -201,7 +201,7 @@ def getPasswordState():
     """
 
     conn, cursor = connectToDb()
-    cursor.execute("""SELECT password_exists FROM user""")
+    cursor.execute("""SELECT passwordExists FROM user""")
     table = cursor.fetchall()
     state = table[0][0]
     closeDb(conn)
@@ -291,7 +291,7 @@ def favoriteCard(favoriteStatus, cardId):
     closeDb(conn)
 
 
-def resetdb():
+def resetDb():
     """
     Deletes all tables and information from database.
 
@@ -299,6 +299,7 @@ def resetdb():
 
     conn, cursor = connectToDb()
     cursor.execute("""DELETE FROM user""")
-    cursor.execute("""DELETE FROM folder""")
     cursor.execute("""DELETE FROM card""")
     closeDb(conn)
+
+initalizeDb()

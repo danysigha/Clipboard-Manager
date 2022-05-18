@@ -29,7 +29,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item alignment="Qt::AlignLeft|Qt::AlignTop">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="goBack">
           <property name="text">
            <string>Go back</string>
           </property>
@@ -134,7 +134,7 @@
          </spacer>
         </item>
         <item alignment="Qt::AlignHCenter">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="reset">
           <property name="minimumSize">
            <size>
             <width>161</width>

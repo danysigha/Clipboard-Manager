@@ -13,19 +13,19 @@ class WelcomeScreen(QDialog):
 
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
 
-    def __init__(self, data_access_object, widget, MainWindow):
+    def __init__(self, dataAccessObject, widget, MainWindow):
         """
         The constructor for welcomeScreen class.
 
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
+        dataAccessObject (dao): the dao object used to communicate with database
         widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
@@ -35,7 +35,7 @@ class WelcomeScreen(QDialog):
         uic.loadUi("welcomescreen.ui", self)
         self.MainWindow = MainWindow
         self.widget = widget
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.login.clicked.connect(self.goToNextPage)
         self.show()
 
@@ -45,8 +45,8 @@ class WelcomeScreen(QDialog):
 
         """
 
-        if self.dao.get_user_status() != 0:
-            if self.dao.get_password_state() == True:
+        if self.dao.getUserStatus() != 0:
+            if self.dao.getPasswordState() == True:
                 self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
 
             else:
@@ -66,29 +66,30 @@ class WelcomeScreenPasswordPage(QDialog):
 
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
 
-    def __init__(self, data_access_object, widget, MainWindow):
+    def __init__(self, dataAccessObject, widget, MainWindow):
         """
         The constructor for welcomeScreenPasswordPage class.
 
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
+        dataAccessObject (dao): the dao object used to communicate with database
         widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
         """
         super(WelcomeScreenPasswordPage, self).__init__()
         uic.loadUi("welcomescreenPasswordPage.ui", self)
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.widget = widget
         self.MainWindow = MainWindow
-        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.passwordEntered.setEchoMode(QtWidgets.QLineEdit.Password)
         self.login.clicked.connect(self.goToNextPage)
+        self.forgotPwd.clicked.connect(self.sendToEmail)
         self.show()
 
     def goToNextPage(self):
@@ -98,26 +99,24 @@ class WelcomeScreenPasswordPage(QDialog):
 
         """
 
-        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-        pwd = self.lineEdit.text()
-        if self.dao.password_is_valid(pwd):
+        self.passwordEntered.setEchoMode(QtWidgets.QLineEdit.Password)
+        pwd = self.passwordEntered.text()
+        if self.dao.passwordIsValid(pwd):
             self.widget.close()
             self.MainWindow.show()
 
         else:
-            self.label_3.show()
-            self.label_3.setText("Incorrect password. Please try again.")
-            self.lineEdit.clear()
+            self.prompt.setText("Incorrect password. Please try again.")
+            self.passwordEntered.clear()
 
-    def sendEmail(self):
+    def sendToEmail(self):
         """
         The function to go to send a temporary password to email on file.
 
         """
 
-        self.dao.send_email()
-        self.label_3.show()
-        self.label_3.setText("A temporary password was sent to the email on file. Please check your email.")
+        self.dao.sendEmail()
+        self.prompt.setText("A temporary password was sent to the email on file. Please check your email.")
 
 
 class NewUser(QDialog):
@@ -129,19 +128,19 @@ class NewUser(QDialog):
 
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
 
-    def __init__(self, data_access_object, widget, MainWindow):
+    def __init__(self, dataAccessObject, widget, MainWindow):
         """
         The constructor for the newUser class.
 
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
+        dataAccessObject (dao): the dao object used to communicate with database
         widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                    to another
 
@@ -149,7 +148,7 @@ class NewUser(QDialog):
 
         super(NewUser, self).__init__()
         uic.loadUi("newUserPage.ui", self)
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.widget = widget
         self.enter.clicked.connect(self.goToMainWindow)
         self.MainWindow = MainWindow
@@ -161,14 +160,14 @@ class NewUser(QDialog):
 
         """
 
-        email1 = self.lineEdit.text()
-        email2 = self.lineEdit_2.text()
+        email1 = self.pwd1.text()
+        email2 = self.pwd2.text()
         if (email1 == email2):
-            self.dao.create_user(email1)
+            self.dao.createUser(email1)
             self.widget.close()
             self.MainWindow.show()
 
         else:
-            self.label_2.setText("Emails do not match, please try again.")
-            self.lineEdit.clear()
-            self.lineEdit_2.clear()
+            self.prompt.setText("Emails do not match, please try again.")
+            self.pwd1.clear()
+            self.pwd2.clear()

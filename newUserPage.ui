@@ -80,7 +80,7 @@
     <string>Please confirm email:</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="pwd1">
    <property name="geometry">
     <rect>
      <x>70</x>
@@ -90,7 +90,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="pwd2">
    <property name="geometry">
     <rect>
      <x>70</x>
@@ -100,7 +100,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="prompt">
    <property name="geometry">
     <rect>
      <x>70</x>

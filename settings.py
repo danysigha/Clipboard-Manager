@@ -13,19 +13,19 @@ class MainSetting(QDialog):
   
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
 
-    def __init__(self, parent, data_access_object, widget):
+    def __init__(self, parent, dataAccessObject, widget):
         """
         The constructor for mainSetting class.
   
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
+        dataAccessObject (dao): the dao object used to communicate with database
         widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
   
@@ -35,10 +35,9 @@ class MainSetting(QDialog):
         uic.loadUi("mainSettingsPage.ui", self)
         self._parent = parent
         self.widget = widget
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.password.clicked.connect(self.goToPasswordPage)
-        self.pushButton_3.clicked.connect(self.goToShelfLife)
-        self.pushButton_2.clicked.connect(self.goToMainWindow)
+        self.goBack.clicked.connect(self.goToMainWindow)
         self.reset.clicked.connect(self.goToResetPage)
         self.show()
 
@@ -49,19 +48,12 @@ class MainSetting(QDialog):
   
         """
 
-        if self.dao.get_password_state():
-            self.widget.setCurrentIndex(self.widget.currentIndex() + 3)
+        if self.dao.getPasswordState():
+            self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
 
         else:
             self.widget.setCurrentIndex(self.widget.currentIndex() + 1)
 
-    def goToShelfLife(self):
-        """
-        The function to go to the change shelfLife page.
-  
-        """
-
-        self.widget.setCurrentIndex(self.widget.currentIndex() + 2)
 
     def goToResetPage(self):
         """
@@ -69,7 +61,7 @@ class MainSetting(QDialog):
 
         """
 
-        self.widget.setCurrentIndex(self.widget.currentIndex() + 4)
+        self.widget.setCurrentIndex(self.widget.currentIndex() + 3)
 
     def goToMainWindow(self):
         """
@@ -90,19 +82,19 @@ class SetFirstPassword(QDialog):
   
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
 
-    def __init__(self, data_access_object, widget):
+    def __init__(self, dataAccessObject, widget):
         """
         The constructor for setFirstPassword class.
   
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
+        dataAccessObject (dao): the dao object used to communicate with database
         widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
   
@@ -110,12 +102,12 @@ class SetFirstPassword(QDialog):
 
         super(SetFirstPassword, self).__init__()
         uic.loadUi("setFirstPasswordPage.ui", self)
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.widget = widget
         self.pwd1.setEchoMode(QtWidgets.QLineEdit.Password)
         self.pwd2.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.pushButton_2.clicked.connect(self.goToMainSettings)
-        self.pushButton.clicked.connect(self.setPassword)
+        self.goBack.clicked.connect(self.goToMainSettings)
+        self.setPwd.clicked.connect(self.setPassword)
 
     def goToMainSettings(self):
         """
@@ -124,6 +116,7 @@ class SetFirstPassword(QDialog):
         """
 
         self.widget.setCurrentIndex(self.widget.currentIndex() - 1)
+        self.label_4.clear()
 
     def setPassword(self):
         """
@@ -135,7 +128,7 @@ class SetFirstPassword(QDialog):
         pwd2 = self.pwd2.text()
 
         if pwd1 == pwd2:
-            self.dao.set_password(pwd1)
+            self.dao.setPassword(pwd1)
             self.label_4.setText("Password successfully saved")
 
         else:
@@ -154,18 +147,18 @@ class ResetApplication(QDialog):
   
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
-    def __init__(self, data_access_object, widget, parent):
+    def __init__(self, dataAccessObject, widget, parent):
         """
         The constructor for resetApplication class.
   
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
+        dataAccessObject (dao): the dao object used to communicate with database
         widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
   
@@ -173,11 +166,11 @@ class ResetApplication(QDialog):
 
         super(ResetApplication, self).__init__()
         uic.loadUi("resetApplicationPage.ui", self)
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.widget = widget
         self.parent = parent
-        self.pushButton_2.clicked.connect(self.goToMainSettings)
-        self.pushButton.clicked.connect(self.resetDatabase)
+        self.goBack.clicked.connect(self.goToMainSettings)
+        self.reset.clicked.connect(self.resetDatabase)
 
     def goToMainSettings(self):
         """
@@ -193,7 +186,7 @@ class ResetApplication(QDialog):
   
         """
 
-        self.dao.resetdb()
+        self.dao.resetDb()
         self.widget.close()
         self.parent.close()
 
@@ -208,19 +201,19 @@ class ChangePasswordPage(QDialog):
   
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
 
-    def __init__(self, data_access_object, widget):
+    def __init__(self, dataAccessObject, widget):
         """
         The constructor for changePasswordPage class.
   
         Parameters:
         parent (QMainWindow): the MainWindow object to be used to access the main window
-        data_access_object (dao): the dao object used to communicate with database
+        dataAccessObject (dao): the dao object used to communicate with database
         widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
   
@@ -228,15 +221,16 @@ class ChangePasswordPage(QDialog):
 
         super(ChangePasswordPage, self).__init__()
         uic.loadUi("changePasswordPage.ui", self)
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.widget = widget
-        self.pushButton_2.clicked.connect(self.goToMainSettings)
-        self.pushButton_3.clicked.connect(self.sendEmail)
-        self.pushButton.clicked.connect(self.setPassword)
-        self.pushButton_4.clicked.connect(self.turnOffPasswordPage)
+        self.goBack.clicked.connect(self.goToMainSettings)
+        self.forgotPwd.clicked.connect(self.sendToEmail)
+        self.setPwd.clicked.connect(self.setPassword)
+        self.disablePwd.clicked.connect(self.turnOffPasswordPage)
         self.oldpwd.setEchoMode(QtWidgets.QLineEdit.Password)
         self.pwd1.setEchoMode(QtWidgets.QLineEdit.Password)
         self.pwd2.setEchoMode(QtWidgets.QLineEdit.Password)
+
 
     def goToMainSettings(self):
         """
@@ -245,6 +239,7 @@ class ChangePasswordPage(QDialog):
         """
 
         self.widget.setCurrentIndex(self.widget.currentIndex() - 2)
+        self.label_4.clear()
 
     def setPassword(self):
         """
@@ -256,13 +251,13 @@ class ChangePasswordPage(QDialog):
         pwd1 = self.pwd1.text()
         pwd2 = self.pwd2.text()
 
-        if pwd1 == pwd2 and self.dao.change_password(oldpwd, pwd1):
+        if pwd1 == pwd2 and self.dao.changePassword(oldpwd, pwd1):
             self.label_4.setText("Password successfully saved")
 
-        elif pwd1 == pwd2 and not self.dao.change_password(oldpwd, pwd1):
+        elif pwd1 == pwd2 and not self.dao.changePassword(oldpwd, pwd1):
             self.label_4.setText("The current password entered is incorrect. Please try again.")
 
-        elif pwd1 != pwd2 and self.dao.change_password(oldpwd, pwd1):
+        elif pwd1 != pwd2 and self.dao.changePassword(oldpwd, pwd1):
             self.label_4.setText("The new passwords do not match. Please try again.")
 
         else:
@@ -272,13 +267,13 @@ class ChangePasswordPage(QDialog):
         self.pwd1.clear()
         self.pwd2.clear()
 
-    def sendEmail(self):
+    def sendToEmail(self):
         """
         The function to send the temporary password to user email.
   
         """
 
-        self.dao.send_email()
+        self.dao.sendEmail()
         self.label_4.setText("A temporary password was sent to the email on file. Please check your email.")
 
     def turnOffPasswordPage(self):
@@ -298,13 +293,13 @@ class DisablePasswordPage(QDialog):
   
     Attributes
     parent (QMainWindow): the MainWindow object to be used to access the main window
-    data_access_object (dao): the dao object used to communicate with database
+    dataAccessObject (dao): the dao object used to communicate with database
     widget (QStackedWidget) : the stacked widget of all the screens for moving from one screen
                                to another
 
     """
 
-    def __init__(self, data_access_object, widget):
+    def __init__(self, dataAccessObject, widget):
         """
         The constructor for disablePassword class.
   
@@ -319,9 +314,10 @@ class DisablePasswordPage(QDialog):
         super(DisablePasswordPage, self).__init__()
         uic.loadUi("disablePasswordPage.ui", self)
         self.widget = widget
-        self.dao = data_access_object
+        self.dao = dataAccessObject
         self.enter.clicked.connect(self.turnOffPassword)
-        self.pushButton_2.clicked.connect(self.goBack)
+        self.backOnePage.clicked.connect(self.goBack)
+        self.passwordEntered.setEchoMode(QtWidgets.QLineEdit.Password)
 
     def turnOffPassword(self):
         """
@@ -329,15 +325,14 @@ class DisablePasswordPage(QDialog):
   
         """
 
-        self.lineEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-        pwd = self.lineEdit.text()
+        pwd = self.passwordEntered.text()
 
-        if self.dao.password_is_valid(pwd):
-            self.dao.set_password_state(0)
+        if self.dao.passwordIsValid(pwd):
+            self.dao.setPasswordState(0)
             self.widget.setCurrentIndex(self.widget.currentIndex() - 4)
         else:
-            self.label_3.setText("The current password entered is incorrect. Please try again.")
-            self.lineEdit.clear()
+            self.returnedText.setText("The current password entered is incorrect. Please try again.")
+            self.passwordEntered.clear()
 
     def goBack(self):
         """
