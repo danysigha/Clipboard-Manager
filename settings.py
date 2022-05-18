@@ -1,6 +1,6 @@
 from PyQt5 import uic
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QComboBox
+from PyQt5.QtWidgets import QDialog
 
 
 class MainSetting(QDialog):
