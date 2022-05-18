@@ -51,7 +51,7 @@ def initalizeDb():
     closeDb(conn)
 
 
-def addCard(userID, cardId, content, category, hideCard, favoriteCard):
+def addCard(cardId, content, category, hideCard, favoriteCard):
     """
     Adds record of a new card with the given parameters.
 
@@ -277,7 +277,7 @@ def hideCard(newCardStatus, cardId):
 
 def favoriteCard(favoriteStatus, cardId):
     """
-    Sets the card record's hidden  field.
+    Sets the card record's favorite  field.
 
     Parameters:
     favoriteStatus (int): 1 or 0 mapping to true or false respectively
@@ -286,8 +286,7 @@ def favoriteCard(favoriteStatus, cardId):
     """
 
     conn, cursor = connectToDb()
-    cursor.execute(
-        'UPDATE card SET favoriteCard = "' + str(favoriteStatus) + '" WHERE cardID == "' + str(cardId) + '";')
+    cursor.execute('UPDATE card SET favoriteCard = "' + str(favoriteStatus) + '" WHERE cardID == "' + str(cardId) + '";')
     closeDb(conn)
 
 

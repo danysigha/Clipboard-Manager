@@ -1,71 +1,154 @@
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtWidgets import QLabel, QMenu, QMainWindow
+from PyQt5.QtWidgets import QLabel, QMenu
 from PyQt5.QtGui import QPixmap
-# from PyQt5 import QtCore
-import uuid
-# import dao
-import validators
-import os
 import card
-import grab_clipboard as grabClip
 
 
 class CardRenderer:
+    """
+        This is a class for generating and displaying cards.
 
-    def __init__(self, parent, dao):  # - content - to add
-        # super(newCopy, self).__init__(parent)
-        # self.label = QLabel()
-        # self.name = str(id)
+        Attributes:
+            parent (QGridlayout class instance): A grid like structure to display cards.
+            row (int): The integer representing the initial row position in the empty gridlayout.
+            column (int): The integer representing the initial column position in the empty gridlayout.
+            rowSpan  (int): The integer representing the initial rowSpan in the gridlayout.
+            columnSpan (int): The integer representing the initial columnSpan in the gridlayout.
+            position (list of int): The list which contains the reference to the latest position available in the grid.
+            contentRequestCategory (int): The integer which indicates the card category currently selected on
+            the interface.
+
+    """
+
+    def __init__(self, parent):
+        """
+            The constructor for the CardRenderer class.
+
+        """
+
         self.parent = parent
-        self._dao = dao
         self._row = 0
         self._column = 0
         self._rowSpan = 1
         self._columnSpan = 1
-        self._position = [self._row, self._column, self._rowSpan, self._columnSpan] # not updated when we delete cards
+        self._position = [self._row, self._column, self._rowSpan, self._columnSpan]
         self.contentRequestCategory = 1
-        # self.label.setObjectName(self.name)
 
-    # def grabNewItem(self):
-    #     return self.label
+    def initializeCardDisplay(self, dbContent, dao, showAllCards):
+        """
+            The function to create and display card objects for all entries in the database.
 
-    def initializeUI(self, content, position=None):
-        # card_list = dict()
-        if position == None: # if not position
-            position = self._position
-        # print(self._position, 'in initialize function before we initialized')
+            The function is also used to create and display a subset of the database entries based of category,
+            and search terms.
 
-        for i in content:
-            new_card = CardObject(self.parent, position, self._dao, self)
-            if i[2] == "Image":
-                # pixmap = QPixmap(i[1])
-                # pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
-                new_card.addToInterface(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])
-            elif i[2] == "Text" or i[2] == "URL":
-                new_card.addToInterface(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])
+            Parameters:
+            content (list of tuples): A list of tuples with all or a subset of the entries in the database.
+            position (list of integers): The list which contains the reference to the latest position available in the
+            grid.
 
-        # print(position, 'in initialize function after we initialized')
-        # print(self._position)
+        """
 
+        for record in dbContent:
+            newCard = CardObject(self.parent, dao, self, showAllCards)
+            cardData = card.Card(record[0], record[1], record[2], record[3], record[4])
+            newCard.addToInterface(cardData)
 
-class CardObject():
-    def __init__(self, parent, position, dao, cardMaker):
-        self.card_data = None
+    def resetGridPosition(self):
+        """
+            The function to set the latest available position in the grid to 0.
+
+        """
+
+        self._position = [self._row, self._column, self._rowSpan, self._columnSpan]
+
+    def getAvailableGridPostion(self):
+        """
+            The function to return the latest available position in the grid.
+
+            Returns:
+            list of int: The coordinates of the next available position in the grid.
+
+        """
+
+        return self._position
+
+    def updateGridPostion(self):
+        """
+            The function to calculate the next available position in the grid.
+
+            The function updates the coordinates of the next available position in the grid
+            to fill up the grid in a 3 by 3 layout.
+
+        """
+
+        if (self._position[1] + 1) % 3 == 0:
+            self._position[0] += 1
+            self._position[1] = 0
+        else:
+            self._position[1] += 1
+
+class CardObject:
+    """
+            This is a class for generating cards.
+
+            Attributes:
+                parent (QGridlayout class instance): A grid like structure to display cards.
+                cardData (Card class instance): A card object that contains the properties of each card.
+                dao (DataAccessor class instance): An object that holds methods to query the database.
+                cardMaker (CardRenderer class instance): An object that holds methods to create and add cards
+                to the interface.
+                showAllCards (function): The function to set the current card category to ALL_CARDS.
+                position (list of integers): The list which contains the reference to the latest position available in
+                the grid.
+                label (QLabel class instance): An object that represents a label on the interface.
+
+        """
+
+    def __init__(self, parent, dao, cardMaker, showAllCards=None):
+        """
+            The constructor for the CardObject class.
+
+        """
+
+        self.cardData = None
         self.label = QLabel()
         self._dao = dao
         self._cardMaker = cardMaker
-        # self.id = uuid.uuid1().hex
         self.parent = parent
-        self._position = position
+        self.showAllCards = showAllCards
 
-    def addToInterface(self, ID, content, category, addedDate, modifiedDate, folderID, hideCard, favoriteCard):
-        # self.label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        # print('before', self._position)
-        self.card_data = card.Card(ID, content, category, addedDate, modifiedDate, folderID, hideCard, favoriteCard)
-        # print(self.card_data)
-        # print(self._position, 'in add function before we increment')
+    def addToInterface(self, cardData):
+        """
+            The function to add the card to the interface.
+
+            The function updates the coordinated of the next available position that will be used to add
+            the next card to the interface.
+
+            Parameters:
+            cardData (Card class instance): A card object that contains the properties of each card.
+
+        """
+
+        self.cardData = cardData
         self.label.setMinimumSize(QSize(200, 150))
         self.label.setMaximumSize(QSize(200, 150))
+        self.setCardContent()
+        if self.cardData.getViewStatus():
+            self.hideCardContent()
+
+        self.label.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.label.customContextMenuRequested.connect(lambda pos, child=self.label: self.customMenuEvent(pos))
+        position = self._cardMaker.getAvailableGridPostion()
+        self.parent.addWidget(self.label, position[0], position[1], position[2], position[3], Qt.AlignTop)
+        self._cardMaker.updateGridPostion()
+
+    def setCardLayout(self):
+        """
+            The function to set the visual properties of all cards.
+
+            The function uses CSS to modify the appearance of the QLabel widget.
+
+        """
 
         self.label.setStyleSheet(u"*{\n"
                                  "border:4px solid black;\n"
@@ -78,244 +161,122 @@ class CardObject():
         self.label.setTextFormat(Qt.RichText)
         self.label.setOpenExternalLinks(True)
 
-        if category =="URL":
+    def setCardContent(self):
+        """
+            The function to set the content of the card.
+
+            The function uses html to make links browser accessible.
+
+        """
+
+        content = self.cardData.getContent()
+        self.setCardLayout()
+        if self.cardData.getCategory() == "URL":
             content = "<a href={}>{}</a>".format(content, content)
             self.label.setText(content)
             self.label.setTextFormat(Qt.RichText)
             self.label.setOpenExternalLinks(True)
+            self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
 
-            if self.card_data.hideCard:
-                self.label.setTextFormat(Qt.PlainText)
-                self.label.setOpenExternalLinks(False)
-                self.label.setTextInteractionFlags(Qt.NoTextInteraction)
-                self.label.setStyleSheet(u"*{\n"
-                                         "border:4px solid black;\n"
-                                         "  border-radius: 15px;\n"
-                                         "  padding: 15px;\n"
-                                         # "  box-shadow: 0px 0px 20px 20px black;\n"
-                                         "  background-color: white;\n"
-                                         "color: white;\n"
-                                         "}")
-            else:
-                self.label.setTextFormat(Qt.RichText)
-                self.label.setOpenExternalLinks(True)
-                self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
-
-        elif category == 'Text':
-
-            # valid = validators.url(copy1)
-            # if valid:
-            #     self.addCopy().setText("<a href={}>{}</a>".format(copy1, copy1))
-            # else:
-            #
-            #     self.addCopy().setText(copy1)
-            #     self.addCopy().adjustSize()
+        elif self.cardData.getCategory() == 'Text':
             self.label.setText(content)
-            if self.card_data.hideCard:
-                self.label.setStyleSheet(u"*{\n"
-                                         "border:4px solid black;\n"
-                                         "  border-radius: 15px;\n"
-                                         "  padding: 15px;\n"
-                                         # "  box-shadow: 0px 0px 20px 20px black;\n"
-                                         "  background-color: white;\n"
-                                         "color: white;\n"
-                                         "}")
-            else:
-                self.label.setStyleSheet(u"*{\n"
-                                         "border:4px solid black;\n"
-                                         "  border-radius: 15px;\n"
-                                         "  padding: 15px;\n"
-                                         # "  box-shadow: 0px 0px 20px 20px black;\n"
-                                         "  background-color: white;\n"
-                                         "color: black;\n"
-                                         "}")
-                self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
+            self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
 
-        elif category == 'Image':
-            if self.card_data.hideCard:
+        elif self.cardData.getCategory() == 'Image':
+            pixmap = QPixmap(content)
+            pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
+            self.label.setPixmap(pixmap4)
+            self.label.setAlignment(Qt.AlignCenter)
 
-                if self.card_data.cardCategory == "Image":
-                    # self.hideImage()
-                    pixmap = QPixmap()
-                    pixmap.fill(Qt.white)
-                    self.label.setPixmap(pixmap)
-            else:
-                pixmap = QPixmap(content)
-                pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
-                self.label.setPixmap(pixmap4)
-                self.label.setAlignment(Qt.AlignCenter)
+    def hideCardContent(self):
+        """
+            The function to hide the content of a card.
 
-        self.label.setContextMenuPolicy(Qt.CustomContextMenu)
-        # self.label.customContextMenuRequested.connect(self.customMenuEvent)
-        self.label.customContextMenuRequested.connect(
-            lambda pos, child=self.label: self.customMenuEvent(pos, child))
+            The function makes the card content color the same as the background.
 
-        self.parent.addWidget(self.label, self._position[0], self._position[1], self._position[2],
-                              self._position[3],
-                              Qt.AlignTop)
-        # self.reset() # recursion occurs here too
-        # self._cardMaker.numCheck = 1  # max recursion depth
-        # self._cardMaker.initializeUI(self._cardMaker._dao.getAllCards(), self._cardMaker._position)
+        """
 
-        if (self._position[1] + 1) % 3 == 0:
-            self._position[0] += 1
-            self._position[1] = 0
-        else:
-            self._position[1] += 1
+        self.label.setTextFormat(Qt.PlainText)
+        self.label.setOpenExternalLinks(False)
+        self.label.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.label.setStyleSheet(u"*{\n"
+                                 "border:4px solid black;\n"
+                                 "  border-radius: 15px;\n"
+                                 "  padding: 15px;\n"
+                                 "  background-color: white;\n"
+                                 "color: white;\n"
+                                 "}")
 
-        # print('after', self._position)
+        if self.cardData.getCategory() == "Image":
+            pixmap = QPixmap()
+            pixmap.fill(Qt.white)
+            self.label.setPixmap(pixmap)
 
-    # def hideImage(self):
+    def resetCardDisplay(self):
+        """
+            The function to empty the grid and display a specified set of cards.
 
-    def reset(self):
+            Extended description of function.
+
+        """
+
+        self._cardMaker.resetGridPosition()
         layout = self.parent
         for i in reversed(range(layout.count())):
             widgetToRemove = layout.itemAt(i).widget()
-            # remove it from the layout list
             layout.removeWidget(widgetToRemove)
-            # remove it from the gui
             widgetToRemove.setParent(None)
             widgetToRemove.deleteLater()
 
-        # print(self._position, 'in reset function after reset')
-        # CardRenderer(self.parent, self._dao).initializeUI(self._dao.getAllCards(), self._position)
-        # self._cardMaker.initializeUI(self._dao.getAllCards(), self._cardMaker._position)
         if self._cardMaker.contentRequestCategory == 1:
-            self._cardMaker.initializeUI(self._dao.getAllCards(), self._cardMaker._position)
+            self._cardMaker.initializeCardDisplay(self._dao.getAllCards(), self._dao, self.showAllCards)
         elif self._cardMaker.contentRequestCategory == 2:
-            self._cardMaker.initializeUI(self._dao.getTextCards(), self._cardMaker._position)
+            self._cardMaker.initializeCardDisplay(self._dao.getTextCards(), self._dao, self.showAllCards)
         elif self._cardMaker.contentRequestCategory == 3:
-            self._cardMaker.initializeUI(self._dao.getImageCards(), self._cardMaker._position)
+            self._cardMaker.initializeCardDisplay(self._dao.getImageCards(), self._dao, self.showAllCards)
         elif self._cardMaker.contentRequestCategory == 4:
-            self._cardMaker.initializeUI(self._dao.getURLCards(), self._cardMaker._position)
-        elif self._cardMaker.contentRequestCategory == 5:
-            self._cardMaker.initializeUI(self._dao.getSearchCards(search), self._cardMaker._position)
-        else:
-            self._cardMaker.initializeUI(self._dao.getFavoriteCards(), self._cardMaker._position)
+            self._cardMaker.initializeCardDisplay(self._dao.getURLCards(), self._dao, self.showAllCards)
+        elif self._cardMaker.contentRequestCategory == 6:
+            self._cardMaker.initializeCardDisplay(self._dao.getFavoriteCards(), self._dao, self.showAllCards)
 
+    def customMenuEvent(self, eventPosition):
+        """
+            The function to create a menu for each card.
 
-        # self._cardMaker(self.parent, self._dao).initializeUI(self._dao.getAllCards())
+            The function creates a menu that will appear at a specific coordinate within the widget
+            where it was requested.
 
+            Parameters:
+            eventPosition (QPoint class instance): A x coordinate and a y coordinate.
 
-    def customMenuEvent(self, eventPosition, child):
-        # child = self._main_window.childAt(self._main_window.sender().mapTo(self._main_window, eventPosition))
-        # print(child)
+        """
+
         contextMenu = QMenu()
         favoriteCard = contextMenu.addAction("Favorite")
         removeFavoriteCard = contextMenu.addAction("Remove Favorite")
         hideCard = contextMenu.addAction("Toggle visibility")
         delCard = contextMenu.addAction("Delete")
-
-        # quitAct = contextMenu.addAction("Quit")
         action = contextMenu.exec_(self.label.mapToGlobal(eventPosition))
 
         if action == favoriteCard:
-            self._dao.favoriteCard(self.card_data.cardID, 1)
+            self._dao.favoriteCard(self.cardData.getId(), 1)
 
         if action == removeFavoriteCard:
-            self._dao.favoriteCard(self.card_data.cardID, 0)
+            self._dao.favoriteCard(self.cardData.getId(), 0)
+            self.resetCardDisplay()
 
         if action == delCard:
-            if self.card_data.cardCategory == "Image":
-                os.remove(self.card_data.cardContent)
-            self._dao.deleteCard(self.card_data.cardID)
-            self._cardMaker._position = [0, 0, 1, 1]
-            self.reset()
-
-            # if (self._position[1] % 3) == 0:
-            #     self._position[0] -= 1
-            #     self._position[1] = 2
-            # else:
-            #     self._position[1] -= 1
-            #
-            # self.parent.removeWidget(self.label)
-            # # self.label.hide()
-            # self.label.deleteLater()
+            self._dao.deleteCard(self.cardData.getId(), self.cardData.getCategory(), self.cardData.getContent())
+            if self.showAllCards:
+                self.showAllCards()
+            self.resetCardDisplay()
 
         if action == hideCard:
-            if self.card_data.hideCard == False:
-
-                self._dao.hideCard(1, self.card_data.cardID)
-
-                if self.card_data.cardCategory == "Image":
-                    # self.hideImage()
-                    pixmap = QPixmap()
-                    pixmap.fill(Qt.white)
-                    self.label.setPixmap(pixmap)
-
-                else:
-                    self.label.setTextFormat(Qt.PlainText)
-                    self.label.setOpenExternalLinks(False)
-                    self.label.setStyleSheet(u"*{\n"
-                                             "border:4px solid black;\n"
-                                             "  border-radius: 15px;\n"
-                                             "  padding: 15px;\n"
-                                             # "  box-shadow: 0px 0px 20px 20px black;\n"
-                                             "  background-color: white;\n"
-                                             "color: white;\n"
-                                             "}")
-
-                self.label.setTextInteractionFlags(Qt.NoTextInteraction)
-
-                # action = contextMenu.actions()[1]
-                # action.setText("Show")
-                self.card_data.hideCard = True
-                # contextMenu.exec_(self.label.mapToGlobal(eventPosition)) #just pops up new menu - does not work
-
+            if not self.cardData.getViewStatus():
+                self._dao.hideCard(1, self.cardData.getId())
+                self.hideCardContent()
+                self.cardData.setHidden(True)
             else:
-
-                self._dao.hideCard(0, self.card_data.cardID)
-
-                if self.card_data.cardCategory == "Image":
-                    pixmap = QPixmap(self.card_data.cardContent)
-                    pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
-                    self.label.setPixmap(pixmap4)
-                    # self.label.setAlignment(Qt.AlignCenter)
-
-                elif self.card_data.cardCategory == "Text":
-                    self.label.setStyleSheet(u"*{\n"
-                                             "border:4px solid black;\n"
-                                             "  border-radius: 15px;\n"
-                                             "  padding: 15px;\n"
-                                             # "  box-shadow: 0px 0px 20px 20px black;\n"
-                                             "  background-color: white;\n"
-                                             "color: black;\n"
-                                             "}")
-                elif self.card_data.cardCategory == "URL":
-                    self.label.setTextFormat(Qt.RichText)
-                    self.label.setOpenExternalLinks(True)
-                    
-                self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
-
-                # action = contextMenu.actions()[1]
-                # action.setText("Hide")
-                self.card_data.hideCard = False
-                # self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
-                # contextMenu.exec_(self.label.mapToGlobal(eventPosition))
-
-            # add setFavorite option
-            # update in db
-            # if hideCard.text() == 'Show'
-            # else:
-            # print(hideCard)
-            # contextMenu.removeAction(hideCard)
-            # hideCard.setText('Show')
-            # contextMenu.addAction("Show")
-            # hideCard.setText('Show')
-            # hideCard = contextMenu.addAction("Show")
-            # if hide self.cardObject.hideCard == false:
-
-            # contextMenu.parent = None
-
-            # else
-            # self.label.setStyleSheet(u"*{\n"
-            #                          "border:4px solid black;\n"
-            #                          "  border-radius: 15px;\n"
-            #                          "  padding: 15px;\n"
-            #                          # "  box-shadow: 0px 0px 20px 20px black;\n"
-            #                          "  background-color: white;\n"
-            #                          "}")
-            # self.label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-
-        # if action == quitAct:
-        #     QMainWindow.close()
+                self._dao.hideCard(0, self.cardData.getId())
+                self.setCardContent()
+                self.cardData.setHidden(False)

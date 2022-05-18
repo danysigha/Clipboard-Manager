@@ -1,7 +1,7 @@
 import bcrypt
 import platform
 import smtplib
-import ssl
+import os
 import string
 import random
 import clipboardManager_DB as db
@@ -68,9 +68,9 @@ class DataAccessor:
     # decryption takes place here
     # UI grabs the decryption key from user and pass to data access object
     def storeCard(self, cardId, content, dataType, hideCard, favoriteCard):
-        db.addCard(1, cardId, content, dataType, hideCard, favoriteCard)
+        db.addCard(cardId, content, dataType, hideCard, favoriteCard)
 
-    def deleteCard(self, id):
+    def deleteCard(self, id, cardCategory, cardContent):
         """
         deletes card from the database
 
@@ -78,7 +78,8 @@ class DataAccessor:
         id (str): key to find the card in the database
 
         """
-
+        if cardCategory == "Image":
+            os.remove(cardContent)
         db.deleteCard(id)
 
     def getAllCards(self):
@@ -130,6 +131,7 @@ class DataAccessor:
         returns all cards from the db that are favorited
 
         """
+
         return db.getFavoriteCards()
 
     def favoriteCard(self, cardId, favoriteStatus):
@@ -142,7 +144,7 @@ class DataAccessor:
 
         """
 
-        db.favoriteCard(cardId, favoriteStatus)
+        db.favoriteCard(favoriteStatus, cardId)
 
     def getSearchCards(self, search):
         """

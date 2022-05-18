@@ -1,80 +1,64 @@
-import datetime
-import uuid
 
 
 class Card:
 
-    def __init__(self, id, cardContent, cardCategory, addedDate, modifiedDate, cardFolder, hideCard=False, favoriteCard =False):
-        # "make a UUID based on the host ID and current time" .hex removes dashes and
-        # turns it into a string
-        self.cardID = id
-        self.cardContent = cardContent
-        self.cardCategory = cardCategory
-        self.addedDate = addedDate
-        self.modifiedDate = modifiedDate
-        self.cardFolder = cardFolder
+    def __init__(self, id, cardContent, cardCategory, hideCard=False, favoriteCard =False):
+        self._cardId = id
+        self._cardContent = cardContent
+        self._cardCategory = cardCategory
         if hideCard == 0:
-            self.hideCard = False
+            self._hideCard = False
         elif hideCard == 1:
-            self.hideCard = True
+            self._hideCard = True
         else:
-            self.hideCard = hideCard
+            self._hideCard = hideCard
 
         if favoriteCard == 0:
-            self.favoriteCard = False
+            self._favoriteCard = False
         elif favoriteCard == 1:
-            self.favoriteCard = True
+            self._favoriteCard = True
         else:
-            self.favoriteCard = favoriteCard
+            self._favoriteCard = favoriteCard
 
-    # getter functions
+    def getId(self):
+        return self._cardId
 
-    def getID(self):
-        return self.cardID
+    def getCategory(self):
+        return self._cardCategory
 
-    def getAddedDate(self):
-        return self.addedDate
+    def getContent(self):
+        return self._cardContent
 
-    def getModifiedDate(self):
-        return self.modifiedDate
+    def getViewStatus(self):
+        return self._hideCard
 
-    def getCardCategory(self):
-        return self.cardCategory
+    def getFavoriteStatus(self):
+        return self._favoriteCard
 
-    def getCardContent(self):
-        return self.cardContent
-
-    # setter functions
-    def setCardCategory(self, e):
+    def setCategory(self, e):
 
         if not isinstance(e, str):
             raise Exception("Card label must be str type")
 
-        self.cardCategory = e
-        self.modifiedDate = datetime.datetime.now()
+        self._cardCategory = e
 
-    def setCardContent(self, e):
+    def setContent(self, e):
         if not isinstance(e, str):
             raise Exception("Card content must be str type")
-        self.cardContent = e
-        self.modifiedDate = datetime.datetime.now()
-
-    def setCardFolder(folder):
-        pass
+        self._cardContent = e
 
     def setHidden(self, H):
-        self.hideCard = H
+        self._hideCard = H
 
-    # delete card
-    def __del__(self):
-        # print("card deleted")
-        # print(self)
-        pass
+    def setId(self, id):
+        self._cardId = id
+
+    def setFavorite(self, newStatus):
+        self._favoriteCard = newStatus
 
     def __str__(self):
-        string = "{\n" + "card ID: " + str(self.cardID) + ", " + "\ncard content: " + "\"" + str(
-            self.cardContent) + "\"" + ", " + "\ncard type: " + str(
-            self.cardCategory) + " , " + "\ndate created: " + str(
-            self.addedDate) + " , " + "\nlast modified: " + str(self.modifiedDate) + "\nfolder ID: " + str(
-            self.cardFolder) + " , " + "\nHidden: " + str(self.hideCard) + "\n}"
+        string = "{\n" + "card ID: " + str(self._cardId) + ", " + "\ncard content: " + "\"" + str(
+            self._cardContent) + "\"" + ", " + "\ncard type: " + str(
+            self._cardCategory) + " , " + "\nHidden: " + str(self._hideCard) + "\nFavorite: " + str(self._favoriteCard)\
+                 + "\n}"
         return string
