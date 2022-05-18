@@ -21,21 +21,31 @@ class Card:
             self._favoriteCard = favoriteCard
 
     def getId(self):
+        """returns card Id"""
         return self._cardId
 
     def getCategory(self):
+        """returns the type of card content"""
         return self._cardCategory
 
     def getContent(self):
         return self._cardContent
 
     def getViewStatus(self):
+        """returns the hidden status of the card"""
         return self._hideCard
 
     def getFavoriteStatus(self):
+        """returns the favorite status of the card"""
         return self._favoriteCard
 
     def setCategory(self, e):
+        """
+        sets card content to passed argument
+        
+        parameters:
+            e (str): the value to set the card category to
+        """
 
         if not isinstance(e, str):
             raise Exception("Card label must be str type")
@@ -43,20 +53,35 @@ class Card:
         self._cardCategory = e
 
     def setContent(self, e):
+        """
+        sets card content to passed argument
+        
+        parameters:
+            e (str): the value to set the card content to
+        """
         if not isinstance(e, str):
             raise Exception("Card content must be str type")
         self._cardContent = e
 
     def setHidden(self, H):
+        """
+        sets card object hidden status
+        
+        parameters:
+            H (bool): the value to set the hideCard to
+        """
         self._hideCard = H
 
     def setId(self, id):
+        """sets the id of the card"""
         self._cardId = id
 
     def setFavorite(self, newStatus):
+        """sets the favorite status of the card"""
         self._favoriteCard = newStatus
 
     def __str__(self):
+        """returns string representation for card object"""
         string = "{\n" + "card ID: " + str(self._cardId) + ", " + "\ncard content: " + "\"" + str(
             self._cardContent) + "\"" + ", " + "\ncard type: " + str(
             self._cardCategory) + " , " + "\nHidden: " + str(self._hideCard) + "\nFavorite: " + str(self._favoriteCard)\
