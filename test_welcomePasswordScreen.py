@@ -35,11 +35,15 @@ class WelcomeScreenPasswordPage(QDialog):
 
         """
 
-        if self.passwordEntered.text() == "apple":
-            print("Correct password inputted")
+        if self.passwordEntered.text() == "":
+            self.prompt.setText("Password field was left blank. Please try again.")
 
         else:
-            self.prompt.setText("Incorrect password. Please try again.")
+            if self.passwordEntered.text() == "apple":
+                print("Correct password inputted")
+
+            else:
+                self.prompt.setText("Incorrect password. Please try again.")
 
     def sendToEmail(self):
         """
@@ -95,7 +99,18 @@ class TestGUI(unittest.TestCase):
         QTest.mouseClick(testObject.forgotPwd, Qt.LeftButton)
         self.assertEqual(testObject.prompt.text(),
                          "A temporary password was sent to the email on file. Please check your email.")
+    def test4(self):
+        """
+        The function to test what happens when the password field is left blank.
 
+        """
+
+        app = QApplication(sys.argv)
+        testObject = WelcomeScreenPasswordPage()
+
+        QTest.keyClicks(testObject.passwordEntered, "")
+        QTest.mouseClick(testObject.login, Qt.LeftButton)
+        self.assertEqual(testObject.prompt.text(), "Password field was left blank. Please try again.")
 
 if __name__ == "__main__":
     unittest.main()

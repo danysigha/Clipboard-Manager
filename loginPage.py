@@ -101,13 +101,17 @@ class WelcomeScreenPasswordPage(QDialog):
 
         self.passwordEntered.setEchoMode(QtWidgets.QLineEdit.Password)
         pwd = self.passwordEntered.text()
-        if self.dao.passwordIsValid(pwd):
-            self.widget.close()
-            self.MainWindow.show()
 
+        if pwd == "":
+            self.prompt.setText("Password field was left blank. Please try again.")
         else:
-            self.prompt.setText("Incorrect password. Please try again.")
-            self.passwordEntered.clear()
+            if self.dao.passwordIsValid(pwd):
+                self.widget.close()
+                self.MainWindow.show()
+
+            else:
+                self.prompt.setText("Incorrect password. Please try again.")
+                self.passwordEntered.clear()
 
     def sendToEmail(self):
         """
@@ -162,12 +166,16 @@ class NewUser(QDialog):
 
         email1 = self.pwd1.text()
         email2 = self.pwd2.text()
-        if (email1 == email2):
-            self.dao.createUser(email1)
-            self.widget.close()
-            self.MainWindow.show()
 
+        if email1 == "" or email2 == "":
+            self.prompt.setText("At least one field was left blank. Please try again.")
         else:
-            self.prompt.setText("Emails do not match, please try again.")
-            self.pwd1.clear()
-            self.pwd2.clear()
+            if (email1 == email2):
+                self.dao.createUser(email1)
+                self.widget.close()
+                self.MainWindow.show()
+
+            else:
+                self.prompt.setText("Emails do not match, please try again.")
+                self.pwd1.clear()
+                self.pwd2.clear()

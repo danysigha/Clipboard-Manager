@@ -44,11 +44,15 @@ class SetFirstPassword(QDialog):
         pwd1 = self.pwd1.text()
         pwd2 = self.pwd2.text()
 
-        if pwd1 == pwd2:
-            self.label_4.setText("Password successfully saved")
+        if pwd1 == "" or pwd2 == "":
+            self.label_4.setText("The password cannot be left blank. Please try again.")
 
         else:
-            self.label_4.setText("The passwords do not match. Please try again.")
+            if pwd1 == pwd2:
+                self.label_4.setText("Password successfully saved")
+
+            else:
+                self.label_4.setText("The passwords do not match. Please try again.")
 
 
 class TestGUI(unittest.TestCase):
@@ -88,6 +92,21 @@ class TestGUI(unittest.TestCase):
         QTest.keyClicks(testObject.pwd2, "apple")
         QTest.mouseClick(testObject.setPwd, Qt.LeftButton)
         self.assertEqual(testObject.label_4.text(), "The passwords do not match. Please try again.")
+        QTest.mouseClick(testObject.goBack, Qt.LeftButton)
+
+    def test3(self):
+        """
+        The function to test what happens when the fields are left blank.
+
+        """
+
+        app = QApplication(sys.argv)
+        testObject = SetFirstPassword()
+
+        QTest.keyClicks(testObject.pwd1, "")
+        QTest.keyClicks(testObject.pwd2, "")
+        QTest.mouseClick(testObject.setPwd, Qt.LeftButton)
+        self.assertEqual(testObject.label_4.text(), "The password cannot be left blank. Please try again.")
         QTest.mouseClick(testObject.goBack, Qt.LeftButton)
 
 

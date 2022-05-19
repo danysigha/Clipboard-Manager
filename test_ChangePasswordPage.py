@@ -55,18 +55,21 @@ class ChangePasswordPage(QDialog):
         oldpwd = self.oldpwd.text()
         pwd1 = self.pwd1.text()
         pwd2 = self.pwd2.text()
-
-        if pwd1 == pwd2 and oldpwd == "apple":
-            self.label_4.setText("Password successfully saved")
-
-        elif pwd1 == pwd2 and oldpwd != "apple":
-            self.label_4.setText("The current password entered is incorrect. Please try again.")
-
-        elif pwd1 != pwd2 and oldpwd == "apple":
-            self.label_4.setText("The new passwords do not match. Please try again.")
+        if oldpwd == "" or pwd1 == "" or pwd2 == "":
+            self.label_4.setText("At least one field was left blank. Please try again.")
 
         else:
-            self.label_4.setText("One or more input has been incorrect. Please try again.")
+            if pwd1 == pwd2 and oldpwd == "apple":
+                self.label_4.setText("Password successfully saved")
+
+            elif pwd1 == pwd2 and oldpwd != "apple":
+                self.label_4.setText("The current password entered is incorrect. Please try again.")
+
+            elif pwd1 != pwd2 and oldpwd == "apple":
+                self.label_4.setText("The new passwords do not match. Please try again.")
+
+            else:
+                self.label_4.setText("One or more input has been incorrect. Please try again.")
 
     def turnOffPasswordPage(self):
         """
@@ -148,6 +151,20 @@ class TestGUI(unittest.TestCase):
         QTest.keyClicks(testObject.oldpwd, "banana")
         QTest.mouseClick(testObject.setPwd, Qt.LeftButton)
         self.assertEqual(testObject.label_4.text(), "One or more input has been incorrect. Please try again.")
+
+    def test5(self):
+        """
+        The function to test what happens when the fields are left blank.
+
+        """
+
+        app = QApplication(sys.argv)
+        testObject = ChangePasswordPage()
+        QTest.keyClicks(testObject.pwd1, "")
+        QTest.keyClicks(testObject.pwd2, "")
+        QTest.keyClicks(testObject.oldpwd, "")
+        QTest.mouseClick(testObject.setPwd, Qt.LeftButton)
+        self.assertEqual(testObject.label_4.text(), "At least one field was left blank. Please try again.")
 
 
 if __name__ == "__main__":

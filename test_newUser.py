@@ -35,11 +35,15 @@ class NewUser(QDialog):
 
         email1 = self.pwd1.text()
         email2 = self.pwd2.text()
-        if email1 == email2:
-            print("Main window entered.")
+        if email1 == "" or email2 == "":
+            self.prompt.setText("At least one field was left blank. Please try again.")
 
         else:
-            self.prompt.setText("Emails do not match, please try again.")
+            if email1 == email2:
+                print("Main window entered.")
+
+            else:
+                self.prompt.setText("Emails do not match, please try again.")
 
 
 class TestGUI(unittest.TestCase):
@@ -76,6 +80,20 @@ class TestGUI(unittest.TestCase):
         QTest.keyClicks(testObject.pwd2, "banana")
         QTest.mouseClick(testObject.enter, Qt.LeftButton)
         self.assertEqual(testObject.prompt.text(), "Emails do not match, please try again.")
+
+    def test3(self):
+        """
+        The function to test what happens when the email fields are left blank.
+
+        """
+
+        app = QApplication(sys.argv)
+        testObject = NewUser()
+
+        QTest.keyClicks(testObject.pwd1, "")
+        QTest.keyClicks(testObject.pwd2, "")
+        QTest.mouseClick(testObject.enter, Qt.LeftButton)
+        self.assertEqual(testObject.prompt.text(), "At least one field was left blank. Please try again.")
 
 
 if __name__ == "__main__":

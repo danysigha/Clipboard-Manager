@@ -34,11 +34,13 @@ class DisablePasswordPage(QDialog):
 
         """
         pwd = self.passwordEntered.text()
-
-        if pwd == "apple":
-            print("Password disabled.")
+        if pwd == "":
+            self.returnedText.setText("You have not entered a password. Please try again.")
         else:
-            self.returnedText.setText("The current password entered is incorrect. Please try again.")
+            if pwd == "apple":
+                print("Password disabled.")
+            else:
+                self.returnedText.setText("The current password entered is incorrect. Please try again.")
 
     def goBack(self):
         """
@@ -68,8 +70,8 @@ class TestGUI(unittest.TestCase):
         app = QApplication(sys.argv)
         testObject = DisablePasswordPage()
 
-        QTest.mouseClick(testObject.enter, Qt.LeftButton)
         QTest.keyClicks(testObject.passwordEntered, "helloworld")
+        QTest.mouseClick(testObject.enter, Qt.LeftButton)
         self.assertEqual(testObject.returnedText.text(), "The current password entered is incorrect. Please try again.")
         QTest.mouseClick(testObject.backOnePage, Qt.LeftButton)
 
@@ -81,9 +83,20 @@ class TestGUI(unittest.TestCase):
 
         app = QApplication(sys.argv)
         testObject = DisablePasswordPage()
-
-        QTest.mouseClick(testObject.enter, Qt.LeftButton)
         QTest.keyClicks(testObject.passwordEntered, "apple")
+        QTest.mouseClick(testObject.enter, Qt.LeftButton)
+
+    def test3(self):
+        """
+        The function to test what happens when nothing is inputted for password.
+
+        """
+
+        app = QApplication(sys.argv)
+        testObject = DisablePasswordPage()
+        QTest.keyClicks(testObject.passwordEntered, "")
+        QTest.mouseClick(testObject.enter, Qt.LeftButton)
+        self.assertEqual(testObject.returnedText.text(), "You have not entered a password. Please try again.")
 
 
 if __name__ == "__main__":
