@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>871</width>
-    <height>574</height>
+    <width>686</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -158,12 +158,12 @@ background-color: rgba(255, 227, 251, 59);
              </property>
              <property name="icon">
               <iconset resource="icons.qrc">
-               <normaloff>:/icons/Icons/noun-image-4804487.svg</normaloff>:/icons/Icons/noun-image-4804487.svg</iconset>
+               <normaloff>:/newPrefix/Icons/icons8-picture-96.png</normaloff>:/newPrefix/Icons/icons8-picture-96.png</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>31</width>
-               <height>31</height>
+               <width>35</width>
+               <height>35</height>
               </size>
              </property>
             </widget>
@@ -182,14 +182,15 @@ border: none;
 }
 QPushButton:hover{
 background-color: rgba(255, 227, 251, 59);
-}</string>
+}
+</string>
              </property>
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="icons.qrc">
-               <normaloff>:/icons/Icons/cards.svg</normaloff>:/icons/Icons/cards.svg</iconset>
+               <normaloff>:/newPrefix/Icons/cards.png</normaloff>:/newPrefix/Icons/cards.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -209,9 +210,9 @@ background-color: rgba(255, 227, 251, 59);
              </property>
              <property name="font">
               <font>
-               <family>Trebuchet MS</family>
+               <family>Futura</family>
                <pointsize>18</pointsize>
-               <bold>true</bold>
+               <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
@@ -231,7 +232,7 @@ padding-left: 30px;
             <widget class="QLabel" name="label_2">
              <property name="font">
               <font>
-               <family>Trebuchet MS</family>
+               <family>Futura</family>
                <pointsize>18</pointsize>
               </font>
              </property>
@@ -247,7 +248,7 @@ padding-left: 30px;
             <widget class="QLabel" name="label_7">
              <property name="font">
               <font>
-               <family>Trebuchet MS</family>
+               <family>Futura</family>
                <pointsize>18</pointsize>
               </font>
              </property>
@@ -266,10 +267,9 @@ padding-left: 30px;
             <widget class="QLabel" name="label">
              <property name="font">
               <font>
-               <family>Trebuchet MS</family>
+               <family>Futura</family>
                <pointsize>18</pointsize>
                <italic>false</italic>
-               <bold>false</bold>
               </font>
              </property>
              <property name="styleSheet">
@@ -287,7 +287,7 @@ padding-left: 30px;
             <widget class="QLabel" name="label_6">
              <property name="font">
               <font>
-               <family>Trebuchet MS</family>
+               <family>Futura</family>
                <pointsize>18</pointsize>
               </font>
              </property>
@@ -317,12 +317,12 @@ background-color: rgba(255, 227, 251, 59);
              </property>
              <property name="icon">
               <iconset resource="icons.qrc">
-               <normaloff>:/icons/Icons/noun-text-3715909.svg</normaloff>:/icons/Icons/noun-text-3715909.svg</iconset>
+               <normaloff>:/newPrefix/Icons/icons8-type-90.png</normaloff>:/newPrefix/Icons/icons8-type-90.png</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>30</width>
-               <height>30</height>
+               <width>35</width>
+               <height>35</height>
               </size>
              </property>
             </widget>
@@ -331,7 +331,7 @@ background-color: rgba(255, 227, 251, 59);
             <widget class="QLabel" name="label_5">
              <property name="font">
               <font>
-               <family>Trebuchet MS</family>
+               <family>Futura</family>
                <pointsize>18</pointsize>
               </font>
              </property>
@@ -358,12 +358,12 @@ background-color: rgba(255, 227, 251, 59);
              </property>
              <property name="icon">
               <iconset resource="icons.qrc">
-               <normaloff>:/icons/Icons/noun-heart-1814272.svg</normaloff>:/icons/Icons/noun-heart-1814272.svg</iconset>
+               <normaloff>:/newPrefix/Icons/icons8-heart-96.png</normaloff>:/newPrefix/Icons/icons8-heart-96.png</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>40</width>
-               <height>40</height>
+               <width>35</width>
+               <height>35</height>
               </size>
              </property>
             </widget>
@@ -382,7 +382,7 @@ background-color: rgba(255, 227, 251, 59);
              </property>
              <property name="icon">
               <iconset resource="icons.qrc">
-               <normaloff>:/icons/Icons/noun-url-4430867.svg</normaloff>:/icons/Icons/noun-url-4430867.svg</iconset>
+               <normaloff>:/newPrefix/Icons/icons8-link-100.png</normaloff>:/newPrefix/Icons/icons8-link-100.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -499,12 +499,12 @@ color: black;</string>
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
-                 <normaloff>:/icons/Icons/noun-search-4812973.svg</normaloff>:/icons/Icons/noun-search-4812973.svg</iconset>
+                 <normaloff>:/newPrefix/Icons/icons8-search-96.png</normaloff>:/newPrefix/Icons/icons8-search-96.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>30</width>
-                 <height>30</height>
+                 <width>25</width>
+                 <height>25</height>
                 </size>
                </property>
               </widget>
@@ -548,7 +548,7 @@ border: none;
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
-                 <normaloff>:/icons/Icons/noun-sidebar-2395938.svg</normaloff>:/icons/Icons/noun-sidebar-2395938.svg</iconset>
+                 <normaloff>:/newPrefix/Icons/icons8-navigation-toolbar-left-96.png</normaloff>:/newPrefix/Icons/icons8-navigation-toolbar-left-96.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -565,7 +565,7 @@ border: none;
                </property>
                <property name="icon">
                 <iconset resource="icons.qrc">
-                 <normaloff>:/icons/Icons/noun-setting-4804149.svg</normaloff>:/icons/Icons/noun-setting-4804149.svg</iconset>
+                 <normaloff>:/newPrefix/Icons/icons8-settings-90.png</normaloff>:/newPrefix/Icons/icons8-settings-90.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -606,8 +606,8 @@ border: none;
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>647</width>
-               <height>450</height>
+               <width>462</width>
+               <height>436</height>
               </rect>
              </property>
             </widget>
