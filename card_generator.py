@@ -183,8 +183,9 @@ class CardObject:
             self.label.setTextInteractionFlags(Qt.TextBrowserInteraction)
 
         elif self.cardData.getCategory() == 'Image':
-            pixmap = QPixmap(content)
-            pixmap4 = pixmap.scaled(150, 100, Qt.KeepAspectRatio)
+            pixmap4 = QPixmap(content)
+            pixmap4.setDevicePixelRatio(2.0)
+            pixmap4 = pixmap4.scaled(400, 300, Qt.KeepAspectRatio)
             self.label.setPixmap(pixmap4)
             self.label.setAlignment(Qt.AlignCenter)
 

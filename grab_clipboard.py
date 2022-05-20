@@ -59,13 +59,13 @@ class ClipboardManager:
                     category = "URL"
                 else:
                     category = "Text"
-
-                self.dao.storeCard(cardId, pbstring, category, 0, 0)
-                if (self._uiStatus['ALL_STATE'] or (self._uiStatus['TEXT_STATE'] and category == 'Text')
-                        or (self._uiStatus['URL_STATE'] and category == 'URL')):
-                    cardData = card.Card(cardId, pbstring, category, 0, 0)
-                    card_generator.CardObject(self.cardRenderer.parent, self.dao, self.cardRenderer).addToInterface(
-                        cardData)
+                if not pbstring.isspace():
+                    self.dao.storeCard(cardId, pbstring, category, 0, 0)
+                    if (self._uiStatus['ALL_STATE'] or (self._uiStatus['TEXT_STATE'] and category == 'Text')
+                            or (self._uiStatus['URL_STATE'] and category == 'URL')):
+                        cardData = card.Card(cardId, pbstring, category, 0, 0)
+                        card_generator.CardObject(self.cardRenderer.parent, self.dao, self.cardRenderer).addToInterface(
+                            cardData)
             elif NSTIFFPboardType in dataType:
                 pbimage = self._pasteBoard.dataForType_(NSTIFFPboardType)
                 image = Image.open(io.BytesIO(pbimage))

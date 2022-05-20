@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, \
     QLineEdit, QFrame, QGridLayout, \
     QStackedWidget, QDesktopWidget
 import grab_clipboard as grabClip
-from PyQt5 import uic
+from PyQt5 import uic, QtCore
 import sys
 import dao
 import card_generator
@@ -10,6 +10,8 @@ import settings
 import loginPage
 import icons
 
+QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class MainWindow(QMainWindow):
     """
@@ -40,7 +42,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         """
-        The constructor for the UI class.
+        The constructor for the MainWindow class.
 
         """
 
@@ -136,8 +138,6 @@ class MainWindow(QMainWindow):
                              "}"
                              u"QPushButton{\n"
                              "border: solid;\n"
-                             "border-color: black;\n"
-                              "border-width: 1px\n"
                              "}"
                              )
 
@@ -233,14 +233,17 @@ class MainWindow(QMainWindow):
         """
 
         searchTerm = self.lineEdit.text()
-        self.updateCategory("ALL_STATE")
-        self.setCategory()
+
         if searchTerm:
+            self.updateCategory("ALL_STATE")
+            self.setCategory()
             self.emptyGrid()
             self.cardMaker.contentRequestCategory = 5
             self.cardMaker.initializeCardDisplay(self.dao.getSearchCards(searchTerm), self.dao, self.showAllCards)
         else:
-            self.showAllCards()
+            if not self.STATUS["ALL_STATE"]:
+                self.showAllCards()
+
 
     def showFavoriteCards(self):
         """
@@ -300,9 +303,9 @@ if __name__ == "__main__":
     gc.manageClip()
 
     widget = QStackedWidget()
-    window1 = loginPage.WelcomeScreen(ui.dao, widget, ui)  # page 1
+    window1 = loginPage.WelcomeScreen(ui.dao, widget, ui)
     window2 = loginPage.NewUser(ui.dao, widget, ui)
-    window3 = loginPage.WelcomeScreenPasswordPage(ui.dao, widget, ui)  # page 1
+    window3 = loginPage.WelcomeScreenPasswordPage(ui.dao, widget, ui)
     widget.addWidget(window1)
     widget.addWidget(window2)
     widget.addWidget(window3)
@@ -314,7 +317,6 @@ if __name__ == "__main__":
     qr.moveCenter(cp)
     widget.move(qr.topLeft())
     qr1 = ui.frameGeometry()
-    cp1 = QDesktopWidget().availableGeometry().center()
     qr1.moveCenter(cp)
     ui.move(qr1.topLeft())
     widget.show()

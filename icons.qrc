@@ -1,12 +1,12 @@
 <RCC>
-  <qresource prefix="icons">
-    <file>Icons/cards.svg</file>
-    <file>Icons/noun-heart-1814272.svg</file>
-    <file>Icons/noun-image-4804487.svg</file>
-    <file>Icons/noun-search-4812973.svg</file>
-    <file>Icons/noun-setting-4804149.svg</file>
-    <file>Icons/noun-sidebar-2395938.svg</file>
-    <file>Icons/noun-text-3715909.svg</file>
-    <file>Icons/noun-url-4430867.svg</file>
+  <qresource prefix="newPrefix">
+    <file>Icons/cards.png</file>
+    <file>Icons/icons8-heart-96.png</file>
+    <file>Icons/icons8-link-100.png</file>
+    <file>Icons/icons8-navigation-toolbar-left-96.png</file>
+    <file>Icons/icons8-picture-96.png</file>
+    <file>Icons/icons8-type-90.png</file>
+    <file>Icons/icons8-settings-90.png</file>
+    <file>Icons/icons8-search-96.png</file>
   </qresource>
 </RCC>
